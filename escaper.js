@@ -55,7 +55,7 @@ exports.replace = function (str, opt_withComment, opt_quotContent) {
 			prev = str.charAt(i - 1),
 			next = str.charAt(i + 1);
 
-		if (!comment && opt_withComment) {
+		if (!comment) {
 			if (!begin) {
 				if (el === '/') {
 					switch (next) {
@@ -115,19 +115,18 @@ exports.replace = function (str, opt_withComment, opt_quotContent) {
 				i += label.length - cut.length;
 			}
 
-		} else if (opt_withComment &&
-			(next === '\n' && comment === '//') || (el === '/' && prev === '*' && comment === '/*')
-		) {
-
+		} else if ((next === '\n' && comment === '//') || (el === '/' && prev === '*' && comment === '/*')) {
 			comment = false;
 
-			cut = str.substring(selectionStart, i + 1);
-			label = '__ESCAPER_QUOT__' + stack.length;
+			if (opt_withComment) {
+				cut = str.substring(selectionStart, i + 1);
+				label = '__ESCAPER_QUOT__' + stack.length;
 
-			stack.push(cut);
-			str = str.substring(0, selectionStart) + label + str.substring(i + 1);
+				stack.push(cut);
+				str = str.substring(0, selectionStart) + label + str.substring(i + 1);
 
-			i += label.length - cut.length;
+				i += label.length - cut.length;
+			}
 		}
 	}
 
