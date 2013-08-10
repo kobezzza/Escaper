@@ -2,7 +2,7 @@ var __NEJS_THIS__ = this;
 var Program = require('commander');
 
 Program
-	.version('0.0.1')
+	.version('0.0.2')
 	.option('-s, --source [src]', 'source file')
 	.option('-o, --output [src]', 'output file')
 	.option('-c, --comment', 'with comment')
