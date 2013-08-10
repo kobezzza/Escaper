@@ -1,11 +1,29 @@
 {
-	"name": "escaper",
-	"version": "0.0.1",
-	"main": "escaper.js",
-	"dependencies": {
-		"commander": "~1.3"
-	},
-	"bin": {
-		"escaper": "index.js"
-	}
+  "name": "escaper",
+  "version": "0.0.1",
+  "main": "escaper.js",
+  "bin": {
+    "escaper": "index.js"
+  },
+  "dependencies": {
+    "commander": "~1.3"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/kobezzza/Escaper"
+  },
+  "author": {
+    "name": "Kobezzza",
+    "email": "kobezzza@mail.ru",
+    "url": "https://github.com/Kobezzza"
+  },
+  "license": "BSD",
+  "readmeFilename": "readme.md",
+  "bugs": {
+    "url": "https://github.com/kobezzza/Escaper/issues"
+  }
 }
