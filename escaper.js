@@ -17,6 +17,10 @@ var escapeEndMap = {
 	'{': true
 };
 
+/**
+ * Стек содержимого
+ * @type {!Array}
+ */
 exports.quotContent = [];
 
 /**
