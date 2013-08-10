@@ -35,7 +35,7 @@ exports.quotContent = [];
  */
 exports.replace = function (str, opt_withComment, opt_quotContent) {
 	var __NEJS_THIS__ = this;
-	opt_withComment = !!opt_withComment
+	opt_withComment = !!opt_withComment;
 	var stack = this.quotContent || opt_quotContent;
 
 	var begin,
