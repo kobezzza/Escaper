@@ -1,5 +1,7 @@
 var __NEJS_THIS__ = this;
-var Escaper = {};
+var Escaper = {
+	version: '0.0.2'
+};
 if (typeof window === 'undefined') {
 	module.exports = exports = Escaper;
 }

@@ -1,8 +1,9 @@
 var __NEJS_THIS__ = this;
 var Program = require('commander');
+var Escaper = require('./escaper');
 
 Program
-	.version('0.0.2')
+	.version(Escaper.version)
 	.option('-s, --source [src]', 'source file')
 	.option('-o, --output [src]', 'output file')
 	.option('-c, --comment', 'with comment')
@@ -11,7 +12,7 @@ Program
 var fs = require('fs');
 fs.writeFileSync(
 	Program.output,
-	require('./escaper').replace(
+	Escaper.replace(
 		String(fs.readFileSync(Program.source)), !!Program.comment
 	)
 );
