@@ -1,6 +1,6 @@
 var __NEJS_THIS__ = this;
 var Escaper = {
-	VERSION: '0.0.3'
+	VERSION: '0.0.4'
 };
 
 if (typeof window === 'undefined') {
@@ -16,6 +16,9 @@ if (typeof window === 'undefined') {
 	};
 
 	var escapeEndMap = {
+		'-': true,
+		'+': true,
+		'*': true,
 		',': true,
 		';': true,
 		'=': true,
