@@ -1,7 +1,7 @@
 var __NEJS_THIS__ = this;
 var Escaper = {
 	VERSION: '0.0.5',
-	isLocal: false
+	isLocal: typeof window === 'undefined' ? !!global.EscaperIsLocal : false
 };
 
 if (typeof window === 'undefined' && !Escaper.isLocal) {
