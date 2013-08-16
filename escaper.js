@@ -1,9 +1,10 @@
 var __NEJS_THIS__ = this;
 var Escaper = {
-	VERSION: '0.0.4'
+	VERSION: '0.0.5',
+	isLocal: false
 };
 
-if (typeof window === 'undefined') {
+if (typeof window === 'undefined' && !Escaper.isLocal) {
 	module.exports = exports = Escaper;
 }
 
