@@ -1,6 +1,6 @@
 var __NEJS_THIS__ = this;
 var Escaper = {
-	VERSION: '0.0.6',
+	VERSION: '0.0.7',
 	isLocal: typeof window === 'undefined' ? !!global.EscaperIsLocal : false
 };
 
@@ -31,6 +31,8 @@ if (typeof window === 'undefined' && !Escaper.isLocal) {
 		'{': true
 	};
 
+	var cache = {};
+
 	/**
 	 * Стек содержимого
 	 * @type {!Array}
@@ -50,6 +52,12 @@ if (typeof window === 'undefined' && !Escaper.isLocal) {
 	Escaper.replace = function (str, opt_withComment, opt_quotContent) {
 		var __NEJS_THIS__ = this;
 		opt_withComment = !!opt_withComment;
+
+		var key = str;
+		if (opt_quotContent && cache[key] && cache[key][opt_withComment]) {
+			return cache[key][opt_withComment];
+		}
+
 		var stack = this.quotContent || opt_quotContent;
 
 		var begin,
@@ -142,6 +150,11 @@ if (typeof window === 'undefined' && !Escaper.isLocal) {
 					i += label.length - cut.length;
 				}
 			}
+		}
+
+		if (opt_quotContent) {
+			cache[key] = cache[key] || {};
+			cache[key][opt_withComment] = str;
 		}
 
 		return str;
