@@ -1,6 +1,6 @@
 var __NEJS_THIS__ = this;
 var Escaper = {
-	VERSION: '0.0.7',
+	VERSION: '0.0.8',
 	isLocal: typeof window === 'undefined' ? !!global.EscaperIsLocal : false
 };
 
@@ -58,7 +58,7 @@ if (typeof window === 'undefined' && !Escaper.isLocal) {
 			return cache[key][opt_withComment];
 		}
 
-		var stack = this.quotContent || opt_quotContent;
+		var stack = opt_quotContent || this.quotContent;
 
 		var begin,
 			end = true,
@@ -170,7 +170,7 @@ if (typeof window === 'undefined' && !Escaper.isLocal) {
 	 */
 	Escaper.paste = function (str, opt_quotContent) {
 		var __NEJS_THIS__ = this;
-		var stack = this.quotContent || opt_quotContent;
+		var stack = opt_quotContent || this.quotContent;
 		return str.replace(/__ESCAPER_QUOT__(\d+)/gm, function (sstr, pos) {
 			return stack[pos];});
 	};
