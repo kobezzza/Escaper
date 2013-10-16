@@ -1,6 +1,6 @@
 var __NEJS_THIS__ = this;
 var Escaper = {
-	VERSION: '0.0.8',
+	VERSION: '0.0.9',
 	isLocal: typeof window === 'undefined' ? !!global.EscaperIsLocal : false
 };
 
@@ -41,7 +41,7 @@ if (typeof window === 'undefined' && !Escaper.isLocal) {
 
 	/**
 	 * Заметить блоки вида ' ... ', " ... ", / ... /, // ..., /* ... *\/ на
-	 * __ESCAPER_QUOT__номер
+	 * __ESCAPER_QUOT__номер_
 	 *
 	 * @this {Object}
 	 * @param {string} str - исходная строка
@@ -129,7 +129,7 @@ if (typeof window === 'undefined' && !Escaper.isLocal) {
 					begin = false;
 
 					cut = str.substring(selectionStart, i + 1);
-					label = '__ESCAPER_QUOT__' + stack.length;
+					label = '__ESCAPER_QUOT__' + stack.length + '_';
 
 					stack.push(cut);
 					str = str.substring(0, selectionStart) + label + str.substring(i + 1);
@@ -142,7 +142,7 @@ if (typeof window === 'undefined' && !Escaper.isLocal) {
 
 				if (opt_withComment) {
 					cut = str.substring(selectionStart, i + 1);
-					label = '__ESCAPER_QUOT__' + stack.length;
+					label = '__ESCAPER_QUOT__' + stack.length + '_';
 
 					stack.push(cut);
 					str = str.substring(0, selectionStart) + label + str.substring(i + 1);
@@ -171,7 +171,7 @@ if (typeof window === 'undefined' && !Escaper.isLocal) {
 	Escaper.paste = function (str, opt_quotContent) {
 		var __NEJS_THIS__ = this;
 		var stack = opt_quotContent || this.quotContent;
-		return str.replace(/__ESCAPER_QUOT__(\d+)/gm, function (sstr, pos) {
+		return str.replace(/__ESCAPER_QUOT__(\d+)_/gm, function (sstr, pos) {
 			return stack[pos];});
 	};
 })();
