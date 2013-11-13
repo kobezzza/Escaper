@@ -1,11 +1,11 @@
 var __NEJS_THIS__ = this;
 /**!
  * @status stable
- * @version 1.0.0
+ * @version 1.0.1
  */
 
 var Escaper = {
-	VERSION: '1.0.0',
+	VERSION: '1.0.1',
 	isLocal: typeof window === 'undefined' ? !!global.EscaperIsLocal : false
 };
 
@@ -157,7 +157,7 @@ if (typeof window === 'undefined' && !Escaper.isLocal) {
 			}
 		}
 
-		if (opt_quotContent || stack === this.quotContent) {
+		if (opt_quotContent && stack === this.quotContent) {
 			cache[key] = cache[key] || {};
 			cache[key][opt_withComment] = str;
 		}
