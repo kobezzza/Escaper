@@ -1,6 +1,6 @@
 {
 	"name": "escaper",
-	"version": "0.0.9",
+	"version": "1.0.0",
 	"main": "escaper.js",
 	"bin": {
 		"escaper": "index.js"
