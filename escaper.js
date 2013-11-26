@@ -1,11 +1,11 @@
 var __NEJS_THIS__ = this;
 /**!
  * @status stable
- * @version 1.0.1
+ * @version 1.0.2
  */
 
 var Escaper = {
-	VERSION: '1.0.1',
+	VERSION: '1.0.2',
 	isLocal: typeof window === 'undefined' ? !!global.EscaperIsLocal : false
 };
 
@@ -48,7 +48,6 @@ if (typeof window === 'undefined' && !Escaper.isLocal) {
 	 * Заметить блоки вида ' ... ', " ... ", / ... /, // ..., /* ... *\/ на
 	 * __ESCAPER_QUOT__номер_
 	 *
-	 * @this {Object}
 	 * @param {string} str - исходная строка
 	 * @param {?boolean=} [opt_withComment=false] - если true, то также вырезаются комментарии
 	 * @param {Array=} [opt_quotContent] - стек содержимого
@@ -168,7 +167,6 @@ if (typeof window === 'undefined' && !Escaper.isLocal) {
 	/**
 	 * Заметить __ESCAPER_QUOT__номер в строке на реальное содержимое
 	 *
-	 * @this {Object}
 	 * @param {string} str - исходная строка
 	 * @param {Array=} [opt_quotContent] - стек содержимого
 	 * @return {string}
