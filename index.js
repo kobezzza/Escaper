@@ -7,7 +7,7 @@ var __NEJS_THIS__ = this;
  */
 
 var Program = require('commander');
-var Escaper = require('./lib/escaper');
+var Escaper = require('./escaper');
 
 Program
 	.version(Escaper.VERSION)
