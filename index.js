@@ -1,12 +1,13 @@
 #!/usr/bin/env node
+
 var __NEJS_THIS__ = this;
 /**!
  * @status stable
- * @version 1.0.0
+ * @version 1.0.1
  */
 
 var Program = require('commander');
-var Escaper = require('./escaper');
+var Escaper = require('./lib/escaper');
 
 Program
 	.version(Escaper.VERSION)
@@ -27,5 +28,5 @@ if (Program.output) {
 	fs.writeFileSync(Program.output, Escaper.replace(text, !!Program.comment));
 
 } else {
-	process.stdout.write(Escaper.replace(text, !!Program.comment));
+	console.log(Escaper.replace(text, !!Program.comment));
 }
