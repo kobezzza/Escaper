@@ -3,7 +3,7 @@
 var __NEJS_THIS__ = this;
 /**!
  * @status stable
- * @version 1.0.1
+ * @version 1.0.2
  */
 
 var Program = require('commander');
