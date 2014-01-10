@@ -1,0 +1,17 @@
+{
+  "name": "Escaper",
+  "main": "lib/core.js",
+  "version": "1.0.3",
+  "homepage": "https://github.com/kobezzza/Escaper",
+  "authors": [
+    "Kobezzza <kobezzza@mail.ru>"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}
