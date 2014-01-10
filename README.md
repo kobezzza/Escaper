@@ -35,21 +35,21 @@ console.log(Escaper.paste(str, content)); // '"foo" 1 /foo/ 2 /* 1 */ 3'
 
 ### Escaper.replace(str, opt_withComment, opt_quotContent)
 
-Заметить блоки вида ' ... ', " ... ", / ... /, // ..., /* ... *\/ на
-__ESCAPER_QUOT__номер_
+	Заметить блоки вида ' ... ', " ... ", / ... /, // ..., /* ... *\/ на
+	__ESCAPER_QUOT__номер_
 
-@param {string} str - исходная строка
-@param {?boolean=} [opt_withComment=false] - если true, то также вырезаются комментарии
-@param {Array=} [opt_quotContent=Escaper.quotContent] - стек содержимого
-@return {string}
+	@param {string} str - исходная строка
+	@param {?boolean=} [opt_withComment=false] - если true, то также вырезаются комментарии
+	@param {Array=} [opt_quotContent=Escaper.quotContent] - стек содержимого
+	@return {string}
 
 ### Escaper.paste(str, opt_quotContent)
 
-Заметить __ESCAPER_QUOT__номер в строке на реальное содержимое
+	Заметить __ESCAPER_QUOT__номер в строке на реальное содержимое
 
-@param {string} str - исходная строка
-@param {Array=} [opt_quotContent=this.quotContent] - стек содержимого
-@return {string}
+	@param {string} str - исходная строка
+	@param {Array=} [opt_quotContent=this.quotContent] - стек содержимого
+	@return {string}
 
 ## Лицензия
 
