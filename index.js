@@ -10,7 +10,7 @@ var Program = require('commander');
 var Escaper = require('./escaper');
 
 Program
-	.version(Escaper.VERSION.toString('.'))
+	.version(Escaper.VERSION.join('.'))
 	.option('-i, --input [src]', 'input text')
 	.option('-s, --source [src]', 'source file')
 	.option('-o, --output [src]', 'output file')
