@@ -8,6 +8,10 @@
 
 или
 
+	bower install escaper
+
+или
+
 	git clone git://github.com/kobezzza/Escaper.git
 
 ## Использование
