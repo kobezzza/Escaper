@@ -28,12 +28,12 @@ console.log(Escaper.paste(str, content)); // '"foo" 1 /foo/ 2 /* 1 */ 3'
 
 ### Использование в консоли
 
-	-i --input [src] исходная строка
 	-s --source [src] ссылка на исходный файл
 	-o --output [src] адрес для сохранения полученного результата (если не указан, то выводится на экран)
 	-c --comment дополнительно экранируются комментарии
 
-	escaper -i '"fooBar" + 1' -c
+	escaper -s myFile.js -c
+	escaper '"fooBar" + 1'
 
 ## API
 

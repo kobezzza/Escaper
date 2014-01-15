@@ -2,7 +2,7 @@
 
 /**!
  * @status stable
- * @version 1.0.2
+ * @version 1.0.3
  */
 
 var Program = require('commander');
@@ -10,18 +10,23 @@ var Escaper = require('./escaper');
 
 Program
 	.version(Escaper.VERSION.join('.'))
-	.option('-i, --input [src]', 'input text')
 	.option('-s, --source [src]', 'source file')
 	.option('-o, --output [src]', 'output file')
 	.option('-c, --comment', 'with comment')
 	.parse(process.argv);
 
-if (!Program.input && !Program.source) {
+var input;
+
+if (!Program.source) {
+	input = process.argv[2];
+}
+
+if (!input && !Program.source) {
 	Program.help();
 }
 
 var fs = require('fs');
-var text = Program.input || String(fs.readFileSync(Program.source));
+var text = Program.source ? String(fs.readFileSync(Program.source)) : input;
 
 if (Program.output) {
 	fs.writeFileSync(Program.output, Escaper.replace(text, !!Program.comment));
