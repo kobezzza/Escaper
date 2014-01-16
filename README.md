@@ -49,7 +49,7 @@ console.log(Escaper.paste(str, content)); // '"foo" 1 /foo/ 2 /* 1 */ 3'
 
 ### Escaper.paste(str, opt_quotContent)
 
-	Заметить __ESCAPER_QUOT__номер в строке на реальное содержимое
+	Заметить __ESCAPER_QUOT__номер_ в строке на реальное содержимое
 
 	@param {string} str - исходная строка
 	@param {Array=} [opt_quotContent=this.quotContent] - стек содержимого

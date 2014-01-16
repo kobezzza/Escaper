@@ -162,7 +162,7 @@ if (typeof window === 'undefined' && !Escaper.isLocal) {
 	};
 
 	/**
-	 * Заметить __ESCAPER_QUOT__номер в строке на реальное содержимое
+	 * Заметить __ESCAPER_QUOT__номер_ в строке на реальное содержимое
 	 *
 	 * @param {string} str - исходная строка
 	 * @param {Array=} [opt_quotContent=this.quotContent] - стек содержимого
