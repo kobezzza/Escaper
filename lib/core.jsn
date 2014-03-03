@@ -4,7 +4,7 @@
  */
 
 var Escaper = {
-	VERSION: [1, 0, 7],
+	VERSION: [1, 0, 8],
 	isLocal: typeof window === 'undefined' ? !!global.EscaperIsLocal : false
 };
 
@@ -55,9 +55,10 @@ if (typeof window === 'undefined' && !Escaper.isLocal) {
 	 * @param {string} str - исходная строка
 	 * @param {?boolean=} [opt_withComment=false] - если true, то также вырезаются комментарии
 	 * @param {Array=} [opt_quotContent=this.quotContent] - стек содержимого
+	 * @param {?boolean=} [opt_snakeskin] - если true, то при экранировании учитываются конструкции Snakeskin
 	 * @return {string}
 	 */
-	Escaper.replace = function (str, opt_withComment, opt_quotContent) {
+	Escaper.replace = function (str, opt_withComment, opt_quotContent, opt_snakeskin) {
 		opt_withComment = !!opt_withComment;
 
 		var cacheKey = str;
@@ -78,6 +79,8 @@ if (typeof window === 'undefined' && !Escaper.isLocal) {
 
 		var cut,
 			label;
+
+		var filterStart = false;
 
 		for (let i = 0; i < str.length; i++) {
 			let el = str.charAt(i),
@@ -108,6 +111,30 @@ if (typeof window === 'undefined' && !Escaper.isLocal) {
 
 					} else if (/[^\s\/]/.test(el)) {
 						end = false;
+					}
+
+					let skip = false;
+
+					if (opt_snakeskin) {
+						if (el === '|' && /[a-z]/i.test(next)) {
+							filterStart = true;
+							end = false;
+							skip = true;
+
+						} else if (filterStart && /[\s]/.test(el)) {
+							filterStart = false;
+							end = true;
+							skip = true;
+						}
+					}
+
+					if (!skip) {
+						if (escapeEndMap[el]) {
+							end = true;
+
+						} else if (/[^\s\/]/.test(el)) {
+							end = false;
+						}
 					}
 				}
 
