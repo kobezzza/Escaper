@@ -60,11 +60,11 @@ if (typeof window === 'undefined' && !Escaper.isLocal) {
 	Escaper.replace = function (str, opt_withComment, opt_quotContent) {
 		opt_withComment = !!opt_withComment;
 
-		var key = str;
+		var cacheKey = str;
 		var stack = opt_quotContent || this.quotContent;
 
-		if (stack === this.quotContent && cache[key] && cache[key][opt_withComment]) {
-			return cache[key][opt_withComment];
+		if (stack === this.quotContent && cache[cacheKey] && cache[cacheKey][opt_withComment]) {
+			return cache[cacheKey][opt_withComment];
 		}
 
 		var begin,
@@ -172,8 +172,8 @@ if (typeof window === 'undefined' && !Escaper.isLocal) {
 		}
 
 		if (stack === this.quotContent) {
-			cache[key] = cache[key] || {};
-			cache[key][opt_withComment] = str;
+			cache[cacheKey] = cache[cacheKey] || {};
+			cache[cacheKey][opt_withComment] = str;
 		}
 
 		return str;
