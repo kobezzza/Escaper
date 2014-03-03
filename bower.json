@@ -1,7 +1,7 @@
 {
   "name": "Escaper",
   "main": "lib/core.js",
-  "version": "1.0.7",
+  "version": "1.0.8",
   "homepage": "https://github.com/kobezzza/Escaper",
   "authors": [
     "Kobezzza <kobezzza@mail.ru>"

@@ -121,7 +121,7 @@ if (typeof window === 'undefined' && !Escaper.isLocal) {
 							end = false;
 							skip = true;
 
-						} else if (filterStart && /[\s]/.test(el)) {
+						} else if (filterStart && /\s/.test(el)) {
 							filterStart = false;
 							end = true;
 							skip = true;
