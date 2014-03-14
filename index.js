@@ -1,11 +1,6 @@
 #!/usr/bin/env node
 
 var __NEJS_THIS__ = this;
-/**!
- * @status stable
- * @version 1.0.3
- */
-
 var Program = require('commander');
 var Escaper = require('./escaper');
 

@@ -1,10 +1,5 @@
 #!/usr/bin/env node
 
-/**!
- * @status stable
- * @version 1.0.3
- */
-
 var Program = require('commander');
 var Escaper = require('./escaper');
 
