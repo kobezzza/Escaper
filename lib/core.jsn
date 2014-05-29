@@ -1,6 +1,7 @@
 var Escaper = {
 	VERSION: [1, 0, 9],
-	isLocal: typeof window === 'undefined' ? !!global.EscaperIsLocal : false
+	isLocal: typeof window === 'undefined' ?
+		Boolean(global.EscaperIsLocal || global['EscaperIsLocal']) : false
 };
 
 if (typeof window === 'undefined' && !Escaper.isLocal) {
