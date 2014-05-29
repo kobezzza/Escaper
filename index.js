@@ -1,6 +1,5 @@
 #!/usr/bin/env node
 
-var __NEJS_THIS__ = this;
 var Program = require('commander');
 var Escaper = require('./escaper');
 
