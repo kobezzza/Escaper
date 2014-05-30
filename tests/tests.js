@@ -122,4 +122,15 @@ describe('Escaper', function()  {
 		expect(Escaper.paste(str, stack))
 			.toBe('Привет /* это комментарий */ Друг!');
 	});
+
+	it("экранирование в фидьтрах Snakeskin", function()  {
+		var stack = [];
+		var str = Escaper.replace('foo|replace /hello/g|join "world"', true, stack, true);
+
+		expect(str)
+			.toBe('foo|replace __ESCAPER_QUOT__0_|join __ESCAPER_QUOT__1_');
+
+		expect(Escaper.paste(str, stack))
+			.toBe('foo|replace /hello/g|join "world"');
+	});
 });
