@@ -6,7 +6,7 @@
 
 * `' ... '`
 * `" ... "`
-* `` ` ... ` ``
+* `` ` ... ` ``, `` ` ...${...} ` ``
 * `/ ... /`
 * `// ...`
 * `/* ... */`
@@ -15,19 +15,19 @@
 
 `https://github.com/kobezzza/Escaper/blob/master/lib/escaper.js`
 
-*или*
+или
 
 ```bash
 npm install escaper
 ```
 
-*или*
+или
 
 ```bash
 bower install escaper
 ```
 
-*или*
+или
 
 ```bash
 git clone git://github.com/kobezzza/Escaper.git
