@@ -43,18 +43,18 @@ console.log(Escaper.paste(str, content)); // '"foo" 1 /foo/ 2 /* 1 */ 3'
 
 ### Escaper.replace(str, opt_withComment, opt_quotContent)
 
-Заметить блоки вида ' ... ', " ... ", / ... /, // ..., /* ... *\/ на
-__ESCAPER_QUOT__номер_ в указанной строке
+	Заметить блоки вида ' ... ', " ... ", / ... /, // ..., /* ... *\/ на
+	__ESCAPER_QUOT__номер_ в указанной строке
 
 ---
 
-#### Аргументы
+**Аргументы**
 
-* {string} **str** - исходная строка
-* {?boolean=} [**opt_withComment**=false] - если true, то также вырезаются комментарии
-* {Array=} [**opt_quotContent**=Escaper.quotContent] - стек содержимого
+	{string} str - исходная строка
+	{?boolean=} [opt_withComment**=false] - если true, то также вырезаются комментарии
+	{Array=} [opt_quotContent**=Escaper.quotContent] - стек содержимого
 
-**return** {string}
+*return* {string}
 
 ### Escaper.paste(str, opt_quotContent)
 
@@ -62,12 +62,12 @@ __ESCAPER_QUOT__номер_ в указанной строке
 
 ---
 
-#### Аргументы
+**Аргументы**
 
-* {string} **str** - исходная строка
-* {Array=} [**opt_quotContent**=Escaper.quotContent] - стек содержимого
+	{string} str - исходная строка
+	{Array=} [opt_quotContent**=Escaper.quotContent] - стек содержимого
 
-**return** {string}
+*return* {string}
 
 ## Лицензия
 
