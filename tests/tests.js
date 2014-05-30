@@ -123,7 +123,7 @@ describe('Escaper', function()  {
 			.toBe('Привет /* это комментарий */ Друг!');
 	});
 
-	it("экранирование в фидьтрах Snakeskin", function()  {
+	it("экранирование в фильтрах Snakeskin", function()  {
 		var stack = [];
 		var str = Escaper.replace('foo|replace /hello/g|join "world"', true, stack, true);
 
