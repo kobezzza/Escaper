@@ -1,5 +1,5 @@
 var Escaper = {
-	VERSION: [1, 0, 9],
+	VERSION: [1, 1, 0],
 	isLocal: typeof window === 'undefined' ?
 		Boolean(global.EscaperIsLocal || global['EscaperIsLocal']) : false
 };
@@ -76,6 +76,8 @@ if (typeof window === 'undefined' && !Escaper.isLocal) {
 		var selectionStart = 0,
 			block = false;
 
+		var templateVar = 0;
+
 		var cut,
 			label;
 
@@ -86,7 +88,7 @@ if (typeof window === 'undefined' && !Escaper.isLocal) {
 				prev = str.charAt(i - 1),
 				next = str.charAt(i + 1);
 
-			//let word = el + next;
+			let word = el + next;
 
 			if (!comment) {
 				if (!begin) {
@@ -141,18 +143,33 @@ if (typeof window === 'undefined' && !Escaper.isLocal) {
 
 				// Блоки [] внутри регулярного выражения
 				if (begin === '/' && !escape) {
-					switch (el) {
-						case '[': {
-							block = true;
-						} break;
+					if (el === '[') {
+						block = true;
 
-						case ']': {
-							block = false;
-						} break;
+					} else if (el === ']') {
+						block = false;
 					}
 				}
 
-				// Анализ содержимого
+				if (!begin && templateVar) {
+					if (el === '}') {
+						templateVar--;
+
+					} else if (el === '{') {
+						templateVar++;
+					}
+
+					if (!templateVar) {
+						el = '`';
+					}
+				}
+
+				if (begin === '`' && !escape && word === '${') {
+					el = '`';
+					i++;
+					templateVar++;
+				}
+
 				if (escapeMap[el] && (el === '/' ? end : true) && !begin) {
 					begin = el;
 					selectionStart = i;
