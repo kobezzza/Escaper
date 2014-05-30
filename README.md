@@ -1,6 +1,14 @@
 # Escaper
 
 Микробиблиотека для "экранирования" литералов строк, регулярных выражений и комментариев в синтаксисе JavaScript.
+Поддерживаются литералы:
+
+* `' ... '`
+* `" ... "`
+* `` ... ``
+* `/ ... /`
+* `// ...`
+* `/* ... */`
 
 ## Установка
 
@@ -17,6 +25,10 @@
 или
 
 	git clone git://github.com/kobezzza/Escaper.git
+	
+## Поддержка
+
+IE 6+, FF, Chrome
 
 ## Использование
 
@@ -61,7 +73,7 @@ console.log(Escaper.paste(str, content)); // '"foo" 1 /foo/ 2 /* 1 */ 3'
 **Аргументы**
 
 * `{string} str` - исходная строка
-* `{Array=} [opt_quotContent**=Escaper.quotContent]` - стек содержимого
+* `{Array=} [opt_quotContent=Escaper.quotContent]` - стек содержимого
 
 `@return {string}`
 
