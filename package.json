@@ -1,7 +1,11 @@
 {
   "name": "escaper",
-  "version": "1.0.8",
+  "version": "1.1.0",
   "main": "escaper.js",
+  "keywords": [
+    "javascript",
+    "string"
+  ],
   "bin": {
     "escaper": "index.js"
   },
@@ -24,6 +28,5 @@
   "bugs": {
     "url": "https://github.com/kobezzza/Escaper/issues"
   },
-  "description": "Escaper\r =======",
   "homepage": "https://github.com/kobezzza/Escaper"
 }
