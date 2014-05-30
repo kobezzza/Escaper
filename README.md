@@ -4,7 +4,11 @@
 
 ## Установка
 
-	npm install -g escaper
+	https://github.com/kobezzza/Escaper/blob/master/lib/escaper.js
+
+или
+
+	npm install escaper
 
 или
 
