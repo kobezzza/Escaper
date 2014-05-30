@@ -1,7 +1,8 @@
 # Escaper
 
 Микробиблиотека для "экранирования" литералов строк, регулярных выражений и комментариев в синтаксисе JavaScript.
-Поддерживаются литералы:
+
+*Поддерживаются литералы:*
 
 * `' ... '`
 * `" ... "`
@@ -12,19 +13,25 @@
 
 ## Установка
 
-	https://github.com/kobezzza/Escaper/blob/master/lib/escaper.js
+`https://github.com/kobezzza/Escaper/blob/master/lib/escaper.js`
 
 или
 
-	npm install escaper
+```bash
+npm install escaper
+```
 
 или
 
-	bower install escaper
+```bash
+bower install escaper
+```
 
 или
 
-	git clone git://github.com/kobezzza/Escaper.git
+```bash
+git clone git://github.com/kobezzza/Escaper.git
+```
 
 ## Использование
 
@@ -44,9 +51,9 @@ console.log(Escaper.paste(str, content)); // '"foo" 1 /foo/ 2 /* 1 */ 3'
 
 ### Использование в консоли
 
-* `-s --source [src]` ссылка на исходный файл
-* `-o --output [src]` адрес для сохранения полученного результата (если не указан, то выводится на экран)
-* `-c --comment` дополнительно экранируются комментарии
+* `-s --source [src]` - ссылка на исходный файл
+* `-o --output [src]` - адрес для сохранения полученного результата (если не указан, то выводится на экран)
+* `-c --comment` - дополнительно экранируются комментарии
 
 ```bash
 escaper -s myFile.js -c
