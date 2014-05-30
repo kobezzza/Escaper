@@ -13,7 +13,7 @@
 
 ## Установка
 
-`https://github.com/kobezzza/Escaper/blob/master/lib/escaper.js`
+https://github.com/kobezzza/Escaper/blob/master/lib/escaper.js
 
 или
 
@@ -39,10 +39,10 @@ git clone git://github.com/kobezzza/Escaper.git
 var str = '"foo" 1 /foo/ 2 /* 1 */ 3',
 	content = [];
 
-/* __ESCAPER_QUOT__0_ 1 __ESCAPER_QUOT__1_ 2 __ESCAPER_QUOT__2_ 3 */
+// __ESCAPER_QUOT__0_ 1 __ESCAPER_QUOT__1_ 2 __ESCAPER_QUOT__2_ 3
 str = Escaper.replace(str, true, content);
 
-/* "foo" 1 /foo/ 2 \/* 1 *\/ 3 */
+// "foo" 1 /foo/ 2 /* 1 */ 3
 Escaper.paste(str, content);
 ```
 
