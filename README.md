@@ -30,7 +30,7 @@ bower install escaper
 или
 
 ```bash
-git clone git://github.com/kobezzza/Escaper.git
+git clone https://github.com/kobezzza/Escaper
 ```
 
 ## Использование
