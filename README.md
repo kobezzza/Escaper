@@ -43,8 +43,8 @@ console.log(Escaper.paste(str, content)); // '"foo" 1 /foo/ 2 /* 1 */ 3'
 
 ### Escaper.replace(str, opt_withComment, opt_quotContent)
 
-	Заметить блоки вида ' ... ', " ... ", / ... /, // ..., /* ... *\/ на
-	__ESCAPER_QUOT__номер_ в указанной строке
+*Заметить блоки вида ' ... ', " ... ", / ... /, // ..., /* ... *\/ на
+__ESCAPER_QUOT__номер_ в указанной строке*
 
 ---
 
@@ -58,7 +58,7 @@ console.log(Escaper.paste(str, content)); // '"foo" 1 /foo/ 2 /* 1 */ 3'
 
 ### Escaper.paste(str, opt_quotContent)
 
-Заметить __ESCAPER_QUOT__номер_ в указанной строке на реальное содержимое
+*Заметить __ESCAPER_QUOT__номер_ в указанной строке на реальное содержимое*
 
 ---
 
