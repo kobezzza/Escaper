@@ -73,8 +73,8 @@ escaper '"fooBar" + 1'
 **Аргументы**
 
 * `string` `str` — исходная строка
-* `?boolean=` `opt_withComment`=`false` — если true, то также вырезаются комментарии
-* `Array=` `opt_quotContent=Escaper.quotContent` — стек содержимого
+* `?boolean=` `opt_withComment = false` — если true, то также вырезаются комментарии
+* `Array=` `opt_quotContent = Escaper.quotContent` — стек содержимого
 
 ### Escaper.paste(str, opt_quotContent)
 
@@ -85,7 +85,7 @@ escaper '"fooBar" + 1'
 **Аргументы**
 
 * `string` `str` — исходная строка
-* `Array=` `opt_quotContent=Escaper.quotContent` — стек содержимого
+* `Array=` `opt_quotContent = Escaper.quotContent` — стек содержимого
 
 ## Лицензия
 
