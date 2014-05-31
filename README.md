@@ -52,9 +52,9 @@ Escaper.paste(str, content);
 
 ### Использование в консоли
 
-* `-s --source [src]` - ссылка на исходный файл
-* `-o --output [src]` - адрес для сохранения полученного результата (если не указан, то выводится на экран)
-* `-c --comment` - дополнительно экранируются комментарии
+* `-s` `--source [src]` - ссылка на исходный файл
+* `-o` `--output [src]` - адрес для сохранения полученного результата (если не указан, то выводится на экран)
+* `-c` `--comment` - дополнительно экранируются комментарии
 
 ```bash
 escaper -s myFile.js -c
@@ -63,29 +63,29 @@ escaper '"fooBar" + 1'
 
 ## API
 
-### Escaper.replace(str, opt_withComment, opt_quotContent)
+### Escaper.replace(str, opt_withComment, opt_quotContent) 
+
+`@return {string}`
 
 Заметить блоки вида `' ... ', " ... ", / ... /, // ..., /* ... *\/` на
 `__ESCAPER_QUOT__номер_` в указанной строке.
 
 **Аргументы**
 
-* `{string} str` - исходная строка
-* `{?boolean=} [opt_withComment=false]` - если true, то также вырезаются комментарии
-* `{Array=} [opt_quotContent=Escaper.quotContent]` - стек содержимого
-	
-`@return {string}`
+* `string` `str` — исходная строка
+* `?boolean=` `opt_withComment`=`false` — если true, то также вырезаются комментарии
+* `Array=` `opt_quotContent`=`Escaper.quotContent` — стек содержимого
 
 ### Escaper.paste(str, opt_quotContent)
+
+`@return {string}`
 
 Заметить `__ESCAPER_QUOT__номер_` в указанной строке на реальное содержимое.
 
 **Аргументы**
 
-* `{string} str` - исходная строка
-* `{Array=} [opt_quotContent=Escaper.quotContent]` - стек содержимого
-
-`@return {string}`
+* `string` `str` — исходная строка
+* `Array=` `opt_quotContent`=`Escaper.quotContent` — стек содержимого
 
 ## Лицензия
 
