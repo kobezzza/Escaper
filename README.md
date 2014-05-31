@@ -65,8 +65,6 @@ escaper '"fooBar" + 1'
 
 ### Escaper.replace(str, opt_withComment, opt_quotContent) 
 
-`@return {string}`
-
 Заметить блоки вида `' ... ', " ... ", / ... /, // ..., /* ... *\/` на
 `__ESCAPER_QUOT__номер_` в указанной строке.
 
@@ -76,9 +74,9 @@ escaper '"fooBar" + 1'
 * `?boolean=` `opt_withComment = false` — если true, то также вырезаются комментарии
 * `Array=` `opt_quotContent = Escaper.quotContent` — стек содержимого
 
-### Escaper.paste(str, opt_quotContent)
-
 `@return {string}`
+
+### Escaper.paste(str, opt_quotContent)
 
 Заметить `__ESCAPER_QUOT__номер_` в указанной строке на реальное содержимое.
 
@@ -86,6 +84,8 @@ escaper '"fooBar" + 1'
 
 * `string` `str` — исходная строка
 * `Array=` `opt_quotContent = Escaper.quotContent` — стек содержимого
+
+`@return {string}`
 
 ## Лицензия
 
