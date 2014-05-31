@@ -52,9 +52,9 @@ Escaper.paste(str, content);
 
 ### Использование в консоли
 
-* `-s` `--source [src]` - ссылка на исходный файл
-* `-o` `--output [src]` - адрес для сохранения полученного результата (если не указан, то выводится на экран)
-* `-c` `--comment` - дополнительно экранируются комментарии
+* `-s` `--source [src]` — ссылка на исходный файл
+* `-o` `--output [src]` — адрес для сохранения полученного результата (если не указан, то выводится на экран)
+* `-c` `--comment` — дополнительно экранируются комментарии
 
 ```bash
 escaper -s myFile.js -c
@@ -74,7 +74,7 @@ escaper '"fooBar" + 1'
 
 * `string` `str` — исходная строка
 * `?boolean=` `opt_withComment`=`false` — если true, то также вырезаются комментарии
-* `Array=` `opt_quotContent`=`Escaper.quotContent` — стек содержимого
+* `Array=` `opt_quotContent=Escaper.quotContent` — стек содержимого
 
 ### Escaper.paste(str, opt_quotContent)
 
@@ -85,7 +85,7 @@ escaper '"fooBar" + 1'
 **Аргументы**
 
 * `string` `str` — исходная строка
-* `Array=` `opt_quotContent`=`Escaper.quotContent` — стек содержимого
+* `Array=` `opt_quotContent=Escaper.quotContent` — стек содержимого
 
 ## Лицензия
 
