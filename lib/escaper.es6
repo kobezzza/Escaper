@@ -1,5 +1,5 @@
 var Escaper = {
-	VERSION: [1, 1, 4],
+	VERSION: [1, 1, 5],
 	isLocal: typeof window === 'undefined' && typeof global !== 'undefined' ?
 		Boolean(global.EscaperIsLocal || global['EscaperIsLocal']) : false
 };
@@ -9,20 +9,20 @@ if (typeof window === 'undefined' && typeof module !== 'undefined' && !Escaper.i
 }
 
 (() => {
-	const escapeMap = {
+	var escapeMap = {
 		'"': true,
 		"'" : true,
 		'/': true,
 		'`': true
 	};
 
-	const rgxpFlagsMap = {
+	var rgxpFlagsMap = {
 		'g': true,
 		'm': true,
 		'i': true
 	};
 
-	const escapeEndMap = {
+	var escapeEndMap = {
 		'-': true,
 		'+': true,
 		'*': true,
