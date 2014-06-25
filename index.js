@@ -1,5 +1,13 @@
 #!/usr/bin/env node
 
+/*!
+ * Escaper v1.1.6
+ * https://github.com/kobezzza/Escaper
+ *
+ * Released under the MIT license
+ * https://github.com/kobezzza/Escaper/blob/master/LICENSE
+ */
+
 var Program = require('commander');
 var Escaper = require('./escaper');
 
