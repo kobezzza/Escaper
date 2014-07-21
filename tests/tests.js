@@ -114,13 +114,13 @@ describe('Escaper', function()  {
 
 	it("экранирование многострочного комментария", function()  {
 		var stack = [];
-		var str = Escaper.replace('Привет /* это комментарий */ Друг!', true, stack);
+		var str = Escaper.replace('Привет /*/ это комментарий */ Друг!', true, stack);
 
 		expect(str)
 			.toBe('Привет __ESCAPER_QUOT__0_ Друг!');
 
 		expect(Escaper.paste(str, stack))
-			.toBe('Привет /* это комментарий */ Друг!');
+			.toBe('Привет /*/ это комментарий */ Друг!');
 	});
 
 	it("экранирование в фильтрах Snakeskin", function()  {
@@ -132,5 +132,16 @@ describe('Escaper', function()  {
 
 		expect(Escaper.paste(str, stack))
 			.toBe('foo|replace /hello/g|join "world"');
+	});
+
+	it("настраиваемое экранирование", function()  {
+		var stack = [];
+		var str = Escaper.replace('"Привет" /* это комментарий */ + /Друг/gim /** foo */!', {'"': true, '/': true, '/*': true}, stack);
+
+		expect(str)
+			.toBe('__ESCAPER_QUOT__0_ __ESCAPER_QUOT__1_ + __ESCAPER_QUOT__2_ /** foo */!');
+
+		expect(Escaper.paste(str, stack))
+			.toBe('"Привет" /* это комментарий */ + /Друг/gim /** foo */!');
 	});
 });
