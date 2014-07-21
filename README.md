@@ -9,7 +9,7 @@
 * `` ` ... ` ``, `` ` ... ${...} ` ``
 * `/ ... /`
 * `// ...`
-* `/* ... */`
+* `/* ... */`, `/** ... */`, `/*! ... */`
 
 ## Установка
 
@@ -50,17 +50,6 @@ Escaper.paste(str, content);
 
 `IE 6+`, `FF`, `Chrome`.
 
-### Использование в консоли
-
-* `-s` `--source [src]` — ссылка на исходный файл
-* `-o` `--output [src]` — адрес для сохранения полученного результата (если не указан, то выводится на экран)
-* `-c` `--comment` — дополнительно экранируются комментарии
-
-```bash
-escaper -s myFile.js -c
-escaper '"fooBar" + 1'
-```
-
 ## API
 
 ### Escaper.replace(str, opt_withComment, opt_quotContent) 
@@ -71,7 +60,19 @@ escaper '"fooBar" + 1'
 **Аргументы**
 
 * `string` `str` — исходная строка
-* `?boolean=` `opt_withComment = false` — если true, то также вырезаются комментарии
+* `(Object|boolean)=` `opt_withCommentsOrParams = false` — таблица вырезаемых последовательностей:
+
+     *) `
+     *) '
+     *) "
+     *) /
+     *) //
+     *) /*
+     *) /**
+     *) /*!
+
+     ИЛИ если логическое значение, то вырезаются литералы с комментариями (true) / литералы (false)
+     
 * `Array=` `opt_quotContent = Escaper.quotContent` — стек содержимого
 
 `@return {string}`
