@@ -1,5 +1,5 @@
 /*!
- * Escaper v1.1.6
+ * Escaper v1.2.0
  * https://github.com/kobezzza/Escaper
  *
  * Released under the MIT license
@@ -7,7 +7,7 @@
  */
 
 var Escaper = {
-	VERSION: [1, 1, 6],
+	VERSION: [1, 2, 0],
 	isLocal: typeof window === 'undefined' && typeof global !== 'undefined' ?
 		Boolean(global.EscaperIsLocal || global['EscaperIsLocal']) : false
 };
@@ -24,11 +24,58 @@ if (typeof window === 'undefined' && typeof module !== 'undefined' && !Escaper.i
 		'`': true
 	};
 
+	var sCommentsMap = {
+		'//': true
+	};
+
+	var mCommentsMap = {
+		'/*': true,
+		'/**': true,
+		'/*!': true
+	};
+
+	var keyArr = [];
+
+	for (let key in escapeMap) {
+		if (!escapeMap.hasOwnProperty(key)) {
+			continue;
+		}
+
+		keyArr.push(key);
+	}
+
+	for (let key in sCommentsMap) {
+		if (!sCommentsMap.hasOwnProperty(key)) {
+			continue;
+		}
+
+		keyArr.push(key);
+	}
+
+	for (let key in mCommentsMap) {
+		if (!mCommentsMap.hasOwnProperty(key)) {
+			continue;
+		}
+
+		keyArr.push(key);
+	}
+
 	var rgxpFlagsMap = {
 		'g': true,
 		'm': true,
-		'i': true
+		'i': true,
+		'y': true,
+		'u': true
 	};
+
+	var rgxpFlags = [];
+	for (let key in rgxpFlagsMap) {
+		if (!rgxpFlagsMap.hasOwnProperty(key)) {
+			continue;
+		}
+
+		rgxpFlags.push(key);
+	}
 
 	var escapeEndMap = {
 		'-': true,
@@ -45,8 +92,8 @@ if (typeof window === 'undefined' && typeof module !== 'undefined' && !Escaper.i
 		'{': true
 	};
 
-	var cache = {};
-	var content = [];
+	var cache = {},
+		content = [];
 
 	/**
 	 * Стек содержимого
@@ -59,20 +106,53 @@ if (typeof window === 'undefined' && typeof module !== 'undefined' && !Escaper.i
 	 * __ESCAPER_QUOT__номер_ в указанной строке
 	 *
 	 * @param {string} str - исходная строка
-	 * @param {?boolean=} [opt_withComment=false] - если true, то также вырезаются комментарии
+	 * @param {(Object|boolean)=} [opt_withCommentsOrParams=false] - таблица вырезаемых последовательностей:
+	 *
+	 *     *) `
+	 *     *) '
+	 *     *) "
+	 *     *) /
+	 *     *) //
+	 *     *) /*
+	 *     *) /**
+	 *     *) /*!
+	 *
+	 *     ИЛИ если логическое значение, то вырезаются литералы с комментариями (true) / литералы (false)
+	 *
 	 * @param {Array=} [opt_quotContent=Escaper.quotContent] - стек содержимого
 	 * @param {?boolean=} [opt_snakeskin] - если true, то при экранировании учитываются конструкции Snakeskin
 	 * @return {string}
 	 */
-	Escaper.replace = function (str, opt_withComment, opt_quotContent, opt_snakeskin) {
-		opt_withComment = Boolean(opt_withComment);
+	Escaper.replace = function (str, opt_withCommentsOrParams, opt_quotContent, opt_snakeskin) {
+		var isObj = opt_withCommentsOrParams instanceof Object;
+		var p = isObj ?
+			Object(opt_withCommentsOrParams) : {};
 
-		var cacheKey = str;
+		var withComments = false;
+		if (typeof opt_withCommentsOrParams === 'boolean') {
+			withComments = Boolean(opt_withCommentsOrParams);
+		}
+
+		var cacheKey = '';
+		for (let i = -1; ++i < keyArr.length;) {
+			let el = keyArr[i];
+
+			if (mCommentsMap[el] || sCommentsMap[el]) {
+				p[el] = Boolean(withComments || p[el]);
+				cacheKey += `${p[el]},`;
+
+			} else {
+				p[el] = Boolean(p[el] || !isObj);
+				cacheKey += `${p[el]},`;
+			}
+		}
+
+		var initStr = str;
 		var stack = opt_quotContent ||
 			content;
 
-		if (stack === content && cache[cacheKey] && cache[cacheKey][opt_withComment]) {
-			return cache[cacheKey][opt_withComment];
+		if (stack === content && cache[cacheKey] && cache[cacheKey][initStr]) {
+			return cache[cacheKey][initStr];
 		}
 
 		var begin = false,
@@ -84,28 +164,34 @@ if (typeof window === 'undefined' && typeof module !== 'undefined' && !Escaper.i
 		var selectionStart = 0,
 			block = false;
 
-		var templateVar = 0;
+		var templateVar = 0,
+			filterStart = false;
 
 		var cut,
 			label;
 
-		var filterStart = false;
+		var uSRgxp = /[^\s\/]/,
+			wRgxp = /[a-z]/i,
+			sRgxp = /\s/;
 
-		for (let i = 0; i < str.length; i++) {
+		for (let i = -1; ++i < str.length;) {
 			let el = str.charAt(i),
 				prev = str.charAt(i - 1),
 				next = str.charAt(i + 1);
 
-			let word = el + next;
+			let word = el + next,
+				lWord = word + str.charAt(i + 2);
 
 			if (!comment) {
 				if (!begin) {
 					if (el === '/') {
-						if (next === '*') {
-							comment = '/*';
+						if (sCommentsMap[word] || mCommentsMap[word]) {
+							if (sCommentsMap[lWord] || mCommentsMap[lWord]) {
+								comment = lWord;
 
-						} else if (next === '/') {
-							comment = '//';
+							} else {
+								comment = word;
+							}
 						}
 
 						if (comment) {
@@ -117,19 +203,19 @@ if (typeof window === 'undefined' && typeof module !== 'undefined' && !Escaper.i
 					if (escapeEndMap[el]) {
 						end = true;
 
-					} else if (/[^\s\/]/.test(el)) {
+					} else if (uSRgxp.test(el)) {
 						end = false;
 					}
 
 					let skip = false;
 
 					if (opt_snakeskin) {
-						if (el === '|' && /[a-z]/i.test(next)) {
+						if (el === '|' && wRgxp.test(next)) {
 							filterStart = true;
 							end = false;
 							skip = true;
 
-						} else if (filterStart && /\s/.test(el)) {
+						} else if (filterStart && sRgxp.test(el)) {
 							filterStart = false;
 							end = true;
 							skip = true;
@@ -140,7 +226,7 @@ if (typeof window === 'undefined' && typeof module !== 'undefined' && !Escaper.i
 						if (escapeEndMap[el]) {
 							end = true;
 
-						} else if (/[^\s\/]/.test(el)) {
+						} else if (uSRgxp.test(el)) {
 							end = false;
 						}
 					}
@@ -175,20 +261,16 @@ if (typeof window === 'undefined' && typeof module !== 'undefined' && !Escaper.i
 					templateVar++;
 				}
 
-				if (escapeMap[el] && (el === '/' ? end : true) && !begin) {
+				if (p[el] && (el === '/' ? end : true) && !begin) {
 					begin = el;
 					selectionStart = i;
 
 				} else if (begin && (el === '\\' || escape)) {
 					escape = !escape;
 
-				} else if (escapeMap[el] && begin === el && !escape && (begin === '/' ? !block : true)) {
+				} else if (p[el] && begin === el && !escape && (begin === '/' ? !block : true)) {
 					if (el === '/') {
-						for (let key in rgxpFlagsMap) {
-							if (!rgxpFlagsMap.hasOwnProperty(key)) {
-								continue;
-							}
-
+						for (let j = -1; ++j < rgxpFlags.length;) {
 							if (rgxpFlagsMap[str.charAt(i + 1)]) {
 								i++;
 							}
@@ -206,10 +288,11 @@ if (typeof window === 'undefined' && typeof module !== 'undefined' && !Escaper.i
 					i += label.length - cut.length;
 				}
 
-			} else if ((next === '\n' && comment === '//') || (el === '/' && prev === '*' && comment === '/*')) {
-				comment = false;
+			} else if ((next === '\n' && sCommentsMap[comment]) ||
+				(el === '/' && prev === '*' && i - selectionStart > 2 && mCommentsMap[comment])
 
-				if (opt_withComment) {
+			) {
+				if (p[comment]) {
 					cut = str.substring(selectionStart, i + 1);
 					label = `__ESCAPER_QUOT__${stack.length}_`;
 
@@ -218,12 +301,14 @@ if (typeof window === 'undefined' && typeof module !== 'undefined' && !Escaper.i
 
 					i += label.length - cut.length;
 				}
+
+				comment = false;
 			}
 		}
 
 		if (stack === content) {
 			cache[cacheKey] = cache[cacheKey] || {};
-			cache[cacheKey][opt_withComment] = str;
+			cache[cacheKey][initStr] = str;
 		}
 
 		return str;
