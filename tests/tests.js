@@ -144,4 +144,15 @@ describe('Escaper', function()  {
 		expect(Escaper.paste(str, stack))
 			.toBe('"Привет" /* это комментарий */ + /Друг/gim /** foo */!');
 	});
+
+	it("настраиваемое экранирование с вложенными литералами", function()  {
+		var stack = [];
+		var str = Escaper.replace('"Привет" /** "foo" */', {'"': true}, stack);
+
+		expect(str)
+			.toBe('__ESCAPER_QUOT__0_ /** "foo" */');
+
+		expect(Escaper.paste(str, stack))
+			.toBe('"Привет" /** "foo" */');
+	});
 });
