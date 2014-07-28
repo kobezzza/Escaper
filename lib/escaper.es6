@@ -1,5 +1,5 @@
 /*!
- * Escaper v1.2.0
+ * Escaper v1.2.1
  * https://github.com/kobezzza/Escaper
  *
  * Released under the MIT license
@@ -7,7 +7,7 @@
  */
 
 var Escaper = {
-	VERSION: [1, 2, 0],
+	VERSION: [1, 2, 1],
 	isLocal: typeof window === 'undefined' && typeof global !== 'undefined' ?
 		Boolean(global.EscaperIsLocal || global['EscaperIsLocal']) : false
 };
@@ -34,7 +34,8 @@ if (typeof window === 'undefined' && typeof module !== 'undefined' && !Escaper.i
 		'/*!': true
 	};
 
-	var keyArr = [];
+	var keyArr = [],
+		finalMap = {};
 
 	for (let key in escapeMap) {
 		if (!escapeMap.hasOwnProperty(key)) {
@@ -42,6 +43,7 @@ if (typeof window === 'undefined' && typeof module !== 'undefined' && !Escaper.i
 		}
 
 		keyArr.push(key);
+		finalMap[key] = true;
 	}
 
 	for (let key in sCommentsMap) {
@@ -50,6 +52,7 @@ if (typeof window === 'undefined' && typeof module !== 'undefined' && !Escaper.i
 		}
 
 		keyArr.push(key);
+		finalMap[key] = true;
 	}
 
 	for (let key in mCommentsMap) {
@@ -58,6 +61,7 @@ if (typeof window === 'undefined' && typeof module !== 'undefined' && !Escaper.i
 		}
 
 		keyArr.push(key);
+		finalMap[key] = true;
 	}
 
 	var rgxpFlagsMap = {
@@ -261,14 +265,14 @@ if (typeof window === 'undefined' && typeof module !== 'undefined' && !Escaper.i
 					templateVar++;
 				}
 
-				if (p[el] && (el === '/' ? end : true) && !begin) {
+				if (finalMap[el] && (el === '/' ? end : true) && !begin) {
 					begin = el;
 					selectionStart = i;
 
 				} else if (begin && (el === '\\' || escape)) {
 					escape = !escape;
 
-				} else if (p[el] && begin === el && !escape && (begin === '/' ? !block : true)) {
+				} else if (finalMap[el] && begin === el && !escape && (begin === '/' ? !block : true)) {
 					if (el === '/') {
 						for (let j = -1; ++j < rgxpFlags.length;) {
 							if (rgxpFlagsMap[str.charAt(i + 1)]) {
@@ -279,13 +283,15 @@ if (typeof window === 'undefined' && typeof module !== 'undefined' && !Escaper.i
 
 					begin = false;
 
-					cut = str.substring(selectionStart, i + 1);
-					label = `__ESCAPER_QUOT__${stack.length}_`;
+					if (p[el]) {
+						cut = str.substring(selectionStart, i + 1);
+						label = `__ESCAPER_QUOT__${stack.length}_`;
 
-					stack.push(cut);
-					str = str.substring(0, selectionStart) + label + str.substring(i + 1);
+						stack.push(cut);
+						str = str.substring(0, selectionStart) + label + str.substring(i + 1);
 
-					i += label.length - cut.length;
+						i += label.length - cut.length;
+					}
 				}
 
 			} else if ((next === '\n' && sCommentsMap[comment]) ||
