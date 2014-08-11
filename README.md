@@ -2,6 +2,9 @@
 
 Микробиблиотека для «экранирования» литералов строк, регулярных выражений и комментариев в синтаксисе JavaScript.
 
+[![NPM version](https://badge.fury.io/js/escaper.svg)](http://badge.fury.io/js/escaper)
+[![NPM dependencies](https://david-dm.org/kobezzza/escaper.png)](https://david-dm.org/kobezzza/escaper)
+
 **Поддерживаются литералы:**
 
 * `' ... '`
