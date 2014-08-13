@@ -67,13 +67,12 @@ Escaper.paste(str, content);
 
 ```js
 {
-	"'": true,
-	'"': true,
-	'`': true,
-	'/': true,
-	
-	'//': true,
-	'/*': true,
+	"'"  : true,
+	'"'  : true,
+	'`'  : true,
+	'/'  : true,
+	'//' : true,
+	'/*' : true,
 	'/**': true,
 	'/*!': true
 }
