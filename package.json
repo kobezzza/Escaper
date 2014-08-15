@@ -18,7 +18,11 @@
     "type": "git",
     "url": "https://github.com/kobezzza/Escaper"
   },
-  "author": "Kobezzza <kobezzza@mail.ru> (https://github.com/Kobezzza)",
+  "author": {
+    "name": "Kobezzza",
+    "email": "kobezzza@mail.ru",
+    "url": "https://github.com/Kobezzza"
+  },
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/kobezzza/Escaper/issues"
