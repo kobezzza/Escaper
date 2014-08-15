@@ -85,6 +85,8 @@ if (typeof window === 'undefined' && typeof module !== 'undefined' && !Escaper.i
 		'-': true,
 		'+': true,
 		'*': true,
+		'%': true,
+		'~': true,
 		'>': true,
 		'<': true,
 		'^': true,
@@ -93,11 +95,21 @@ if (typeof window === 'undefined' && typeof module !== 'undefined' && !Escaper.i
 		'=': true,
 		'|': true,
 		'&': true,
+		'!': true,
 		'?': true,
 		':': true,
 		'(': true,
 		'{': true,
 		'[': true
+	};
+
+	var escapeEndWord = {
+		'typeof': true,
+		'void': true,
+		'instaceof': true,
+		'delete': true,
+		'in': true,
+		'new': true
 	};
 
 	var cache = {},
@@ -182,6 +194,10 @@ if (typeof window === 'undefined' && typeof module !== 'undefined' && !Escaper.i
 			wRgxp = /[a-z]/i,
 			sRgxp = /\s/;
 
+		var partRgxp = /\w/,
+			part = '',
+			rPart = '';
+
 		for (let i = -1; ++i < str.length;) {
 			let el = str.charAt(i),
 				prev = str.charAt(i - 1),
@@ -208,15 +224,23 @@ if (typeof window === 'undefined' && typeof module !== 'undefined' && !Escaper.i
 						}
 					}
 
-					if (escapeEndMap[el]) {
+					if (escapeEndMap[el] || escapeEndWord[rPart]) {
 						end = true;
+						rPart = '';
 
 					} else if (uSRgxp.test(el)) {
 						end = false;
 					}
 
-					let skip = false;
+					if (partRgxp.test(el)) {
+						part += el;
 
+					} else {
+						rPart = part;
+						part = '';
+					}
+
+					let skip = false;
 					if (opt_snakeskin) {
 						if (el === '|' && wRgxp.test(next)) {
 							filterStart = true;
@@ -286,6 +310,7 @@ if (typeof window === 'undefined' && typeof module !== 'undefined' && !Escaper.i
 					}
 
 					begin = false;
+					end = false;
 
 					if (p[el]) {
 						cut = str.substring(selectionStart, i + 1);
