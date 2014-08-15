@@ -1,5 +1,5 @@
 /*!
- * Escaper v1.2.3
+ * Escaper v1.2.4
  * https://github.com/kobezzza/Escaper
  *
  * Released under the MIT license
@@ -7,7 +7,7 @@
  */
 
 var Escaper = {
-	VERSION: [1, 2, 3],
+	VERSION: [1, 2, 4],
 	isLocal: typeof window === 'undefined' && typeof global !== 'undefined' ?
 		Boolean(global.EscaperIsLocal || global['EscaperIsLocal']) : false
 };
