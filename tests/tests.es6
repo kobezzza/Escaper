@@ -158,12 +158,12 @@ describe('Escaper', () => {
 
 	it("дополнительная проверка регулярных выражений", () => {
 		var stack = [];
-		var str = Escaper.replace('2 >> /foo/ < /bar/ ^ /car/ [/bar/]', true, stack);
+		var str = Escaper.replace('2 >> /foo/ < /bar/ ^ /car/ [/bar/] foo typeof /mu/ /mu/', true, stack);
 
 		expect(str)
-			.toBe('2 >> __ESCAPER_QUOT__0_ < __ESCAPER_QUOT__1_ ^ __ESCAPER_QUOT__2_ [__ESCAPER_QUOT__3_]');
+			.toBe('2 >> __ESCAPER_QUOT__0_ < __ESCAPER_QUOT__1_ ^ __ESCAPER_QUOT__2_ [__ESCAPER_QUOT__3_] foo typeof __ESCAPER_QUOT__4_ /mu/');
 
 		expect(Escaper.paste(str, stack))
-			.toBe('2 >> /foo/ < /bar/ ^ /car/ [/bar/]');
+			.toBe('2 >> /foo/ < /bar/ ^ /car/ [/bar/] foo typeof /mu/ /mu/');
 	});
 });
