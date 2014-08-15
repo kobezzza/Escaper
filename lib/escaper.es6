@@ -96,7 +96,8 @@ if (typeof window === 'undefined' && typeof module !== 'undefined' && !Escaper.i
 		'?': true,
 		':': true,
 		'(': true,
-		'{': true
+		'{': true,
+		'[': true
 	};
 
 	var cache = {},
