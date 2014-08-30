@@ -1,5 +1,5 @@
 /*!
- * Escaper v1.2.5
+ * Escaper v1.2.6
  * https://github.com/kobezzza/Escaper
  *
  * Released under the MIT license
@@ -7,7 +7,7 @@
  */
 
 var Escaper = {
-	VERSION: [1, 2, 5],
+	VERSION: [1, 2, 6],
 	isLocal: typeof window === 'undefined' && typeof global !== 'undefined' ?
 		Boolean(global.EscaperIsLocal || global['EscaperIsLocal']) : false
 };
@@ -103,7 +103,7 @@ if (typeof window === 'undefined' && typeof module !== 'undefined' && !Escaper.i
 		'[': true
 	};
 
-	var escapeEndWord = {
+	var escapeEndWordMap = {
 		'typeof': true,
 		'void': true,
 		'instaceof': true,
@@ -224,7 +224,7 @@ if (typeof window === 'undefined' && typeof module !== 'undefined' && !Escaper.i
 						}
 					}
 
-					if (escapeEndMap[el] || escapeEndWord[rPart]) {
+					if (escapeEndMap[el] || escapeEndWordMap[rPart]) {
 						end = true;
 						rPart = '';
 

@@ -1,7 +1,7 @@
 {
   "name": "Escaper",
   "main": "lib/escaper.js",
-  "version": "1.2.5",
+  "version": "1.2.6",
   "homepage": "https://github.com/kobezzza/Escaper",
   "keywords": [
     "javascript",
