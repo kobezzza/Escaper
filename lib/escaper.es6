@@ -1,5 +1,5 @@
 /*!
- * Escaper v1.2.6
+ * Escaper v1.3.0
  * https://github.com/kobezzza/Escaper
  *
  * Released under the MIT license
@@ -7,7 +7,7 @@
  */
 
 var Escaper = {
-	VERSION: [1, 2, 6],
+	VERSION: [1, 3, 0],
 	isLocal: typeof window === 'undefined' && typeof global !== 'undefined' ?
 		Boolean(global.EscaperIsLocal || global['EscaperIsLocal']) : false
 };
@@ -99,9 +99,11 @@ if (typeof window === 'undefined' && typeof module !== 'undefined' && !Escaper.i
 		'?': true,
 		':': true,
 		'(': true,
-		'{': true,
-		'[': true
+		'{': true
 	};
+
+	// https://github.com/termi/es6-transpiler/issues/47
+	escapeEndMap['['] = true;
 
 	var escapeEndWordMap = {
 		'typeof': true,
@@ -128,6 +130,10 @@ if (typeof window === 'undefined' && typeof module !== 'undefined' && !Escaper.i
 	 * @param {string} str - исходная строка
 	 * @param {(Object|boolean)=} [opt_withCommentsOrParams=false] - таблица вырезаемых последовательностей:
 	 *
+	 *     (если установить значение параметру -1, то он будет полностью вырезаться,
+	 *     т.е. без возможности обратной замены, иначе true/false - включить/исключить последовательность)
+	 *
+	 *     *) @all - специальная команда для выделения всех последовательностей
 	 *     *) `
 	 *     *) '
 	 *     *) "
@@ -153,15 +159,29 @@ if (typeof window === 'undefined' && typeof module !== 'undefined' && !Escaper.i
 			withComments = Boolean(opt_withCommentsOrParams);
 		}
 
+		if (p['@all']) {
+			for (let key in finalMap) {
+				if (!finalMap.hasOwnProperty(key)) {
+					continue;
+				}
+
+				if (key in p === false) {
+					p[key] = true;
+				}
+			}
+
+			delete p['@all'];
+		}
+
 		var cacheKey = '';
 		for (let i = -1; ++i < keyArr.length;) {
 			let el = keyArr[i];
 
 			if (mCommentsMap[el] || sCommentsMap[el]) {
-				p[el] = Boolean(withComments || p[el]);
+				p[el] = withComments || p[el];
 
 			} else {
-				p[el] = Boolean(p[el] || !isObj);
+				p[el] = p[el] || !isObj;
 			}
 
 			cacheKey += `${p[el]},`;
@@ -314,11 +334,16 @@ if (typeof window === 'undefined' && typeof module !== 'undefined' && !Escaper.i
 
 					if (p[el]) {
 						cut = str.substring(selectionStart, i + 1);
-						label = `__ESCAPER_QUOT__${stack.length}_`;
 
-						stack.push(cut);
+						if (p[el] === -1) {
+							label = '';
+
+						} else {
+							label = `__ESCAPER_QUOT__${stack.length}_`;
+							stack.push(cut);
+						}
+
 						str = str.substring(0, selectionStart) + label + str.substring(i + 1);
-
 						i += label.length - cut.length;
 					}
 				}
@@ -329,11 +354,16 @@ if (typeof window === 'undefined' && typeof module !== 'undefined' && !Escaper.i
 			) {
 				if (p[comment]) {
 					cut = str.substring(selectionStart, i + 1);
-					label = `__ESCAPER_QUOT__${stack.length}_`;
 
-					stack.push(cut);
+					if (p[comment] === -1) {
+						label = '';
+
+					} else {
+						label = `__ESCAPER_QUOT__${stack.length}_`;
+						stack.push(cut);
+					}
+
 					str = str.substring(0, selectionStart) + label + str.substring(i + 1);
-
 					i += label.length - cut.length;
 				}
 

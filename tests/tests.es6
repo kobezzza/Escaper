@@ -156,6 +156,17 @@ describe('Escaper', () => {
 			.toBe('"Привет" /** "foo" */');
 	});
 
+	it("настраиваемое экранирование c флагом @all", () => {
+		var stack = [];
+		var str = Escaper.replace('"Привет" /* это комментарий */ + /Друг/gim /** foo */!', {'@all': true, '/*': -1}, stack);
+
+		expect(str)
+			.toBe('__ESCAPER_QUOT__0_  + __ESCAPER_QUOT__1_ __ESCAPER_QUOT__2_!');
+
+		expect(Escaper.paste(str, stack))
+			.toBe('"Привет"  + /Друг/gim /** foo */!');
+	});
+
 	it("дополнительная проверка регулярных выражений", () => {
 		var stack = [];
 		var str = Escaper.replace('2 >> /foo/ < /bar/ ^ /car/ [/bar/] foo typeof /mu/ /mu/', true, stack);

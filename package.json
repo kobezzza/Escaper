@@ -1,6 +1,6 @@
 {
   "name": "escaper",
-  "version": "1.2.6",
+  "version": "1.3.0",
   "main": "lib/escaper.js",
   "keywords": [
     "javascript",
@@ -9,7 +9,9 @@
   "directories": {
     "lib": "lib"
   },
-  "dependencies": {},
+  "dependencies": {
+    "es6-transpiler": "^0.7.16-2"
+  },
   "devDependencies": {},
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
