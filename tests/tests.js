@@ -167,6 +167,28 @@ describe('Escaper', function()  {
 			.toBe('"Привет"  + /Друг/gim /** foo */!');
 	});
 
+	it("настраиваемое экранирование c флагом @comments", function()  {
+		var stack = [];
+		var str = Escaper.replace('"Привет" /* это комментарий */ + /Друг/gim /** foo */!', {'@comments': -1}, stack);
+
+		expect(str)
+			.toBe('"Привет"  + /Друг/gim !');
+
+		expect(Escaper.paste(str, stack))
+			.toBe('"Привет"  + /Друг/gim !');
+	});
+
+	it("настраиваемое экранирование c флагом @comments, @literals и @all", function()  {
+		var stack = [];
+		var str = Escaper.replace('"Привет" /* это комментарий */ + /Друг/gim /** foo */!', {'@all': -1, '@comments': false, '@literals': true}, stack);
+
+		expect(str)
+			.toBe('__ESCAPER_QUOT__0_ /* это комментарий */ + __ESCAPER_QUOT__1_ /** foo */!');
+
+		expect(Escaper.paste(str, stack))
+			.toBe('"Привет" /* это комментарий */ + /Друг/gim /** foo */!');
+	});
+
 	it("дополнительная проверка регулярных выражений", function()  {
 		var stack = [];
 		var str = Escaper.replace('2 >> /foo/ < /bar/ ^ /car/ [/bar/] foo typeof /mu/ /mu/', true, stack);
