@@ -1,6 +1,6 @@
 {
   "name": "escaper",
-  "version": "1.4.0",
+  "version": "1.4.1",
   "main": "lib/escaper.js",
   "keywords": [
     "javascript",
