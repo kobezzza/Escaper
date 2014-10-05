@@ -4,6 +4,7 @@
 
 [![NPM version](https://badge.fury.io/js/escaper.svg)](http://badge.fury.io/js/escaper)
 [![NPM dependencies](https://david-dm.org/kobezzza/escaper.svg)](https://david-dm.org/kobezzza/escaper)
+[![Build Status](https://travis-ci.org/kobezzza/Escaper.svg?branch=master)](https://travis-ci.org/kobezzza/Escaper)
 
 **Поддерживаются литералы:**
 
