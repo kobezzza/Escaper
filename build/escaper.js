@@ -239,18 +239,17 @@ if (typeof window === 'undefined' && typeof module !== 'undefined' && !Escaper.i
 
 		for (var i$0 = -1; ++i$0 < str.length;) {
 			var el$0 = str.charAt(i$0),
-				prev = str.charAt(i$0 - 1),
 				next = str.charAt(i$0 + 1);
 
-			var word = el$0 + next,
-				lWord = word + str.charAt(i$0 + 2);
+			var word = str.substr(i$0, 2),
+				extWord = str.substr(i$0, 3);
 
 			if (!comment) {
 				if (!begin) {
 					if (el$0 === '/') {
 						if (sCommentsMap[word] || mCommentsMap[word]) {
-							if (sCommentsMap[lWord] || mCommentsMap[lWord]) {
-								comment = lWord;
+							if (sCommentsMap[extWord] || mCommentsMap[extWord]) {
+								comment = extWord;
 
 							} else {
 								comment = word;
@@ -368,7 +367,7 @@ if (typeof window === 'undefined' && typeof module !== 'undefined' && !Escaper.i
 				}
 
 			} else if ((nRgxp.test(next) && sCommentsMap[comment]) ||
-				(el$0 === '/' && prev === '*' && i$0 - selectionStart > 2 && mCommentsMap[comment])
+				(mCommentsMap[el$0 + str.charAt(i$0 - 1)] && i$0 - selectionStart > 2 && mCommentsMap[comment])
 
 			) {
 				if (p[comment]) {
