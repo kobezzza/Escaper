@@ -17,7 +17,7 @@
 
 ## Установка
 
-https://github.com/kobezzza/Escaper/blob/master/lib/escaper.js
+https://github.com/kobezzza/Escaper/blob/master/build/escaper.js
 
 или
 
@@ -56,7 +56,7 @@ Escaper.paste(str, content);
 
 ## API
 
-### Escaper.replace(str, opt_withComment, opt_quotContent) 
+### Escaper.replace(str, opt_withComment, opt_quotContent)
 
 Заметить блоки вида `' ... '`, `" ... "`, `` ` ... ` ``, `/ ... /`, `// ...`, `/* ... */` на
 `__ESCAPER_QUOT__номер_` в указанной строке.
@@ -66,14 +66,14 @@ Escaper.paste(str, content);
 * `string` `str` — исходная строка
 * `(Object|boolean)=` `opt_withCommentsOrParams = false` — таблица вырезаемых последовательностей:
 
-Если установить значение параметру `-1`, то он будет полностью вырезаться, 
+Если установить значение параметру `-1`, то он будет полностью вырезаться,
 т.е. без возможности обратной замены, иначе `true`/`false` — включить/исключить последовательность.
 
 ```js
 {
 	'@all'     : true // Cпециальная команда для выделения всех последовательностей
 	'@comments': true // Cпециальная команда для выделения всех видов комментариев
-	'@literals': true // Cпециальная команда для выделения литералов строк 
+	'@literals': true // Cпециальная команда для выделения литералов строк
 	                  // и регулярных выражений
 
 	"'"        : true,
@@ -87,13 +87,13 @@ Escaper.paste(str, content);
 }
 ```
 
-ИЛИ если логическое значение, то 
+ИЛИ если логическое значение, то
 
 ```js
 true  // вырезаются литералы с комментариями
 false // вырезаются одни литералы
 ```
-     
+
 * `Array=` `opt_quotContent = Escaper.quotContent` — стек содержимого
 
 `@return {string}`
