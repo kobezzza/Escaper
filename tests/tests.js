@@ -1,5 +1,5 @@
-describe('Escaper', function()  {
-	it('экранирование строк вида " ... "', function()  {
+describe('Escaper', function ()  {
+	it('экранирование строк вида " ... "', function ()  {
 		var str = Escaper.replace('Привет "друг\\\""!');
 
 		expect(str)
@@ -18,7 +18,7 @@ describe('Escaper', function()  {
 			.toBe('Привет "друг\\\""!');
 	});
 
-	it("экранирование строк вида ' ... '", function()  {
+	it("экранирование строк вида ' ... '", function ()  {
 		var str = Escaper.replace("Привет 'друг\\\''!");
 
 		expect(str)
@@ -37,7 +37,7 @@ describe('Escaper', function()  {
 			.toBe("Привет 'друг\\\''!");
 	});
 
-	it('экранирование строк вида ` ... `', function()  {
+	it('экранирование строк вида ` ... `', function ()  {
 		var stack = [];
 		var str = Escaper.replace('Привет `друг`!', false, stack);
 
@@ -72,7 +72,7 @@ describe('Escaper', function()  {
 			.toBe('Привет `друг${foo/* fooo */}`!');
 	});
 
-	it("экранирование регулярных выражений", function()  {
+	it("экранирование регулярных выражений", function ()  {
 		var stack = [];
 		var str = Escaper.replace("Привет + /друг\\//gmi!", false, stack);
 
@@ -99,7 +99,7 @@ describe('Escaper', function()  {
 			.toBe('/друг\\/[//.]/gmi!, /друг\\/[//.]/gmi');
 	});
 
-	it("экранирование однострочного комментария", function()  {
+	it("экранирование однострочного комментария", function ()  {
 		var stack = [];
 		var str = Escaper.replace(
 			("Привет // это комментарий\
@@ -112,7 +112,7 @@ describe('Escaper', function()  {
 			.toBe('Привет // это комментарий\n\t\t\tДруг!');
 	});
 
-	it("экранирование многострочного комментария", function()  {
+	it("экранирование многострочного комментария", function ()  {
 		var stack = [];
 		var str = Escaper.replace('Привет /*/ это комментарий */ Друг!', true, stack);
 
@@ -123,7 +123,7 @@ describe('Escaper', function()  {
 			.toBe('Привет /*/ это комментарий */ Друг!');
 	});
 
-	it("экранирование в фильтрах Snakeskin", function()  {
+	it("экранирование в фильтрах Snakeskin", function ()  {
 		var stack = [];
 		var str = Escaper.replace('foo|replace /hello/g|join "world"', true, stack, true);
 
@@ -134,7 +134,7 @@ describe('Escaper', function()  {
 			.toBe('foo|replace /hello/g|join "world"');
 	});
 
-	it("настраиваемое экранирование", function()  {
+	it("настраиваемое экранирование", function ()  {
 		var stack = [];
 		var str = Escaper.replace('"Привет" /* это комментарий */ + /Друг/gim /** foo */!', {'"': true, '/': true, '/*': true}, stack);
 
@@ -145,7 +145,7 @@ describe('Escaper', function()  {
 			.toBe('"Привет" /* это комментарий */ + /Друг/gim /** foo */!');
 	});
 
-	it("настраиваемое экранирование с вложенными литералами", function()  {
+	it("настраиваемое экранирование с вложенными литералами", function ()  {
 		var stack = [];
 		var str = Escaper.replace('"Привет" /** "foo" */', {'"': true}, stack);
 
@@ -156,7 +156,7 @@ describe('Escaper', function()  {
 			.toBe('"Привет" /** "foo" */');
 	});
 
-	it("настраиваемое экранирование c флагом @all", function()  {
+	it("настраиваемое экранирование c флагом @all", function ()  {
 		var stack = [];
 		var str = Escaper.replace('"Привет" /* это комментарий */ + /Друг/gim /** foo */!', {'@all': true, '/*': -1}, stack);
 
@@ -167,7 +167,7 @@ describe('Escaper', function()  {
 			.toBe('"Привет"  + /Друг/gim /** foo */!');
 	});
 
-	it("настраиваемое экранирование c флагом @comments", function()  {
+	it("настраиваемое экранирование c флагом @comments", function ()  {
 		var stack = [];
 		var str = Escaper.replace('"Привет" /* это комментарий */ + /Друг/gim /** foo */!', {'@comments': -1}, stack);
 
@@ -178,7 +178,7 @@ describe('Escaper', function()  {
 			.toBe('"Привет"  + /Друг/gim !');
 	});
 
-	it("настраиваемое экранирование c флагом @comments, @literals и @all", function()  {
+	it("настраиваемое экранирование c флагом @comments, @literals и @all", function ()  {
 		var stack = [];
 		var str = Escaper.replace('"Привет" /* это комментарий */ + /Друг/gim /** foo */!', {'@all': -1, '@comments': false, '@literals': true}, stack);
 
@@ -189,7 +189,7 @@ describe('Escaper', function()  {
 			.toBe('"Привет" /* это комментарий */ + /Друг/gim /** foo */!');
 	});
 
-	it("дополнительная проверка регулярных выражений", function()  {
+	it("дополнительная проверка регулярных выражений", function ()  {
 		var stack = [];
 		var str = Escaper.replace('2 >> /foo/ < /bar/ ^ /car/ [/bar/] foo typeof /mu/ /mu/', true, stack);
 
