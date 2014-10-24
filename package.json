@@ -1,6 +1,6 @@
 {
   "name": "escaper",
-  "version": "1.4.3",
+  "version": "1.4.4",
   "main": "build/escaper.js",
   "keywords": [
     "javascript",
