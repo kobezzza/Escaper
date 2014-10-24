@@ -1,6 +1,6 @@
 {
   "name": "Escaper",
-  "main": "lib/escaper.js",
+  "main": "build/escaper.js",
   "version": "1.4.3",
   "homepage": "https://github.com/kobezzza/Escaper",
   "keywords": [

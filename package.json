@@ -1,22 +1,21 @@
 {
   "name": "escaper",
   "version": "1.4.3",
-  "main": "lib/escaper.js",
+  "main": "build/escaper.js",
   "keywords": [
     "javascript",
     "string"
   ],
-  "directories": {
-    "lib": "lib"
-  },
   "dependencies": {},
   "devDependencies": {
     "gulp": "^3.8.9",
+    "gulp-bump": "^0.1.11",
     "gulp-concat": "^2.4.1",
-    "gulp-es6-transpiler": "^1.0.0"
+    "gulp-es6-transpiler": "^1.0.0",
+    "jasmine-node": "^1.14.5"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 0"
+    "test": "jasmine-node tests"
   },
   "repository": {
     "type": "git",
