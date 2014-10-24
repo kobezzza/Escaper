@@ -1,5 +1,5 @@
 /*!
- * Escaper v1.4.2
+ * Escaper
  * https://github.com/kobezzza/Escaper
  *
  * Released under the MIT license
@@ -7,7 +7,7 @@
  */
 
 var Escaper = {
-	VERSION: [1, 4, 2],
+	VERSION: [1, 4, 3],
 	isLocal: typeof window === 'undefined' && typeof global !== 'undefined' ?
 		Boolean(global.EscaperIsLocal || global['EscaperIsLocal']) : false
 };
@@ -141,8 +141,7 @@ if (typeof window === 'undefined' && typeof module !== 'undefined' && !Escaper.i
 	var uSRgxp = /[^\s\/]/,
 		wRgxp = /[a-z]/i,
 		sRgxp = /\s/,
-		nRgxp = /\r|\n/,
-		partRgxp = /[a-z]/;
+		nRgxp = /\r|\n/;
 
 	/**
 	 * Заметить блоки вида ' ... ', " ... ", ` ... `, / ... /, // ..., /* ... *\/ на
@@ -272,7 +271,7 @@ if (typeof window === 'undefined' && typeof module !== 'undefined' && !Escaper.i
 						end = false;
 					}
 
-					if (partRgxp.test(el$0)) {
+					if (wRgxp.test(el$0)) {
 						part += el$0;
 
 					} else {

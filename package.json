@@ -10,7 +10,11 @@
     "lib": "lib"
   },
   "dependencies": {},
-  "devDependencies": {},
+  "devDependencies": {
+    "gulp": "^3.8.9",
+    "gulp-concat": "^2.4.1",
+    "gulp-es6-transpiler": "^1.0.0"
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 0"
   },
