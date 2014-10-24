@@ -1,7 +1,7 @@
 {
   "name": "Escaper",
   "main": "lib/escaper.js",
-  "version": "1.4.2",
+  "version": "1.4.3",
   "homepage": "https://github.com/kobezzza/Escaper",
   "keywords": [
     "javascript",
@@ -19,6 +19,6 @@
     "tests"
   ],
   "devDependencies": {
-    "jasmine": "~2.0"
+    "jasmine": "^2.0.0"
   }
 }
