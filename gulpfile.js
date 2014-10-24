@@ -1,6 +1,7 @@
-var gulp = require('gulp'),
-	es6 = require('gulp-es6-transpiler'),
-	concat = require('gulp-concat');
+var gulp = require('gulp');
+var es6 = require('gulp-es6-transpiler'),
+	concat = require('gulp-concat'),
+	bump = require('gulp-bump');
 
 gulp.task('es6-transpiler', function () {
 	gulp.src('./lib/*.es6')
@@ -9,8 +10,17 @@ gulp.task('es6-transpiler', function () {
 		.pipe(gulp.dest('./build/'));
 });
 
-gulp.task('watch', function () {
-	gulp.watch('./lib/*.es6', ['es6-transpiler']);
+gulp.task('bump', function () {
+	delete require.cache[require.resolve('./build/escaper')];
+	var v = require('./build/escaper').VERSION.join('.');
+
+	gulp.src('./*.json')
+		.pipe(bump({version: v}))
+		.pipe(gulp.dest('./'));
 });
 
-gulp.task('default', ['es6-transpiler', 'watch']);
+gulp.task('watch', function () {
+	gulp.watch('./lib/*.es6', ['es6-transpiler', 'bump']);
+});
+
+gulp.task('default', ['es6-transpiler', 'bump', 'watch']);
