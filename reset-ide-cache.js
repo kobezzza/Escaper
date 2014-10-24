@@ -2,7 +2,7 @@ var fs = require('fs'),
 	path = require('path');
 
 (function exec(dirname) {
-	fs.readdirSync(dirname).forEach(function(el)  {
+	fs.readdirSync(dirname).forEach(function (el)  {
 		var src = path.join(dirname, el);
 		var stats = fs.statSync(src);
 
