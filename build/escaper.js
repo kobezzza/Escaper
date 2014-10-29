@@ -7,7 +7,7 @@
  */
 
 var Escaper = {
-	VERSION: [1, 4, 4],
+	VERSION: [1, 4, 5],
 	isLocal: typeof window === 'undefined' && typeof global !== 'undefined' ?
 		Boolean(global.EscaperIsLocal || global['EscaperIsLocal']) : false
 };
