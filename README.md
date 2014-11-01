@@ -17,7 +17,7 @@
 
 ## Установка
 
-https://github.com/kobezzza/Escaper/blob/master/build/escaper.js
+https://github.com/kobezzza/Escaper/blob/master/dist/escaper.js
 
 или
 
