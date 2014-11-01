@@ -1,2 +1,2 @@
-global.Escaper = require('../build/escaper');
+global.Escaper = require('../dist/escaper');
 require('./tests');
