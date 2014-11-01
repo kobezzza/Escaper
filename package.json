@@ -33,10 +33,10 @@
     "gulp-concat": "^2.4.1",
     "gulp-es6-transpiler": "^1.0.0",
     "istanbul": "^0.3.2",
-    "jasmine-node": "^1.14.5"
+    "jasmine-node": "^2.0.0"
   },
   "scripts": {
     "test": "jasmine-node test",
-    "test-travis": "istanbul cover test"
+    "test-travis": "istanbul jasmine-node test"
   }
 }
