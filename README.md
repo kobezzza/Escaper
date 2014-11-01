@@ -2,9 +2,9 @@
 
 Микробиблиотека для «экранирования» литералов строк, регулярных выражений и комментариев в синтаксисе JavaScript.
 
-[![NPM version](https://badge.fury.io/js/escaper.svg)](http://badge.fury.io/js/escaper)
-[![NPM dependencies](https://david-dm.org/kobezzza/escaper.svg)](https://david-dm.org/kobezzza/escaper)
-[![Build Status](https://travis-ci.org/kobezzza/Escaper.svg?branch=master)](https://travis-ci.org/kobezzza/Escaper)
+[![NPM version](http://img.shields.io/npm/v/escaper.svg?style=flat)](http://badge.fury.io/js/escaper)
+[![NPM dependencies](http://img.shields.io/david/kobezzza/Escaper.svg?style=flat)](https://david-dm.org/kobezzza/escaper)
+[![Build Status](http://img.shields.io/travis/kobezzza/Escaper.svg?style=flat&branch=master)](https://travis-ci.org/kobezzza/Escaper)
 
 **Поддерживаются литералы:**
 
