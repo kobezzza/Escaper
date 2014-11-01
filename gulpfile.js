@@ -13,7 +13,7 @@ gulp.task('build', function (callback) {
 		.on('end', callback);
 });
 
-gulp.task('bump', function () {
+gulp.task('bump', ['build'], function () {
 	delete require.cache[require.resolve('./dist/escaper')];
 	var v = require('./dist/escaper').VERSION.join('.');
 
@@ -34,7 +34,7 @@ gulp.task('test', ['build'], function (callback) {
 });
 
 gulp.task('watch', function () {
-	gulp.watch('./lib/*.js', ['build', 'bump']);
+	gulp.watch('./lib/*.js', ['bump']);
 });
 
 gulp.task('default', ['test', 'bump']);
