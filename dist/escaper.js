@@ -7,7 +7,7 @@
  */
 
 var Escaper = {
-	VERSION: [1, 4, 9],
+	VERSION: [1, 4, 10],
 	isLocal: false
 };
 
@@ -21,6 +21,7 @@ var Escaper = {
 
 	}
 
+	/* istanbul ignore next */
 	if (isNode) {
 		Escaper.isLocal = Boolean(global.EscaperIsLocal || global['EscaperIsLocal']);
 
@@ -50,6 +51,7 @@ var Escaper = {
 		finalMap = {};
 
 	for (var key in escapeMap) {
+		/* istanbul ignore if */
 		if (!escapeMap.hasOwnProperty(key)) {
 			continue;
 		}
@@ -59,6 +61,7 @@ var Escaper = {
 	}
 
 	for (var key$0 in sCommentsMap) {
+		/* istanbul ignore if */
 		if (!sCommentsMap.hasOwnProperty(key$0)) {
 			continue;
 		}
@@ -68,6 +71,7 @@ var Escaper = {
 	}
 
 	for (var key$1 in mCommentsMap) {
+		/* istanbul ignore if */
 		if (!mCommentsMap.hasOwnProperty(key$1)) {
 			continue;
 		}
@@ -86,6 +90,7 @@ var Escaper = {
 
 	var rgxpFlags = [];
 	for (var key$2 in rgxpFlagsMap) {
+		/* istanbul ignore if */
 		if (!rgxpFlagsMap.hasOwnProperty(key$2)) {
 			continue;
 		}
@@ -134,6 +139,7 @@ var Escaper = {
 	 */
 	function mix(obj, p, val) {
 		for (var key in obj) {
+			/* istanbul ignore if */
 			if (!obj.hasOwnProperty(key)) {
 				continue;
 			}

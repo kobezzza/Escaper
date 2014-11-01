@@ -8,14 +8,31 @@ describe('Escaper', function () {
 		expect(Escaper.paste(str))
 			.toBe('Привет "друг\\\""!');
 
-		var stack = [];
-		var str2 = Escaper.replace('Привет "друг\\\""!', false, stack);
+		var str2 = Escaper.replace('Привет "друг\\\""!');
 
 		expect(str2)
 			.toBe('Привет __ESCAPER_QUOT__0_!');
 
-		expect(Escaper.paste(str2, stack))
+		expect(Escaper.paste(str2))
 			.toBe('Привет "друг\\\""!');
+
+		var stack = [];
+		var str3 = Escaper.replace('Привет "друг\\\""!', false, stack);
+
+		expect(str3)
+			.toBe('Привет __ESCAPER_QUOT__0_!');
+
+		expect(Escaper.paste(str3, stack))
+			.toBe('Привет "друг\\\""!');
+
+		stack = [];
+		var str4 = Escaper.replace('Привет "друг\\\""!', {'"': -1}, stack);
+
+		expect(str4)
+			.toBe('Привет !');
+
+		expect(Escaper.paste(str4, stack))
+			.toBe('Привет !');
 	});
 
 	it("экранирование строк вида ' ... '", function () {

@@ -2,7 +2,7 @@
   "name": "escaper",
   "description": "Микробиблиотека для «экранирования» литералов строк, регулярных выражений и комментариев в синтаксисе JavaScript.",
   "homepage": "https://github.com/kobezzza/Escaper",
-  "version": "1.4.9",
+  "version": "1.4.10",
   "author": {
     "name": "Kobezzza",
     "email": "kobezzza@mail.ru",
@@ -31,9 +31,12 @@
     "gulp-bump": "^0.1.11",
     "gulp-concat": "^2.4.1",
     "gulp-es6-transpiler": "^1.0.0",
+    "gulp-istanbul": "^0.3.1",
+    "gulp-jasmine": "^1.0.1",
     "jasmine-node": "^2.0.0"
   },
   "scripts": {
-    "test": "jasmine-node test"
+    "test": "jasmine-node test",
+    "test-travis": "gulp test"
   }
 }

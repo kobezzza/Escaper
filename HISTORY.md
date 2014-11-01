@@ -1,3 +1,7 @@
+## v1.4.10
+
+- [x] Добавлена интеграция [coveralls](https://github.com/cainus/node-coveralls) и [istanbul](https://github.com/gotwarlost/istanbul).
+
 ## v1.4.9
 
 - [x] Небольшие исправления.
