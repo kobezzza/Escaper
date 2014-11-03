@@ -194,7 +194,7 @@ var Escaper = {
 	 */
 	Escaper.replace = function (str, opt_withCommentsOrParams, opt_quotContent, opt_snakeskin) {
 		symbols = symbols || Escaper.symbols || Escaper['symbols'] || 'a-z';
-		filterRgxp = filterRgxp || new RegExp((("[!$" + symbols) + "_]"));
+		filterRgxp = filterRgxp || new RegExp((("[!$" + symbols) + "_]"), 'i');
 
 		var isObj = opt_withCommentsOrParams instanceof Object;
 		var p = isObj ?
