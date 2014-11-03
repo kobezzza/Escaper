@@ -7,7 +7,7 @@
  */
 
 var Escaper = {
-	VERSION: [1, 4, 11],
+	VERSION: [1, 4, 12],
 	isLocal: false
 };
 
@@ -157,9 +157,12 @@ var Escaper = {
 	Escaper.quotContent = content;
 
 	var uSRgxp = /[^\s\/]/,
-		wRgxp = /[a-z]/i,
+		wRgxp = /[a-z]/,
 		sRgxp = /\s/,
 		nRgxp = /\r|\n/;
+
+	var symbols,
+		filterRgxp;
 
 	/**
 	 * Заметить блоки вида ' ... ', " ... ", ` ... `, / ... /, // ..., /* ... *\/ на
@@ -190,6 +193,9 @@ var Escaper = {
 	 * @return {string}
 	 */
 	Escaper.replace = function (str, opt_withCommentsOrParams, opt_quotContent, opt_snakeskin) {
+		symbols = symbols || Escaper.symbols || Escaper['symbols'] || 'a-z';
+		filterRgxp = filterRgxp || new RegExp((("[!$" + symbols) + "_]"));
+
 		var isObj = opt_withCommentsOrParams instanceof Object;
 		var p = isObj ?
 			Object(opt_withCommentsOrParams) : {};
@@ -298,7 +304,7 @@ var Escaper = {
 
 					var skip = false;
 					if (opt_snakeskin) {
-						if (el$0 === '|' && wRgxp.test(next)) {
+						if (el$0 === '|' && filterRgxp.test(next)) {
 							filterStart = true;
 							end = false;
 							skip = true;
