@@ -7,7 +7,7 @@
  */
 
 var Escaper = {
-	VERSION: [1, 4, 13],
+	VERSION: [1, 4, 14],
 	isLocal: false
 };
 
@@ -162,7 +162,7 @@ var Escaper = {
 		nRgxp = /\r|\n/;
 
 	var symbols,
-		filterRgxp;
+		snakeskinRgxp;
 
 	/**
 	 * Заметить блоки вида ' ... ', " ... ", ` ... `, / ... /, // ..., /* ... *\/ на
@@ -193,8 +193,15 @@ var Escaper = {
 	 * @return {string}
 	 */
 	Escaper.replace = function (str, opt_withCommentsOrParams, opt_quotContent, opt_snakeskin) {
-		symbols = symbols || Escaper.symbols || Escaper['symbols'] || 'a-z';
-		filterRgxp = filterRgxp || new RegExp((("[!$" + symbols) + "_]"), 'i');
+		symbols = symbols ||
+			Escaper.symbols ||
+			Escaper['symbols'] ||
+			'a-z';
+
+		snakeskinRgxp = snakeskinRgxp ||
+			Escaper.snakeskinRgxp ||
+			Escaper['snakeskinRgxp'] ||
+			new RegExp((("[!$" + symbols) + "_]"), 'i');
 
 		var isObj = opt_withCommentsOrParams instanceof Object;
 		var p = isObj ?
@@ -304,7 +311,7 @@ var Escaper = {
 
 					var skip = false;
 					if (opt_snakeskin) {
-						if (el$0 === '|' && filterRgxp.test(next)) {
+						if (el$0 === '|' && snakeskinRgxp.test(next)) {
 							filterStart = true;
 							end = false;
 							skip = true;
@@ -362,7 +369,7 @@ var Escaper = {
 				} else if (begin && (el$0 === '\\' || escape)) {
 					escape = !escape;
 
-				} else if (finalMap[el$0] && begin === el$0 && !escape && (begin === '/' ? !block : true)) {
+				} else if (finalMap[el$0] && begin === el$0 && !escape && (begin !== '/' || !block)) {
 					if (el$0 === '/') {
 						for (var j = -1; ++j < rgxpFlags.length;) {
 							if (rgxpFlagsMap[str.charAt(i$0 + 1)]) {
