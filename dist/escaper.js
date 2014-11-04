@@ -7,7 +7,7 @@
  */
 
 var Escaper = {
-	VERSION: [1, 4, 12],
+	VERSION: [1, 4, 13],
 	isLocal: false
 };
 
@@ -355,7 +355,7 @@ var Escaper = {
 					templateVar++;
 				}
 
-				if (finalMap[el$0] && (el$0 === '/' ? end : true) && !begin) {
+				if (finalMap[el$0] && (el$0 !== '/' || end) && !begin) {
 					begin = el$0;
 					selectionStart = i$0;
 
