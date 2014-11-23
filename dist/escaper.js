@@ -7,7 +7,7 @@
  */
 
 var Escaper = {
-	VERSION: [1, 4, 14],
+	VERSION: [1, 4, 15],
 	isLocal: false
 };
 
@@ -428,6 +428,8 @@ var Escaper = {
 		return str;
 	};
 
+	var pasteRgxp = /__ESCAPER_QUOT__(\d+)_/g;
+
 	/**
 	 * Заметить __ESCAPER_QUOT__номер_ в указанной строке на реальное содержимое
 	 *
@@ -437,6 +439,6 @@ var Escaper = {
 	 */
 	Escaper.paste = function (str, opt_quotContent) {
 		var stack = opt_quotContent || content;
-		return str.replace(/__ESCAPER_QUOT__(\d+)_/gm, function(sstr, pos)  {return stack[pos]});
+		return str.replace(pasteRgxp, function(sstr, pos)  {return stack[pos]});
 	};
 })();
