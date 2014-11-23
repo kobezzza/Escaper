@@ -1,6 +1,6 @@
 # Escaper
 
-Микробиблиотека для «экранирования» литералов строк, регулярных выражений и комментариев в синтаксисе JavaScript.
+Библиотека для «экранирования» литералов строк, регулярных выражений и комментариев в синтаксисе JavaScript.
 
 [![NPM version](http://img.shields.io/npm/v/escaper.svg?style=flat)](http://badge.fury.io/js/escaper)
 [![NPM dependencies](http://img.shields.io/david/kobezzza/Escaper.svg?style=flat)](https://david-dm.org/kobezzza/escaper)
@@ -72,9 +72,9 @@ Escaper.paste(str, content);
 
 ```js
 {
-	'@all'     : true // Cпециальная команда для выделения всех последовательностей
-	'@comments': true // Cпециальная команда для выделения всех видов комментариев
-	'@literals': true // Cпециальная команда для выделения литералов строк
+	'@all'     : true // Специальная команда для выделения всех последовательностей
+	'@comments': true // Специальная команда для выделения всех видов комментариев
+	'@literals': true // Специальная команда для выделения литералов строк
 	                  // и регулярных выражений
 
 	"'"        : true,
