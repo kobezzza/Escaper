@@ -7,11 +7,11 @@
  */
 
 var Escaper = {
-	VERSION: [1, 4, 17],
+	VERSION: [1, 4, 18],
 	isLocal: false
 };
 
-(function()  {
+(function(root)  {
 	var isNode = false;
 
 	try {
@@ -28,6 +28,9 @@ var Escaper = {
 		if (!Escaper.isLocal) {
 			module.exports = exports = Escaper;
 		}
+
+	} else {
+		root.Escaper = Escaper;
 	}
 
 	var escapeMap = {
@@ -441,4 +444,4 @@ var Escaper = {
 		var stack = opt_quotContent || content;
 		return str.replace(pasteRgxp, function(sstr, pos)  {return stack[pos]});
 	};
-})();
+})(new Function('return this')());
