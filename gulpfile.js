@@ -1,11 +1,7 @@
-// https://github.com/termi/es6-transpiler/issues/66
-String.prototype.contains = String.prototype.contains || function (str, opt_pos) {
-	return String.prototype.indexOf.apply(this, arguments) !== -1;
-};
-
 var gulp = require('gulp');
-var es6 = require('gulp-es6-transpiler'),
+var to5 = require('gulp-6to5'),
 	concat = require('gulp-concat'),
+	wrap = require('gulp-wrap'),
 	bump = require('gulp-bump'),
 	istanbul = require('gulp-istanbul'),
 	jasmine = require('gulp-jasmine');
@@ -13,7 +9,14 @@ var es6 = require('gulp-es6-transpiler'),
 gulp.task('build', function (callback) {
 	gulp.src('./lib/*.js')
 		.pipe(concat('escaper.js'))
-		.pipe(es6({disallowUnknownReferences: false}))
+		.pipe(to5())
+
+		.pipe(wrap(
+			'(function (root) {' +
+				'<%= contents %>' +
+			'})(new Function(\'return this\')());'
+		))
+
 		.pipe(gulp.dest('./dist/'))
 		.on('end', callback);
 });
