@@ -9,8 +9,7 @@
  */
 
 var Escaper = {
-  VERSION: [1, 4, 19],
-  isLocal: false
+  VERSION: [2, 0, 0]
 };
 
 var isNode = false;
@@ -21,11 +20,7 @@ try {
 
 /* istanbul ignore next */
 if (isNode) {
-  Escaper.isLocal = Boolean(global.EscaperIsLocal || global.EscaperIsLocal);
-
-  if (!Escaper.isLocal) {
-    module.exports = exports = root = Escaper;
-  }
+  module.exports = exports = root = Escaper;
 } else {
   root.Escaper = Escaper;
 }
@@ -157,6 +152,9 @@ Escaper.quotContent = content;
 var uSRgxp = /[^\s\/]/, wRgxp = /[a-z]/, sRgxp = /\s/, nRgxp = /\r|\n/;
 
 var symbols, snakeskinRgxp;
+
+Escaper.snakeskinRgxp = Escaper.snakeskinRgxp || null;
+Escaper.symbols = Escaper.symbols || null;
 
 /**
  * Заметить блоки вида ' ... ', " ... ", ` ... `, / ... /, // ..., /* ... *\/ на
