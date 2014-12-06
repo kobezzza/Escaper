@@ -9,7 +9,9 @@ var to5 = require('gulp-6to5'),
 gulp.task('build', function (callback) {
 	gulp.src('./lib/*.js')
 		.pipe(concat('escaper.js'))
-		.pipe(to5())
+		.pipe(to5({
+			blacklist: ['_propertyLiterals']
+		}))
 
 		.pipe(wrap(
 			'(function (root) {' +
