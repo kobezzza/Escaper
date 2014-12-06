@@ -1,4 +1,4 @@
-(function (root) {"use strict";
+(function (global) {"use strict";
 
 /*!
  * Escaper
@@ -9,7 +9,7 @@
  */
 
 var Escaper = {
-  VERSION: [2, 0, 1]
+  VERSION: [2, 0, 2]
 };
 
 var isNode = false;
@@ -20,9 +20,9 @@ try {
 
 /* istanbul ignore next */
 if (isNode) {
-  module.exports = exports = root = Escaper;
+  module.exports = exports = Escaper;
 } else {
-  root.Escaper = Escaper;
+  global.Escaper = Escaper;
 }
 
 var escapeMap = {
@@ -120,7 +120,7 @@ var escapeEndWordMap = {
   "instanceof": true,
   "delete": true,
   "in": true,
-  "newd": true
+  "new": true
 };
 
 var cache = {}, content = [];

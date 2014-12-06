@@ -14,7 +14,7 @@ gulp.task('build', function (callback) {
 		}))
 
 		.pipe(wrap(
-			'(function (root) {' +
+			'(function (global) {' +
 				'<%= contents %>' +
 			'})(new Function(\'return this\')());'
 		))
