@@ -9,7 +9,7 @@
  */
 
 var Escaper = {
-  VERSION: [2, 0, 0]
+  VERSION: [2, 0, 1]
 };
 
 var isNode = false;
@@ -75,11 +75,11 @@ for (var key in mCommentsMap) {
 }
 
 var rgxpFlagsMap = {
-  g: true,
-  m: true,
-  i: true,
-  y: true,
-  u: true
+  "g": true,
+  "m": true,
+  "i": true,
+  "y": true,
+  "u": true
 };
 
 var rgxpFlags = [];
@@ -117,10 +117,10 @@ var escapeEndMap = {
 var escapeEndWordMap = {
   "typeof": true,
   "void": true,
-  instaceof: true,
+  "instanceof": true,
   "delete": true,
   "in": true,
-  "new": true
+  "newd": true
 };
 
 var cache = {}, content = [];
