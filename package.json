@@ -2,7 +2,7 @@
   "name": "escaper",
   "description": "Библиотека для «экранирования» литералов строк, регулярных выражений и комментариев в синтаксисе JavaScript.",
   "homepage": "https://github.com/kobezzza/Escaper",
-  "version": "2.0.2",
+  "version": "2.0.3",
   "author": {
     "name": "Kobezzza",
     "email": "kobezzza@mail.ru",
@@ -29,9 +29,9 @@
   "devDependencies": {
     "coveralls": "^2.11.2",
     "gulp": "^3.8.9",
-    "gulp-6to5": "^1.0.2",
     "gulp-bump": "^0.1.11",
     "gulp-concat": "^2.4.1",
+    "gulp-es6-transpiler": "^1.0.1",
     "gulp-istanbul": "^0.3.1",
     "gulp-jasmine": "^1.0.1",
     "gulp-wrap": "^0.5.0",

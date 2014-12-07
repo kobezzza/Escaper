@@ -1,5 +1,5 @@
 var gulp = require('gulp');
-var to5 = require('gulp-6to5'),
+var es6 = require('gulp-es6-transpiler'),
 	concat = require('gulp-concat'),
 	wrap = require('gulp-wrap'),
 	bump = require('gulp-bump'),
@@ -9,8 +9,9 @@ var to5 = require('gulp-6to5'),
 gulp.task('build', function (callback) {
 	gulp.src('./lib/*.js')
 		.pipe(concat('escaper.js'))
-		.pipe(to5({
-			blacklist: ['_propertyLiterals']
+		.pipe(es6({
+			disallowDuplicated: false,
+			disallowUnknownReferences: false
 		}))
 
 		.pipe(wrap(

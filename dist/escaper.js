@@ -1,6 +1,4 @@
-(function (global) {"use strict";
-
-/*!
+(function (global) {/*!
  * Escaper
  * https://github.com/kobezzza/Escaper
  *
@@ -9,121 +7,128 @@
  */
 
 var Escaper = {
-  VERSION: [2, 0, 2]
+	VERSION: [2, 0, 3]
 };
 
 var isNode = false;
 
 try {
-  isNode = "object" === typeof process && Object.prototype.toString.call(process) === "[object process]";
-} catch (ignore) {}
+	isNode = 'object' === typeof process && Object.prototype.toString.call(process) === '[object process]';
+
+} catch (ignore) {
+
+}
 
 /* istanbul ignore next */
 if (isNode) {
-  module.exports = exports = Escaper;
+	module.exports =
+		exports = Escaper;
+
 } else {
-  global.Escaper = Escaper;
+	global.Escaper = Escaper;
 }
 
 var escapeMap = {
-  "\"": true,
-  "'": true,
-  "/": true,
-  "`": true
+	'"': true,
+	"'" : true,
+	'/': true,
+	'`': true
 };
 
 var sCommentsMap = {
-  "//": true
+	'//': true
 };
 
 var mCommentsMap = {
-  "/*": true,
-  "/**": true,
-  "/*!": true
+	'/*': true,
+	'/**': true,
+	'/*!': true
 };
 
-var keyArr = [], finalMap = {};
+var keyArr = [],
+	finalMap = {};
 
 for (var key in escapeMap) {
-  /* istanbul ignore if */
-  if (!escapeMap.hasOwnProperty(key)) {
-    continue;
-  }
+	/* istanbul ignore if */
+	if (!escapeMap.hasOwnProperty(key)) {
+		continue;
+	}
 
-  keyArr.push(key);
-  finalMap[key] = true;
+	keyArr.push(key);
+	finalMap[key] = true;
 }
 
-for (var key in sCommentsMap) {
-  /* istanbul ignore if */
-  if (!sCommentsMap.hasOwnProperty(key)) {
-    continue;
-  }
+for (var key$0 in sCommentsMap) {
+	/* istanbul ignore if */
+	if (!sCommentsMap.hasOwnProperty(key$0)) {
+		continue;
+	}
 
-  keyArr.push(key);
-  finalMap[key] = true;
+	keyArr.push(key$0);
+	finalMap[key$0] = true;
 }
 
-for (var key in mCommentsMap) {
-  /* istanbul ignore if */
-  if (!mCommentsMap.hasOwnProperty(key)) {
-    continue;
-  }
+for (var key$1 in mCommentsMap) {
+	/* istanbul ignore if */
+	if (!mCommentsMap.hasOwnProperty(key$1)) {
+		continue;
+	}
 
-  keyArr.push(key);
-  finalMap[key] = true;
+	keyArr.push(key$1);
+	finalMap[key$1] = true;
 }
 
 var rgxpFlagsMap = {
-  "g": true,
-  "m": true,
-  "i": true,
-  "y": true,
-  "u": true
+	'g': true,
+	'm': true,
+	'i': true,
+	'y': true,
+	'u': true
 };
 
 var rgxpFlags = [];
-for (var key in rgxpFlagsMap) {
-  /* istanbul ignore if */
-  if (!rgxpFlagsMap.hasOwnProperty(key)) {
-    continue;
-  }
+for (var key$2 in rgxpFlagsMap) {
+	/* istanbul ignore if */
+	if (!rgxpFlagsMap.hasOwnProperty(key$2)) {
+		continue;
+	}
 
-  rgxpFlags.push(key);
+	rgxpFlags.push(key$2);
 }
 
 var escapeEndMap = {
-  "-": true,
-  "+": true,
-  "*": true,
-  "%": true,
-  "~": true,
-  ">": true,
-  "<": true,
-  "^": true,
-  ",": true,
-  ";": true,
-  "=": true,
-  "|": true,
-  "&": true,
-  "!": true,
-  "?": true,
-  ":": true,
-  "(": true,
-  "{": true,
-  "[": true
+	'-': true,
+	'+': true,
+	'*': true,
+	'%': true,
+	'~': true,
+	'>': true,
+	'<': true,
+	'^': true,
+	',': true,
+	';': true,
+	'=': true,
+	'|': true,
+	'&': true,
+	'!': true,
+	'?': true,
+	':': true,
+	'(': true,
+	'{': true,
+	'[': true
 };
 
 var escapeEndWordMap = {
-  "typeof": true,
-  "void": true,
-  "instanceof": true,
-  "delete": true,
-  "in": true,
-  "new": true
+	'typeof': true,
+	'void': true,
+	'instanceof': true,
+	'delete': true,
+	'in': true,
+	'new': true
 };
 
-var cache = {}, content = [];
+var cache = {},
+	content = [];
 
 /**
  * @param {!Object} obj
@@ -131,16 +136,16 @@ var cache = {}, content = [];
  * @param {(boolean|number)} val
  */
 function mix(obj, p, val) {
-  for (var key in obj) {
-    /* istanbul ignore if */
-    if (!obj.hasOwnProperty(key)) {
-      continue;
-    }
+	for (var key in obj) {
+		/* istanbul ignore if */
+		if (!obj.hasOwnProperty(key)) {
+			continue;
+		}
 
-    if (key in p === false) {
-      p[key] = val;
-    }
-  }
+		if (key in p === false) {
+			p[key] = val;
+		}
+	}
 }
 
 /**
@@ -149,9 +154,13 @@ function mix(obj, p, val) {
  */
 Escaper.quotContent = content;
 
-var uSRgxp = /[^\s\/]/, wRgxp = /[a-z]/, sRgxp = /\s/, nRgxp = /\r|\n/;
+var uSRgxp = /[^\s\/]/,
+	wRgxp = /[a-z]/,
+	sRgxp = /\s/,
+	nRgxp = /\r|\n/;
 
-var symbols, snakeskinRgxp;
+var symbols,
+	snakeskinRgxp;
 
 Escaper.snakeskinRgxp = Escaper.snakeskinRgxp || null;
 Escaper.symbols = Escaper.symbols || null;
@@ -185,207 +194,239 @@ Escaper.symbols = Escaper.symbols || null;
  * @return {string}
  */
 Escaper.replace = function (str, opt_withCommentsOrParams, opt_quotContent, opt_snakeskin) {
-  symbols = symbols || Escaper.symbols || Escaper.symbols || "a-z";
+	symbols = symbols ||
+		Escaper.symbols ||
+		Escaper['symbols'] ||
+		'a-z';
 
-  snakeskinRgxp = snakeskinRgxp || Escaper.snakeskinRgxp || Escaper.snakeskinRgxp || new RegExp("[!$" + symbols + "_]", "i");
+	snakeskinRgxp = snakeskinRgxp ||
+		Escaper.snakeskinRgxp ||
+		Escaper['snakeskinRgxp'] ||
+		new RegExp((("[!$" + symbols) + "_]"), 'i');
 
-  var isObj = opt_withCommentsOrParams instanceof Object;
-  var p = isObj ? Object(opt_withCommentsOrParams) : {};
+	var isObj = opt_withCommentsOrParams instanceof Object;
+	var p = isObj ?
+		Object(opt_withCommentsOrParams) : {};
 
-  var withComments = false;
-  if (typeof opt_withCommentsOrParams === "boolean") {
-    withComments = Boolean(opt_withCommentsOrParams);
-  }
+	var withComments = false;
+	if (typeof opt_withCommentsOrParams === 'boolean') {
+		withComments = Boolean(opt_withCommentsOrParams);
+	}
 
-  if ("@comments" in p) {
-    mix(mCommentsMap, p, p["@comments"]);
-    mix(sCommentsMap, p, p["@comments"]);
-    delete p["@comments"];
-  }
+	if ('@comments' in p) {
+		mix(mCommentsMap, p, p['@comments']);
+		mix(sCommentsMap, p, p['@comments']);
+		delete p['@comments'];
+	}
 
-  if ("@literals" in p) {
-    mix(escapeMap, p, p["@literals"]);
-    delete p["@literals"];
-  }
+	if ('@literals' in p) {
+		mix(escapeMap, p, p['@literals']);
+		delete p['@literals'];
+	}
 
-  if ("@all" in p) {
-    mix(finalMap, p, p["@all"]);
-    delete p["@all"];
-  }
+	if ('@all' in p) {
+		mix(finalMap, p, p['@all']);
+		delete p['@all'];
+	}
 
-  var cacheKey = "";
-  for (var i = -1; ++i < keyArr.length;) {
-    var el = keyArr[i];
+	var cacheKey = '';
+	for (var i = -1; ++i < keyArr.length;) {
+		var el = keyArr[i];
 
-    if (mCommentsMap[el] || sCommentsMap[el]) {
-      p[el] = withComments || p[el];
-    } else {
-      p[el] = p[el] || !isObj;
-    }
+		if (mCommentsMap[el] || sCommentsMap[el]) {
+			p[el] = withComments || p[el];
 
-    cacheKey += "" + p[el] + ",";
-  }
+		} else {
+			p[el] = p[el] || !isObj;
+		}
 
-  var initStr = str;
-  var stack = opt_quotContent || content;
+		cacheKey += (("" + (p[el])) + ",");
+	}
 
-  if (stack === content && cache[cacheKey] && cache[cacheKey][initStr]) {
-    return cache[cacheKey][initStr];
-  }
+	var initStr = str;
+	var stack = opt_quotContent ||
+		content;
 
-  var begin = false, end = true;
+	if (stack === content && cache[cacheKey] && cache[cacheKey][initStr]) {
+		return cache[cacheKey][initStr];
+	}
 
-  var escape = false, comment = false;
+	var begin = false,
+		end = true;
 
-  var selectionStart = 0, block = false;
+	var escape = false,
+		comment = false;
 
-  var templateVar = 0, filterStart = false;
+	var selectionStart = 0,
+		block = false;
 
-  var cut, label;
+	var templateVar = 0,
+		filterStart = false;
 
-  var part = "", rPart = "";
+	var cut,
+		label;
 
-  for (var i = -1; ++i < str.length;) {
-    var el = str.charAt(i), next = str.charAt(i + 1);
+	var part = '',
+		rPart = '';
 
-    var word = str.substr(i, 2), extWord = str.substr(i, 3);
+	for (var i$0 = -1; ++i$0 < str.length;) {
+		var el$0 = str.charAt(i$0),
+			next = str.charAt(i$0 + 1);
 
-    if (!comment) {
-      if (!begin) {
-        if (el === "/") {
-          if (sCommentsMap[word] || mCommentsMap[word]) {
-            if (sCommentsMap[extWord] || mCommentsMap[extWord]) {
-              comment = extWord;
-            } else {
-              comment = word;
-            }
-          }
+		var word = str.substr(i$0, 2),
+			extWord = str.substr(i$0, 3);
 
-          if (comment) {
-            selectionStart = i;
-            continue;
-          }
-        }
+		if (!comment) {
+			if (!begin) {
+				if (el$0 === '/') {
+					if (sCommentsMap[word] || mCommentsMap[word]) {
+						if (sCommentsMap[extWord] || mCommentsMap[extWord]) {
+							comment = extWord;
 
-        if (escapeEndMap[el] || escapeEndWordMap[rPart]) {
-          end = true;
-          rPart = "";
-        } else if (uSRgxp.test(el)) {
-          end = false;
-        }
+						} else {
+							comment = word;
+						}
+					}
 
-        if (wRgxp.test(el)) {
-          part += el;
-        } else {
-          rPart = part;
-          part = "";
-        }
+					if (comment) {
+						selectionStart = i$0;
+						continue;
+					}
+				}
 
-        var skip = false;
-        if (opt_snakeskin) {
-          if (el === "|" && snakeskinRgxp.test(next)) {
-            filterStart = true;
-            end = false;
-            skip = true;
-          } else if (filterStart && sRgxp.test(el)) {
-            filterStart = false;
-            end = true;
-            skip = true;
-          }
-        }
+				if (escapeEndMap[el$0] || escapeEndWordMap[rPart]) {
+					end = true;
+					rPart = '';
 
-        if (!skip) {
-          if (escapeEndMap[el]) {
-            end = true;
-          } else if (uSRgxp.test(el)) {
-            end = false;
-          }
-        }
-      }
+				} else if (uSRgxp.test(el$0)) {
+					end = false;
+				}
 
-      // Блоки [] внутри регулярного выражения
-      if (begin === "/" && !escape) {
-        if (el === "[") {
-          block = true;
-        } else if (el === "]") {
-          block = false;
-        }
-      }
+				if (wRgxp.test(el$0)) {
+					part += el$0;
 
-      if (!begin && templateVar) {
-        if (el === "}") {
-          templateVar--;
-        } else if (el === "{") {
-          templateVar++;
-        }
+				} else {
+					rPart = part;
+					part = '';
+				}
 
-        if (!templateVar) {
-          el = "`";
-        }
-      }
+				var skip = false;
+				if (opt_snakeskin) {
+					if (el$0 === '|' && snakeskinRgxp.test(next)) {
+						filterStart = true;
+						end = false;
+						skip = true;
 
-      if (begin === "`" && !escape && word === "${") {
-        el = "`";
-        i++;
-        templateVar++;
-      }
+					} else if (filterStart && sRgxp.test(el$0)) {
+						filterStart = false;
+						end = true;
+						skip = true;
+					}
+				}
 
-      if (finalMap[el] && (el !== "/" || end) && !begin) {
-        begin = el;
-        selectionStart = i;
-      } else if (begin && (el === "\\" || escape)) {
-        escape = !escape;
-      } else if (finalMap[el] && begin === el && !escape && (begin !== "/" || !block)) {
-        if (el === "/") {
-          for (var j = -1; ++j < rgxpFlags.length;) {
-            if (rgxpFlagsMap[str.charAt(i + 1)]) {
-              i++;
-            }
-          }
-        }
+				if (!skip) {
+					if (escapeEndMap[el$0]) {
+						end = true;
 
-        begin = false;
-        end = false;
+					} else if (uSRgxp.test(el$0)) {
+						end = false;
+					}
+				}
+			}
 
-        if (p[el]) {
-          cut = str.substring(selectionStart, i + 1);
+			// Блоки [] внутри регулярного выражения
+			if (begin === '/' && !escape) {
+				if (el$0 === '[') {
+					block = true;
 
-          if (p[el] === -1) {
-            label = "";
-          } else {
-            label = "__ESCAPER_QUOT__" + stack.length + "_";
-            stack.push(cut);
-          }
+				} else if (el$0 === ']') {
+					block = false;
+				}
+			}
 
-          str = str.substring(0, selectionStart) + label + str.substring(i + 1);
-          i += label.length - cut.length;
-        }
-      }
-    } else if ((nRgxp.test(next) && sCommentsMap[comment]) || (mCommentsMap[el + str.charAt(i - 1)] && i - selectionStart > 2 && mCommentsMap[comment])) {
-      if (p[comment]) {
-        cut = str.substring(selectionStart, i + 1);
+			if (!begin && templateVar) {
+				if (el$0 === '}') {
+					templateVar--;
 
-        if (p[comment] === -1) {
-          label = "";
-        } else {
-          label = "__ESCAPER_QUOT__" + stack.length + "_";
-          stack.push(cut);
-        }
+				} else if (el$0 === '{') {
+					templateVar++;
+				}
 
-        str = str.substring(0, selectionStart) + label + str.substring(i + 1);
-        i += label.length - cut.length;
-      }
+				if (!templateVar) {
+					el$0 = '`';
+				}
+			}
 
-      comment = false;
-    }
-  }
+			if (begin === '`' && !escape && word === '${') {
+				el$0 = '`';
+				i$0++;
+				templateVar++;
+			}
 
-  if (stack === content) {
-    cache[cacheKey] = cache[cacheKey] || {};
-    cache[cacheKey][initStr] = str;
-  }
+			if (finalMap[el$0] && (el$0 !== '/' || end) && !begin) {
+				begin = el$0;
+				selectionStart = i$0;
 
-  return str;
+			} else if (begin && (el$0 === '\\' || escape)) {
+				escape = !escape;
+
+			} else if (finalMap[el$0] && begin === el$0 && !escape && (begin !== '/' || !block)) {
+				if (el$0 === '/') {
+					for (var j = -1; ++j < rgxpFlags.length;) {
+						if (rgxpFlagsMap[str.charAt(i$0 + 1)]) {
+							i$0++;
+						}
+					}
+				}
+
+				begin = false;
+				end = false;
+
+				if (p[el$0]) {
+					cut = str.substring(selectionStart, i$0 + 1);
+
+					if (p[el$0] === -1) {
+						label = '';
+
+					} else {
+						label = (("__ESCAPER_QUOT__" + (stack.length)) + "_");
+						stack.push(cut);
+					}
+
+					str = str.substring(0, selectionStart) + label + str.substring(i$0 + 1);
+					i$0 += label.length - cut.length;
+				}
+			}
+
+		} else if ((nRgxp.test(next) && sCommentsMap[comment]) ||
+			(mCommentsMap[el$0 + str.charAt(i$0 - 1)] && i$0 - selectionStart > 2 && mCommentsMap[comment])
+
+		) {
+			if (p[comment]) {
+				cut = str.substring(selectionStart, i$0 + 1);
+
+				if (p[comment] === -1) {
+					label = '';
+
+				} else {
+					label = (("__ESCAPER_QUOT__" + (stack.length)) + "_");
+					stack.push(cut);
+				}
+
+				str = str.substring(0, selectionStart) + label + str.substring(i$0 + 1);
+				i$0 += label.length - cut.length;
+			}
+
+			comment = false;
+		}
+	}
+
+	if (stack === content) {
+		cache[cacheKey] = cache[cacheKey] || {};
+		cache[cacheKey][initStr] = str;
+	}
+
+	return str;
 };
 
 var pasteRgxp = /__ESCAPER_QUOT__(\d+)_/g;
@@ -398,8 +439,7 @@ var pasteRgxp = /__ESCAPER_QUOT__(\d+)_/g;
  * @return {string}
  */
 Escaper.paste = function (str, opt_quotContent) {
-  var stack = opt_quotContent || content;
-  return str.replace(pasteRgxp, function (sstr, pos) {
-    return stack[pos];
-  });
-};})(new Function('return this')());
+	var stack = opt_quotContent || content;
+	return str.replace(pasteRgxp, function(sstr, pos)  {return stack[pos]});
+};
+})(new Function('return this')());
