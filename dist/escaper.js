@@ -7,7 +7,7 @@
  */
 
 var Escaper = {
-	VERSION: [2, 0, 3]
+	VERSION: [2, 0, 4]
 };
 
 var isNode = false;
@@ -21,7 +21,7 @@ try {
 
 /* istanbul ignore next */
 if (isNode) {
-	module.exports =
+	module['exports'] =
 		exports = Escaper;
 
 } else {

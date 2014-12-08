@@ -1,3 +1,7 @@
+## v2.0.4
+
+- [x] Исправление ошибок.
+
 ## v2.0.3
 
 - [x] Возврат на [es6-transpiler](https://github.com/termi/es6-transpiler).
