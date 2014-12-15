@@ -5,25 +5,25 @@
  * Released under the MIT license
  * https://github.com/kobezzza/Escaper/blob/master/LICENSE
  *
- * Date: Mon, 15 Dec 2014 08:15:05 GMT
+ * Date: Mon, 15 Dec 2014 08:22:52 GMT
  */
 
 (function (global) {var Escaper = {
 	VERSION: [2, 0, 5]
 };
 
-var isNode = false;
+var IS_NODE = false;
 
 try {
-	isNode = 'object' === typeof process && Object.prototype.toString.call(process) === '[object process]';
+	IS_NODE = 'object' === typeof process && Object.prototype.toString.call(process) === '[object process]';
 
 } catch (ignore) {
 
 }
 
 /* istanbul ignore next */
-if (isNode) {
-	module['exports'] =
+if (IS_NODE) {
+	module.exports =
 		exports = Escaper;
 
 } else {

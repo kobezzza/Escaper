@@ -66,8 +66,6 @@ gulp.task('compile', ['build'], function (callback) {
 					'./node_modules/closurecompiler-externs/events.js',
 					'./node_modules/closurecompiler-externs/stream.js',
 					'./node_modules/closurecompiler-externs/process.js',
-					'./node_modules/closurecompiler-externs/path.js',
-					'./node_modules/closurecompiler-externs/fs.js',
 					'./node_modules/closurecompiler-externs/core.js',
 					'./externs.js'
 				],
