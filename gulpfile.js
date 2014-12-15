@@ -3,10 +3,28 @@ var es6 = require('gulp-es6-transpiler'),
 	concat = require('gulp-concat'),
 	wrap = require('gulp-wrap'),
 	bump = require('gulp-bump'),
+	gcc = require('gulp-closure-compiler'),
+	header = require('gulp-header'),
 	istanbul = require('gulp-istanbul'),
 	jasmine = require('gulp-jasmine');
 
+function getVersion() {
+	delete require.cache[require.resolve('./dist/escaper')];
+	return require('./dist/escaper').VERSION.join('.');
+}
+
 gulp.task('build', function (callback) {
+	var fullHead =
+		'/*!\n' +
+		' * Escaper v' + getVersion() + '\n' +
+		' * https://github.com/kobezzza/Escaper\n' +
+		' *\n' +
+		' * Released under the MIT license\n' +
+		' * https://github.com/kobezzza/Escaper/blob/master/LICENSE\n' +
+		' *\n' +
+		' * Date: ' + new Date().toUTCString() + '\n' +
+		' */\n\n';
+
 	gulp.src('./lib/*.js')
 		.pipe(concat('escaper.js'))
 		.pipe(es6({
@@ -20,21 +38,64 @@ gulp.task('build', function (callback) {
 			'})(new Function(\'return this\')());'
 		))
 
+		.pipe(header(fullHead))
 		.pipe(gulp.dest('./dist/'))
+
 		.on('end', callback);
 });
 
 gulp.task('bump', ['build'], function () {
-	delete require.cache[require.resolve('./dist/escaper')];
-	var v = require('./dist/escaper').VERSION.join('.');
-
 	gulp.src('./*.json')
-		.pipe(bump({version: v}))
+		.pipe(bump({version: getVersion()}))
 		.pipe(gulp.dest('./'));
 });
 
-gulp.task('test', ['build'], function (callback) {
-	gulp.src('./dist/escaper.js')
+gulp.task('compile', ['build'], function (callback) {
+	gulp.src(['./dist/escaper.js'])
+		.pipe(gcc({
+			compilerPath: './bower_components/closure-compiler/compiler.jar',
+			fileName: 'escaper.min.js',
+
+			compilerFlags: {
+				compilation_level: 'ADVANCED_OPTIMIZATIONS',
+				use_types_for_optimization: null,
+
+				language_in: 'ES5',
+				externs: [
+					'./node_modules/closurecompiler-externs/buffer.js',
+					'./node_modules/closurecompiler-externs/events.js',
+					'./node_modules/closurecompiler-externs/stream.js',
+					'./node_modules/closurecompiler-externs/process.js',
+					'./node_modules/closurecompiler-externs/path.js',
+					'./node_modules/closurecompiler-externs/fs.js',
+					'./node_modules/closurecompiler-externs/core.js',
+					'./externs.js'
+				],
+
+				jscomp_warning: [
+					'invalidCasts',
+					'accessControls',
+					'checkDebuggerStatement',
+					'checkRegExp',
+					'checkTypes',
+					'const',
+					'constantProperty',
+					'deprecated',
+					'externsValidation',
+					'missingProperties',
+					'visibility'
+				]
+			}
+		}))
+
+		.pipe(header('/*! Escaper v' + getVersion() + ' | https://github.com/kobezzza/Escaper/blob/master/LICENSE */\n'))
+		.pipe(gulp.dest('./dist'))
+
+		.on('end', callback);
+});
+
+gulp.task('test', ['compile'], function (callback) {
+	gulp.src('./dist/escaper.min.js')
 		.pipe(istanbul())
 		.on('finish', function () {
 			gulp.src('./test/index_spec.js')
@@ -45,7 +106,8 @@ gulp.task('test', ['build'], function (callback) {
 });
 
 gulp.task('watch', function () {
-	gulp.watch('./lib/*.js', ['bump']);
+	gulp.watch('./lib/escaper.js', ['bump']);
+	gulp.watch('./lib/*.js', ['test']);
 });
 
 gulp.task('default', ['test', 'bump']);
