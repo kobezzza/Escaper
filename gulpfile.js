@@ -92,7 +92,7 @@ gulp.task('compile', ['build'], function (callback) {
 		.on('end', callback);
 });
 
-gulp.task('test', ['compile'], function (callback) {
+function test(callback) {
 	gulp.src('./dist/escaper.min.js')
 		.pipe(istanbul())
 		.on('finish', function () {
@@ -101,11 +101,14 @@ gulp.task('test', ['compile'], function (callback) {
 				.pipe(istanbul.writeReports())
 				.on('end', callback);
 		});
-});
+}
+
+gulp.task('test-dev', ['compile'], test);
+gulp.task('test', test);
 
 gulp.task('watch', function () {
 	gulp.watch('./lib/escaper.js', ['bump']);
-	gulp.watch('./lib/*.js', ['test']);
+	gulp.watch('./lib/*.js', ['test-dev']);
 });
 
-gulp.task('default', ['test', 'bump']);
+gulp.task('default', ['test-dev', 'bump']);
