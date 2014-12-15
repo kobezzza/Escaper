@@ -1,13 +1,15 @@
-(function (global) {/*!
- * Escaper
+/*!
+ * Escaper v2.0.5
  * https://github.com/kobezzza/Escaper
  *
  * Released under the MIT license
  * https://github.com/kobezzza/Escaper/blob/master/LICENSE
+ *
+ * Date: Mon, 15 Dec 2014 08:15:05 GMT
  */
 
-var Escaper = {
-	VERSION: [2, 0, 4]
+(function (global) {var Escaper = {
+	VERSION: [2, 0, 5]
 };
 
 var isNode = false;
