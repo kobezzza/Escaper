@@ -5,11 +5,11 @@
  * Released under the MIT license
  * https://github.com/kobezzza/Escaper/blob/master/LICENSE
  *
- * Date: Mon, 15 Dec 2014 08:22:52 GMT
+ * Date: Mon, 15 Dec 2014 08:57:09 GMT
  */
 
 (function (global) {var Escaper = {
-	VERSION: [2, 0, 5]
+	VERSION: [2, 0, 6]
 };
 
 var IS_NODE = false;

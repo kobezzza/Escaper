@@ -2,7 +2,7 @@
   "name": "escaper",
   "description": "Библиотека для «экранирования» литералов строк, регулярных выражений и комментариев в синтаксисе JavaScript.",
   "homepage": "https://github.com/kobezzza/Escaper",
-  "version": "2.0.5",
+  "version": "2.0.6",
   "author": {
     "name": "Kobezzza",
     "email": "kobezzza@mail.ru",
