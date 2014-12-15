@@ -107,8 +107,8 @@ gulp.task('test-dev', ['compile'], test);
 gulp.task('test', test);
 
 gulp.task('watch', function () {
+	gulp.watch('./lib/*.js', ['build']);
 	gulp.watch('./lib/escaper.js', ['bump']);
-	gulp.watch('./lib/*.js', ['test-dev']);
 });
 
 gulp.task('default', ['test-dev', 'bump']);
