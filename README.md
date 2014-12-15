@@ -18,7 +18,7 @@
 
 ## Установка
 
-https://github.com/kobezzza/Escaper/blob/master/dist/escaper.js
+https://github.com/kobezzza/Escaper/blob/master/dist/escaper.min.js
 
 или
 
