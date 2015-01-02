@@ -1,3 +1,7 @@
+## v2.0.8
+
+- [x] Small fixes.
+
 ## v2.0.7
 
 - [x] Added English documentation;

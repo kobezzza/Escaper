@@ -5,14 +5,13 @@
  * Released under the MIT license
  * https://github.com/kobezzza/Escaper/blob/master/LICENSE
  *
- * Date: Fri, 02 Jan 2015 17:01:20 GMT
+ * Date: Fri, 02 Jan 2015 17:55:19 GMT
  */
 
 (function (global) {var Escaper = {
-	VERSION: [2, 0, 7]
+	VERSION: [2, 0, 8]
 };
 
-/* istanbul ignore next */
 if (typeof define === "function" && define['amd']) {
 	define([], function()  {return Escaper});
 
@@ -45,7 +44,6 @@ var keyArr = [],
 	finalMap = {};
 
 for (var key in escapeMap) {
-	/* istanbul ignore if */
 	if (!escapeMap.hasOwnProperty(key)) {
 		continue;
 	}
@@ -55,7 +53,6 @@ for (var key in escapeMap) {
 }
 
 for (var key$0 in sCommentsMap) {
-	/* istanbul ignore if */
 	if (!sCommentsMap.hasOwnProperty(key$0)) {
 		continue;
 	}
@@ -65,7 +62,6 @@ for (var key$0 in sCommentsMap) {
 }
 
 for (var key$1 in mCommentsMap) {
-	/* istanbul ignore if */
 	if (!mCommentsMap.hasOwnProperty(key$1)) {
 		continue;
 	}
@@ -84,7 +80,6 @@ var rgxpFlagsMap = {
 
 var rgxpFlags = [];
 for (var key$2 in rgxpFlagsMap) {
-	/* istanbul ignore if */
 	if (!rgxpFlagsMap.hasOwnProperty(key$2)) {
 		continue;
 	}
@@ -133,7 +128,6 @@ var cache = {},
  */
 function mix(obj, p, val) {
 	for (var key in obj) {
-		/* istanbul ignore if */
 		if (!obj.hasOwnProperty(key)) {
 			continue;
 		}
@@ -171,9 +165,9 @@ Escaper.symbols = Escaper.symbols || null;
  *     (если установить значение параметру -1, то он будет полностью вырезаться,
  *     т.е. без возможности обратной замены, иначе true/false - включить/исключить последовательность)
  *
- *     *) @all - специальная команда для выделения всех последовательностей
- *     *) @comments - специальная команда для выделения всех видов комментариев
- *     *) @literals - специальная команда для выделения литералов строк и регулярных выражений
+ *     *) @all - вырезаются все последовательности
+ *     *) @comments - вырезаются все виды комментариев
+ *     *) @literals - вырезаются все виды литералов строк и регулярных выражений
  *     *) `
  *     *) '
  *     *) "
