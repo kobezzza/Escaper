@@ -95,6 +95,7 @@ gulp.task('compile', ['build'], function (callback) {
 function test(callback) {
 	gulp.src('./dist/escaper.min.js')
 		.pipe(istanbul())
+		.pipe(istanbul.hookRequire())
 		.on('finish', function () {
 			gulp.src('./test/index_spec.js')
 				.pipe(jasmine())
