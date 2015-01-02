@@ -1,13 +1,13 @@
 # Escaper
 
-Библиотека для «экранирования» литералов строк, регулярных выражений и комментариев в синтаксисе JavaScript.
+Library for "escaping" literal strings, regular expressions and comments in the syntax of JavaScript.
 
 [![NPM version](http://img.shields.io/npm/v/escaper.svg?style=flat)](http://badge.fury.io/js/escaper)
 [![NPM dependencies](http://img.shields.io/david/kobezzza/Escaper.svg?style=flat)](https://david-dm.org/kobezzza/escaper)
 [![Build Status](http://img.shields.io/travis/kobezzza/Escaper.svg?style=flat&branch=master)](https://travis-ci.org/kobezzza/Escaper)
 [![Coverage Status](http://img.shields.io/coveralls/kobezzza/Escaper.svg?style=flat)](https://coveralls.io/r/kobezzza/Escaper?branch=master)
 
-**Поддерживаются литералы:**
+**Supported:**
 
 * `' ... '`
 * `" ... "`
@@ -16,29 +16,29 @@
 * `// ...`
 * `/* ... */`, `/** ... */`, `/*! ... */`
 
-## Установка
+## Install
 
-https://github.com/kobezzza/Escaper/blob/master/dist/escaper.min.js
+https://raw.githubusercontent.com/kobezzza/Escaper/master/dist/escaper.min.js
 
-или
+or
 
 ```bash
 npm install escaper
 ```
 
-или
+or
 
 ```bash
 bower install escaper
 ```
 
-или
+or
 
 ```bash
 git clone https://github.com/kobezzza/Escaper
 ```
 
-## Использование
+## Usage
 
 ```js
 var str = '"foo" 1 + /foo/ + 2 /* 1 */ 3',
@@ -51,31 +51,24 @@ str = Escaper.replace(str, true, content);
 Escaper.paste(str, content);
 ```
 
-### Поддержка
-
-`IE 6+`, `FF`, `Chrome`.
-
 ## API
 
 ### Escaper.replace(str, opt_withComment, opt_quotContent)
 
-Заметить блоки вида `' ... '`, `" ... "`, `` ` ... ` ``, `/ ... /`, `// ...`, `/* ... */` на
-`__ESCAPER_QUOT__номер_` в указанной строке.
+Replace blocks `' ... '`, `" ... "`, `` ` ... ` ``, `/ ... /`, `// ...`, `/* ... */` on
+`__ESCAPER_QUOT__number_` in the specified string.
 
-**Аргументы**
+**Arguments**
 
-* `string` `str` — исходная строка
-* `(Object|boolean)=` `opt_withCommentsOrParams = false` — таблица вырезаемых последовательностей:
-
-Если установить значение параметру `-1`, то он будет полностью вырезаться,
-т.е. без возможности обратной замены, иначе `true`/`false` — включить/исключить последовательность.
+* `string` `str` — source string
+* `(Object|boolean)=` `opt_withCommentsOrParams = false` — parameters:
 
 ```js
 {
-	'@all'     : true // Специальная команда для выделения всех последовательностей
-	'@comments': true // Специальная команда для выделения всех видов комментариев
-	'@literals': true // Специальная команда для выделения литералов строк
-	                  // и регулярных выражений
+	'@all'     : true // Replace all sequences
+	'@comments': true // Replace all kinds of comments
+	'@literals': true // Replace all kinds of string literals
+	                  // and regular expressions
 
 	"'"        : true,
 	'"'        : true,
@@ -88,47 +81,31 @@ Escaper.paste(str, content);
 }
 ```
 
-ИЛИ если логическое значение, то
+If set value to `-1`, it will be completely cut,
+without the possibility of replacing back, or `true` /` false` - include / exclude.
+
+If parameter `opt_withCommentsOrParams` is boolean:
 
 ```js
-true  // вырезаются литералы с комментариями
-false // вырезаются одни литералы
+true  // Replace all sequences
+false // Replace all kinds of string literals and regular expressions
 ```
 
-* `Array=` `opt_quotContent = Escaper.quotContent` — стек содержимого
+* `Array=` `opt_quotContent = Escaper.quotContent` — content store
 
 `@return {string}`
 
 ### Escaper.paste(str, opt_quotContent)
 
-Заметить `__ESCAPER_QUOT__номер_` в указанной строке на реальное содержимое.
+Replace `__ESCAPER_QUOT__number_` in the specified string on the real content.
 
-**Аргументы**
+**Arguments**
 
-* `string` `str` — исходная строка
-* `Array=` `opt_quotContent = Escaper.quotContent` — стек содержимого
+* `string` `str` — source string
+* `Array=` `opt_quotContent = Escaper.quotContent` — content store
 
 `@return {string}`
 
-## Лицензия
+## [License](https://github.com/kobezzza/Escaper/blob/master/LICENSE)
 
-The MIT License (MIT)
-
-Copyright (c) 2014 Андрей Кобец (Kobezzza) <kobezzza@mail.ru>
-
-Данная лицензия разрешает лицам, получившим копию данного программного обеспечения и
-сопутствующей документации (в дальнейшем именуемыми «Программное Обеспечение»),
-безвозмездно использовать Программное Обеспечение без ограничений, включая неограниченное право на использование,
-копирование, изменение, добавление, публикацию, распространение, сублицензирование и/или
-продажу копий Программного Обеспечения, также как и лицам, которым предоставляется данное
-Программное Обеспечение, при соблюдении следующих условий:
-
-Указанное выше уведомление об авторском праве и данные условия должны быть включены во все копии или
-значимые части данного Программного Обеспечения.
-
-ДАННОЕ ПРОГРАММНОЕ ОБЕСПЕЧЕНИЕ ПРЕДОСТАВЛЯЕТСЯ «КАК ЕСТЬ», БЕЗ КАКИХ-ЛИБО ГАРАНТИЙ, ЯВНО ВЫРАЖЕННЫХ ИЛИ ПОДРАЗУМЕВАЕМЫХ,
-ВКЛЮЧАЯ, НО НЕ ОГРАНИЧИВАЯСЬ ГАРАНТИЯМИ ТОВАРНОЙ ПРИГОДНОСТИ, СООТВЕТСТВИЯ ПО ЕГО КОНКРЕТНОМУ НАЗНАЧЕНИЮ И
-ОТСУТСТВИЯ НАРУШЕНИЙ ПРАВ. НИ В КАКОМ СЛУЧАЕ АВТОРЫ ИЛИ ПРАВООБЛАДАТЕЛИ НЕ НЕСУТ ОТВЕТСТВЕННОСТИ ПО ИСКАМ О
-ВОЗМЕЩЕНИИ УЩЕРБА, УБЫТКОВ ИЛИ ДРУГИХ ТРЕБОВАНИЙ ПО ДЕЙСТВУЮЩИМ КОНТРАКТАМ, ДЕЛИКТАМ ИЛИ ИНОМУ, ВОЗНИКШИМ ИЗ,
-ИМЕЮЩИМ ПРИЧИНОЙ ИЛИ СВЯЗАННЫМ С ПРОГРАММНЫМ ОБЕСПЕЧЕНИЕМ ИЛИ ИСПОЛЬЗОВАНИЕМ ПРОГРАММНОГО ОБЕСПЕЧЕНИЯ ИЛИ
-ИНЫМИ ДЕЙСТВИЯМИ С ПРОГРАММНЫМ ОБЕСПЕЧЕНИЕМ.
+The MIT License.
