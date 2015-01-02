@@ -1,15 +1,15 @@
 /*!
- * Escaper v2.0.5
+ * Escaper v2.0.6
  * https://github.com/kobezzza/Escaper
  *
  * Released under the MIT license
  * https://github.com/kobezzza/Escaper/blob/master/LICENSE
  *
- * Date: Mon, 15 Dec 2014 08:57:09 GMT
+ * Date: Fri, 02 Jan 2015 14:49:12 GMT
  */
 
 (function (global) {var Escaper = {
-	VERSION: [2, 0, 6]
+	VERSION: [2, 0, 7]
 };
 
 var IS_NODE = false;
