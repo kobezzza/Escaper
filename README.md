@@ -2,6 +2,8 @@
 
 Library for "escaping" literal strings, regular expressions and comments in the syntax of JavaScript.
 
+[Russian documentation](https://github.com/kobezzza/Escaper/blob/master/README.ru.md).
+
 [![NPM version](http://img.shields.io/npm/v/escaper.svg?style=flat)](http://badge.fury.io/js/escaper)
 [![NPM dependencies](http://img.shields.io/david/kobezzza/Escaper.svg?style=flat)](https://david-dm.org/kobezzza/escaper)
 [![Build Status](http://img.shields.io/travis/kobezzza/Escaper.svg?style=flat&branch=master)](https://travis-ci.org/kobezzza/Escaper)
