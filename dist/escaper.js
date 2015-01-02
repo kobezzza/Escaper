@@ -1,21 +1,21 @@
 /*!
- * Escaper v2.0.7
+ * Escaper v2.0.8
  * https://github.com/kobezzza/Escaper
  *
  * Released under the MIT license
  * https://github.com/kobezzza/Escaper/blob/master/LICENSE
  *
- * Date: Fri, 02 Jan 2015 17:55:19 GMT
+ * Date: Fri, 02 Jan 2015 17:58:20 GMT
  */
 
 (function (global) {var Escaper = {
 	VERSION: [2, 0, 8]
 };
 
-if (typeof define === "function" && define['amd']) {
+if (typeof define === 'function' && define['amd']) {
 	define([], function()  {return Escaper});
 
-} else if (typeof exports === "object") {
+} else if (typeof exports === 'object') {
 	module.exports =
 		exports = Escaper;
 
