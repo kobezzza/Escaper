@@ -1,62 +1,67 @@
+## v2.0.7
+
+- [x] Added English documentation;
+- [x] Small fixes.
+
 ## v2.0.6
 
-- [x] Доработка сборки.
+- [x] Improvement of the project build.
 
 ## v2.0.4
 
-- [x] Исправление ошибок.
+- [x] Bugfix.
 
 ## v2.0.3
 
-- [x] Возврат на [es6-transpiler](https://github.com/termi/es6-transpiler).
+- [x] Rollback on [es6-transpiler](https://github.com/termi/es6-transpiler).
 
 ## v2.0.2
 
-- [x] Исправление ошибок.
+- [x] Bugfix.
 
 ## v2.0.1
 
-- [x] Исправление ошибок.
+- [x] Bugfix.
 
 ## v2.0.0
 
-- [x] Изменён способ экспорта модуля.
+- [x] Changed the way to export the module.
 
 ## v1.4.19
 
-- [x] Переход на [6to5](https://github.com/6to5/6to5).
+- [x] Move on [6to5](https://github.com/6to5/6to5).
 
 ## v1.4.18
 
-- [x] Небольшие исправления.
+- [x] Small fixes.
 
 ## v1.4.17
 
-- [x] Небольшие исправления.
+- [x] Small fixes.
 
 ## v1.4.16
 
-- [x] Небольшие исправления.
+- [x] Small fixes.
 
 ## v1.4.15
 
-- [x] Небольшие исправления.
+- [x] Small fixes.
 
 ## v1.4.14
 
-- [x] Небольшие исправления.
+- [x] Small fixes.
 
 ## v1.4.13
 
-- [x] Небольшие исправления.
+- [x] Small fixes.
 
 ## v1.4.12
 
-- [x] Исправление ошибок при работе с Snakeskin.
+- [x] Bugfix.
 
 ## v1.4.11
 
-- [x] Небольшие исправления.
+- [x] Small fixes.
 
 ## v1.4.10
 
@@ -64,38 +69,38 @@
 
 ## v1.4.9
 
-- [x] Небольшие исправления.
+- [x] Small fixes.
 
 ## v1.4.8
 
-- [x] Небольшие исправления.
+- [x] Small fixes.
 
 ## v1.4.7
 
-- [x] Исправление ошибки.
+- [x] Bugfix.
 
 ## v1.4.6
 
-- [x] Небольшие исправления.
+- [x] Small fixes.
 
 ## v1.4.4
 
-- [x] Небольшие исправления.
+- [x] Small fixes.
 
 ## v1.4.2
 
-- [x] Исправление ошибки в экранировании однострочных комментариев.
+- [x] Fix errors in the escaping of single-line comments.
 
 ## v1.4.1
 
-- [x] Рефакторинг.
+- [x] Refactoring.
 
 ## v1.4.0
 
-- [x] Добавлены 2 новых флага `@comments` и `@literals`;
-- [x] Значение `@` флагов теперь можно устанавливать в `false` и `-1`.
+- [x] Added 2 new flag `@comments` and `@literals`;
+- [x] The value `@` can be set to `false` and` -1`.
 
 ## v1.3.0
 
-- [x] Добавлен флаг `@all` для настройки вырезаемых последовательностей;
-- [x] Добавлено значение флага `-1` для полного вырезания последовательности.
+- [x] Added flag `@all`;
+- [x] Added value of the flag `-1` for complete removal sequence.
