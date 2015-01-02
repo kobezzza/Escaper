@@ -1,6 +1,6 @@
 {
   "name": "Escaper",
-  "description": "Library for \"escaping\" string literals, regular expressions and comments in the syntax of JavaScript.",
+  "description": "Library for escaping string literals, regular expressions and comments in the syntax of JavaScript.",
   "main": "dist/escaper.min.js",
   "version": "2.0.7",
   "homepage": "https://github.com/kobezzza/Escaper",

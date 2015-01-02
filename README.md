@@ -1,6 +1,6 @@
 # Escaper
 
-Library for "escaping" string literals, regular expressions and comments in the syntax of JavaScript.
+Library for escaping string literals, regular expressions and comments in the syntax of JavaScript.
 
 [Russian documentation](https://github.com/kobezzza/Escaper/blob/master/README.ru.md).
 
