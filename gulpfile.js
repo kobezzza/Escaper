@@ -6,7 +6,8 @@ var es6 = require('gulp-es6-transpiler'),
 	gcc = require('gulp-closure-compiler'),
 	header = require('gulp-header'),
 	istanbul = require('gulp-istanbul'),
-	jasmine = require('gulp-jasmine');
+	jasmine = require('gulp-jasmine'),
+	eol = require('gulp-eol');
 
 function getVersion() {
 	delete require.cache[require.resolve('./dist/escaper')];
@@ -39,6 +40,7 @@ gulp.task('build', function (callback) {
 		))
 
 		.pipe(header(fullHead))
+		.pipe(eol())
 		.pipe(gulp.dest('./dist/'))
 
 		.on('end', callback);
@@ -47,6 +49,7 @@ gulp.task('build', function (callback) {
 gulp.task('bump', ['build'], function () {
 	gulp.src('./*.json')
 		.pipe(bump({version: getVersion()}))
+		.pipe(eol())
 		.pipe(gulp.dest('./'));
 });
 
@@ -87,6 +90,7 @@ gulp.task('compile', ['build'], function (callback) {
 		}))
 
 		.pipe(header('/*! Escaper v' + getVersion() + ' | https://github.com/kobezzza/Escaper/blob/master/LICENSE */\n'))
+		.pipe(eol())
 		.pipe(gulp.dest('./dist'))
 
 		.on('end', callback);
