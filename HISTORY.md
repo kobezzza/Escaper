@@ -13,7 +13,7 @@
 
 ## v2.0.3
 
-- [x] Rollback on [es6-transpiler](https://github.com/termi/es6-transpiler).
+- [x] Rollback to [es6-transpiler](https://github.com/termi/es6-transpiler).
 
 ## v2.0.2
 
@@ -29,7 +29,7 @@
 
 ## v1.4.19
 
-- [x] Move on [6to5](https://github.com/6to5/6to5).
+- [x] Moved to [6to5](https://github.com/6to5/6to5).
 
 ## v1.4.18
 
