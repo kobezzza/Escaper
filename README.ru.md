@@ -52,7 +52,6 @@ Escaper.paste(str, content);
 ```
 
 ## API
-
 ### Escaper.replace(str, opt_withComment, opt_quotContent)
 
 Заметить блоки вида `' ... '`, `" ... "`, `` ` ... ` ``, `/ ... /`, `// ...`, `/* ... */` на

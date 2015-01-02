@@ -54,7 +54,6 @@ Escaper.paste(str, content);
 ```
 
 ## API
-
 ### Escaper.replace(str, opt_withComment, opt_quotContent)
 
 Replace blocks `' ... '`, `" ... "`, `` ` ... ` ``, `/ ... /`, `// ...`, `/* ... */` on
