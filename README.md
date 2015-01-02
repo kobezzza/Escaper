@@ -81,8 +81,8 @@ Replace blocks `' ... '`, `" ... "`, `` ` ... ` ``, `/ ... /`, `// ...`, `/* ...
 }
 ```
 
-If set value to -1, it will be removal, without the possibility of replacing back,
-or true /false - include / exclude.
+If set value to `-1`, it will be removal, without the possibility of replacing back,
+or `true` / `false` - include / exclude.
 
 If parameter `opt_withCommentsOrParams` is boolean:
 
