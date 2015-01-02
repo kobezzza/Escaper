@@ -51,10 +51,6 @@ str = Escaper.replace(str, true, content);
 Escaper.paste(str, content);
 ```
 
-### Поддержка
-
-`IE 6+`, `FF`, `Chrome`.
-
 ## API
 
 ### Escaper.replace(str, opt_withComment, opt_quotContent)
@@ -72,9 +68,9 @@ Escaper.paste(str, content);
 
 ```js
 {
-	'@all'     : true // Специальная команда для выделения всех последовательностей
-	'@comments': true // Специальная команда для выделения всех видов комментариев
-	'@literals': true // Специальная команда для выделения литералов строк
+	'@all'     : true // Вырезаются все последовательности
+	'@comments': true // Вырезаются все виды комментариев
+	'@literals': true // Вырезаются все виды литералов строк
 	                  // и регулярных выражений
 
 	"'"        : true,
