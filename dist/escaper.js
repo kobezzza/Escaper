@@ -1,28 +1,22 @@
 /*!
- * Escaper v2.0.6
+ * Escaper v2.0.7
  * https://github.com/kobezzza/Escaper
  *
  * Released under the MIT license
  * https://github.com/kobezzza/Escaper/blob/master/LICENSE
  *
- * Date: Fri, 02 Jan 2015 14:49:12 GMT
+ * Date: Fri, 02 Jan 2015 15:52:50 GMT
  */
 
 (function (global) {var Escaper = {
 	VERSION: [2, 0, 7]
 };
 
-var IS_NODE = false;
-
-try {
-	IS_NODE = 'object' === typeof process && Object.prototype.toString.call(process) === '[object process]';
-
-} catch (ignore) {
-
-}
-
 /* istanbul ignore next */
-if (IS_NODE) {
+if (typeof define === "function" && define['amd']) {
+	define([], function()  {return Escaper});
+
+} else if (typeof exports === "object") {
 	module.exports =
 		exports = Escaper;
 
