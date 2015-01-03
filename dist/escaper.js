@@ -1,15 +1,15 @@
 /*!
- * Escaper v2.0.8
+ * Escaper v2.1.0
  * https://github.com/kobezzza/Escaper
  *
  * Released under the MIT license
  * https://github.com/kobezzza/Escaper/blob/master/LICENSE
  *
- * Date: Fri, 02 Jan 2015 17:58:20 GMT
+ * Date: Sat, 03 Jan 2015 07:53:45 GMT
  */
 
 (function (global) {var Escaper = {
-	VERSION: [2, 0, 8]
+	VERSION: [2, 1, 0]
 };
 
 if (typeof define === 'function' && define['amd']) {
@@ -23,18 +23,29 @@ if (typeof define === 'function' && define['amd']) {
 	global.Escaper = Escaper;
 }
 
-var escapeMap = {
+var stringLiterals = {
 	'"': true,
 	"'" : true,
-	'/': true,
 	'`': true
 };
 
-var sCommentsMap = {
+var literals = {
+	'/': true
+};
+
+for (var key in stringLiterals) {
+	if (!stringLiterals.hasOwnProperty(key)) {
+		continue;
+	}
+
+	literals[key] = true;
+}
+
+var singleComments = {
 	'//': true
 };
 
-var mCommentsMap = {
+var multComments = {
 	'/*': true,
 	'/**': true,
 	'/*!': true
@@ -43,17 +54,8 @@ var mCommentsMap = {
 var keyArr = [],
 	finalMap = {};
 
-for (var key in escapeMap) {
-	if (!escapeMap.hasOwnProperty(key)) {
-		continue;
-	}
-
-	keyArr.push(key);
-	finalMap[key] = true;
-}
-
-for (var key$0 in sCommentsMap) {
-	if (!sCommentsMap.hasOwnProperty(key$0)) {
+for (var key$0 in literals) {
+	if (!literals.hasOwnProperty(key$0)) {
 		continue;
 	}
 
@@ -61,13 +63,22 @@ for (var key$0 in sCommentsMap) {
 	finalMap[key$0] = true;
 }
 
-for (var key$1 in mCommentsMap) {
-	if (!mCommentsMap.hasOwnProperty(key$1)) {
+for (var key$1 in singleComments) {
+	if (!singleComments.hasOwnProperty(key$1)) {
 		continue;
 	}
 
 	keyArr.push(key$1);
 	finalMap[key$1] = true;
+}
+
+for (var key$2 in multComments) {
+	if (!multComments.hasOwnProperty(key$2)) {
+		continue;
+	}
+
+	keyArr.push(key$2);
+	finalMap[key$2] = true;
 }
 
 var rgxpFlagsMap = {
@@ -79,12 +90,12 @@ var rgxpFlagsMap = {
 };
 
 var rgxpFlags = [];
-for (var key$2 in rgxpFlagsMap) {
-	if (!rgxpFlagsMap.hasOwnProperty(key$2)) {
+for (var key$3 in rgxpFlagsMap) {
+	if (!rgxpFlagsMap.hasOwnProperty(key$3)) {
 		continue;
 	}
 
-	rgxpFlags.push(key$2);
+	rgxpFlags.push(key$3);
 }
 
 var escapeEndMap = {
@@ -167,6 +178,7 @@ Escaper.symbols = Escaper.symbols || null;
  *
  *     *) @all - вырезаются все последовательности
  *     *) @comments - вырезаются все виды комментариев
+ *     *) @strings - вырезаются все виды литералов строк
  *     *) @literals - вырезаются все виды литералов строк и регулярных выражений
  *     *) `
  *     *) '
@@ -204,13 +216,18 @@ Escaper.replace = function (str, opt_withCommentsOrParams, opt_quotContent, opt_
 	}
 
 	if ('@comments' in p) {
-		mix(mCommentsMap, p, p['@comments']);
-		mix(sCommentsMap, p, p['@comments']);
+		mix(multComments, p, p['@comments']);
+		mix(singleComments, p, p['@comments']);
 		delete p['@comments'];
 	}
 
+	if ('@strings' in p) {
+		mix(stringLiterals, p, p['@strings']);
+		delete p['@strings'];
+	}
+
 	if ('@literals' in p) {
-		mix(escapeMap, p, p['@literals']);
+		mix(literals, p, p['@literals']);
 		delete p['@literals'];
 	}
 
@@ -223,7 +240,7 @@ Escaper.replace = function (str, opt_withCommentsOrParams, opt_quotContent, opt_
 	for (var i = -1; ++i < keyArr.length;) {
 		var el = keyArr[i];
 
-		if (mCommentsMap[el] || sCommentsMap[el]) {
+		if (multComments[el] || singleComments[el]) {
 			p[el] = withComments || p[el];
 
 		} else {
@@ -269,8 +286,8 @@ Escaper.replace = function (str, opt_withCommentsOrParams, opt_quotContent, opt_
 		if (!comment) {
 			if (!begin) {
 				if (el$0 === '/') {
-					if (sCommentsMap[word] || mCommentsMap[word]) {
-						if (sCommentsMap[extWord] || mCommentsMap[extWord]) {
+					if (singleComments[word] || multComments[word]) {
+						if (singleComments[extWord] || multComments[extWord]) {
 							comment = extWord;
 
 						} else {
@@ -388,8 +405,8 @@ Escaper.replace = function (str, opt_withCommentsOrParams, opt_quotContent, opt_
 				}
 			}
 
-		} else if ((nRgxp.test(next) && sCommentsMap[comment]) ||
-			(mCommentsMap[el$0 + str.charAt(i$0 - 1)] && i$0 - selectionStart > 2 && mCommentsMap[comment])
+		} else if ((nRgxp.test(next) && singleComments[comment]) ||
+			(multComments[el$0 + str.charAt(i$0 - 1)] && i$0 - selectionStart > 2 && multComments[comment])
 
 		) {
 			if (p[comment]) {

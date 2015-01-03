@@ -66,10 +66,11 @@ Replace blocks `' ... '`, `" ... "`, `` ` ... ` ``, `/ ... /`, `// ...`, `/* ...
 
 ```js
 {
-	'@all'     : true // Replace all sequences
-	'@comments': true // Replace all kinds of comments
-	'@literals': true // Replace all kinds of string literals
-	                  // and regular expressions
+	'@all'     : true, // Replace all sequences
+	'@comments': true, // Replace all kinds of comments
+	'@strings' : true, // Replace all kinds of string literals
+	'@literals': true, // Replace all kinds of string literals
+	                   // and regular expressions
 
 	"'"        : true,
 	'"'        : true,

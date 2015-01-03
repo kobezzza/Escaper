@@ -1,3 +1,7 @@
+## v2.1.0
+
+- [x] Added new flag `@strings`.
+
 ## v2.0.8
 
 - [x] Small fixes.
@@ -101,7 +105,7 @@
 
 ## v1.4.0
 
-- [x] Added 2 new flag `@comments` and `@literals`;
+- [x] Added new flags: `@comments` and `@literals`;
 - [x] The value `@` can be set to `false` and` -1`.
 
 ## v1.3.0
