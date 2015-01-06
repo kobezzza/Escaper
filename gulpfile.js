@@ -35,6 +35,7 @@ gulp.task('build', function (callback) {
 
 		.pipe(wrap(
 			'(function (global) {' +
+				'\'use strict\';' +
 				'<%= contents %>' +
 			'})(new Function(\'return this\')());'
 		))
@@ -60,10 +61,12 @@ gulp.task('compile', ['build'], function (callback) {
 			fileName: 'escaper.min.js',
 
 			compilerFlags: {
+				output_wrapper: '(function () { %output%; }).call(this);',
+
 				compilation_level: 'ADVANCED_OPTIMIZATIONS',
 				use_types_for_optimization: null,
 
-				language_in: 'ES5',
+				language_in: 'ES5_STRICT',
 				externs: [
 					'./node_modules/closurecompiler-externs/buffer.js',
 					'./node_modules/closurecompiler-externs/events.js',
