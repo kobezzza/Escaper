@@ -40,8 +40,6 @@ gulp.task('build', function (callback) {
 		.pipe(wrap(
 			'(function (global) {' +
 				'\n' +
-				'\'use strict\';' +
-				'\n' +
 				'<%= contents %>' +
 				'\n' +
 			'})(new Function(\'return this\')());'

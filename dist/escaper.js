@@ -5,15 +5,14 @@
  * Released under the MIT license
  * https://github.com/kobezzza/Escaper/blob/master/LICENSE
  *
- * Date: Tue, 06 Jan 2015 14:13:37 GMT
+ * Date: Tue, 06 Jan 2015 14:28:03 GMT
  */
 
 (function (global) {
-'use strict';
 "use strict";
 
 var Escaper = {
-  VERSION: [2, 1, 3]
+  VERSION: [2, 1, 4]
 };
 
 if (typeof define === "function" && define["amd"]) {
