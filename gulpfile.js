@@ -42,7 +42,6 @@ gulp.task('build', function (callback) {
 		.pipe(header(fullHead))
 		.pipe(eol())
 		.pipe(gulp.dest('./dist/'))
-
 		.on('end', callback);
 });
 
@@ -94,7 +93,6 @@ gulp.task('compile', ['build'], function (callback) {
 		.pipe(header('/*! Escaper v' + getVersion() + ' | https://github.com/kobezzza/Escaper/blob/master/LICENSE */\n'))
 		.pipe(eol())
 		.pipe(gulp.dest('./dist'))
-
 		.on('end', callback);
 });
 
