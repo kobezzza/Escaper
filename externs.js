@@ -1,6 +1,5 @@
 /** @type {!Object} */
 var Escaper = {
-
 	/** @type {!Array} */
 	VERSION: [],
 
