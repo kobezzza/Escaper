@@ -38,11 +38,11 @@ gulp.task('build', function (callback) {
 		}))
 
 		.pipe(wrap(
-			'(function (global) {' +
+			'(function () {' +
 				'\n' +
 				'<%= contents %>' +
 				'\n' +
-			'})(new Function(\'return this\')());'
+			'}).call(new Function(\'return this\')());'
 		))
 
 		.pipe(header(fullHead))

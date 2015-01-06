@@ -1,18 +1,18 @@
 /*!
- * Escaper v2.1.3
+ * Escaper v2.1.5
  * https://github.com/kobezzza/Escaper
  *
  * Released under the MIT license
  * https://github.com/kobezzza/Escaper/blob/master/LICENSE
  *
- * Date: Tue, 06 Jan 2015 14:28:03 GMT
+ * Date: Tue, 06 Jan 2015 18:16:12 GMT
  */
 
-(function (global) {
+(function () {
 "use strict";
 
 var Escaper = {
-  VERSION: [2, 1, 4]
+  VERSION: [2, 1, 5]
 };
 
 if (typeof define === "function" && define["amd"]) {
@@ -22,7 +22,7 @@ if (typeof define === "function" && define["amd"]) {
 } else if (typeof exports === "object") {
   module.exports = exports = Escaper;
 } else {
-  global.Escaper = Escaper;
+  this.Escaper = Escaper;
 }
 
 var stringLiterals = {
@@ -415,4 +415,4 @@ Escaper.paste = function (str, opt_quotContent) {
     return stack[pos];
   });
 };
-})(new Function('return this')());
+}).call(new Function('return this')());
