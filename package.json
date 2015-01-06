@@ -2,7 +2,7 @@
   "name": "escaper",
   "description": "Library for escaping string literals, regular expressions and comments in the syntax of JavaScript.",
   "homepage": "https://github.com/kobezzza/Escaper",
-  "version": "2.1.0",
+  "version": "2.1.1",
   "author": {
     "name": "kobezzza",
     "email": "kobezzza@mail.ru",
