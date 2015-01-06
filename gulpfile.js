@@ -1,10 +1,11 @@
 var gulp = require('gulp');
-var es6 = require('gulp-es6-transpiler'),
+var to5 = require('gulp-6to5'),
 	concat = require('gulp-concat'),
 	wrap = require('gulp-wrap'),
 	bump = require('gulp-bump'),
 	gcc = require('gulp-closure-compiler'),
 	header = require('gulp-header'),
+	replace = require('gulp-replace'),
 	istanbul = require('gulp-istanbul'),
 	jasmine = require('gulp-jasmine'),
 	eol = require('gulp-eol');
@@ -28,9 +29,12 @@ gulp.task('build', function (callback) {
 
 	gulp.src('./lib/*.js')
 		.pipe(concat('escaper.js'))
-		.pipe(es6({
-			disallowDuplicated: false,
-			disallowUnknownReferences: false
+		.pipe(to5({
+			blacklist: [
+				'specPropertyLiterals',
+				'specMemberExpressionLiterals',
+				'undefinedToVoid'
+			]
 		}))
 
 		.pipe(wrap(
@@ -63,12 +67,10 @@ gulp.task('compile', ['build'], function (callback) {
 			fileName: 'escaper.min.js',
 
 			compilerFlags: {
-				output_wrapper: '(function(){%output%;}).call(this);',
-
 				compilation_level: 'ADVANCED_OPTIMIZATIONS',
 				use_types_for_optimization: null,
 
-				language_in: 'ES5_STRICT',
+				language_in: 'ES5',
 				externs: [
 					'./node_modules/closurecompiler-externs/buffer.js',
 					'./node_modules/closurecompiler-externs/events.js',
@@ -95,6 +97,7 @@ gulp.task('compile', ['build'], function (callback) {
 		}))
 
 		.pipe(header('/*! Escaper v' + getVersion() + ' | https://github.com/kobezzza/Escaper/blob/master/LICENSE */\n'))
+		.pipe(replace(/\(function\(.*?\)\{/, '$&\'use strict\';'))
 		.pipe(eol())
 		.pipe(gulp.dest('./dist'))
 		.on('end', callback);
