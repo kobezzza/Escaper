@@ -1,11 +1,12 @@
 var gulp = require('gulp');
 var to5 = require('gulp-6to5'),
-	concat = require('gulp-concat'),
+	monic = require('gulp-monic'),
 	wrap = require('gulp-wrap'),
 	bump = require('gulp-bump'),
 	gcc = require('gulp-closure-compiler'),
 	header = require('gulp-header'),
 	replace = require('gulp-replace'),
+	download = require('gulp-download'),
 	istanbul = require('gulp-istanbul'),
 	jasmine = require('gulp-jasmine'),
 	eol = require('gulp-eol');
@@ -27,8 +28,8 @@ gulp.task('build', function (callback) {
 		' * Date: ' + new Date().toUTCString() + '\n' +
 		' */\n\n';
 
-	gulp.src('./lib/*.js')
-		.pipe(concat('escaper.js'))
+	gulp.src('./lib/escaper.js')
+		.pipe(monic())
 		.pipe(to5({
 			blacklist: [
 				'specPropertyLiterals',
@@ -58,7 +59,42 @@ gulp.task('bump', ['build'], function () {
 		.pipe(gulp.dest('./'));
 });
 
-gulp.task('compile', ['build'], function (callback) {
+gulp.task('predefs', ['build'], function (callback) {
+	var i = 0;
+
+	function finish() {
+		i--;
+
+		if (!i) {
+			gulp.src('./predefs/src/index.js')
+				.pipe(monic())
+				.pipe(eol())
+				.pipe(gulp.dest('./predefs/build'))
+				.on('end', callback);
+		}
+	}
+
+	i++;
+	download([
+		'https://raw.githubusercontent.com/google/closure-compiler/master/contrib/externs/jasmine.js'
+	])
+		.pipe(eol())
+		.pipe(gulp.dest('./predefs/src/ws'))
+		.on('end', finish);
+
+	i++;
+	download([
+		'https://raw.githubusercontent.com/google/closure-compiler/master/contrib/externs/es6.js'
+	])
+
+		.pipe(replace(/\.<\[.*?]>/g, '.<?>'))
+		.pipe(replace(/\.\.\.([^[\]]+?)\)/g, '...[$1])'))
+		.pipe(eol())
+		.pipe(gulp.dest('./predefs/src/standart'))
+		.on('end', finish);
+});
+
+gulp.task('compile', ['predefs'], function (callback) {
 	gulp.src(['./dist/escaper.js'])
 		.pipe(gcc({
 			compilerPath: './bower_components/closure-compiler/compiler.jar',
@@ -70,12 +106,7 @@ gulp.task('compile', ['build'], function (callback) {
 
 				language_in: 'ES5',
 				externs: [
-					'./node_modules/closurecompiler-externs/buffer.js',
-					'./node_modules/closurecompiler-externs/events.js',
-					'./node_modules/closurecompiler-externs/stream.js',
-					'./node_modules/closurecompiler-externs/process.js',
-					'./node_modules/closurecompiler-externs/core.js',
-					'./externs.js'
+					'./predefs/build/index.js'
 				],
 
 				jscomp_warning: [
