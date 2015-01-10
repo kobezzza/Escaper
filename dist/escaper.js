@@ -1,21 +1,21 @@
 /*!
- * Escaper v2.1.5
+ * Escaper v2.1.6
  * https://github.com/kobezzza/Escaper
  *
  * Released under the MIT license
  * https://github.com/kobezzza/Escaper/blob/master/LICENSE
  *
- * Date: Tue, 06 Jan 2015 18:16:12 GMT
+ * Date: Sat, 10 Jan 2015 12:24:49 GMT
  */
 
 (function () {
 "use strict";
 
 var Escaper = {
-  VERSION: [2, 1, 5]
+  VERSION: [2, 1, 6]
 };
 
-if (typeof define === "function" && define["amd"]) {
+if (typeof define === "function" && (define.amd || define["amd"])) {
   define([], function () {
     return Escaper;
   });
@@ -127,7 +127,8 @@ var escapeEndWordMap = {
   "instanceof": true,
   "delete": true,
   "in": true,
-  "new": true
+  "new": true,
+  "of": true
 };
 
 var cache = {}, content = [];
