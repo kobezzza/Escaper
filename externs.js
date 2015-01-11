@@ -1,4 +1,4 @@
-/** @type {!Object} */
+/** @const */
 var Escaper = {
 	/** @type {!Array} */
 	VERSION: [],
