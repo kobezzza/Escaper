@@ -6,11 +6,11 @@ var Escaper = {
 	/** @type {!Array} */
 	quotContent: [],
 
-	/** @type {RegExp} */
-	snakeskinRgxp: null,
-
 	/** @type {?string} */
 	symbols: null,
+
+	/** @type {RegExp} */
+	snakeskinRgxp: null,
 
 	/**
 	 * @abstract

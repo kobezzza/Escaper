@@ -1,21 +1,21 @@
 /*!
- * Escaper v2.1.7
+ * Escaper v2.1.8
  * https://github.com/kobezzza/Escaper
  *
  * Released under the MIT license
  * https://github.com/kobezzza/Escaper/blob/master/LICENSE
  *
- * Date: Sun, 11 Jan 2015 08:55:22 GMT
+ * Date: Sun, 11 Jan 2015 09:36:19 GMT
  */
 
 (function () {
 "use strict";
 
 var Escaper = {
-  VERSION: [2, 1, 7]
+  VERSION: [2, 1, 8]
 };
 
-if (typeof define === "function" && (define.amd || define["amd"])) {
+if (typeof define === "function" && define.amd) {
   define([], function () {
     return Escaper;
   });
@@ -165,8 +165,8 @@ var uSRgxp = /[^\s\/]/,
 
 var symbols, snakeskinRgxp;
 
-Escaper.snakeskinRgxp = Escaper.snakeskinRgxp || null;
-Escaper.symbols = Escaper.symbols || null;
+Escaper.symbols = null;
+Escaper.snakeskinRgxp = null;
 
 /**
  * Заметить блоки вида ' ... ', " ... ", ` ... `, / ... /, // ..., /* ... *\/ на
@@ -198,9 +198,9 @@ Escaper.symbols = Escaper.symbols || null;
  * @return {string}
  */
 Escaper.replace = function (str, opt_withCommentsOrParams, opt_quotContent, opt_snakeskin) {
-  symbols = symbols || Escaper.symbols || Escaper["symbols"] || "a-z";
+  symbols = symbols || Escaper.symbols || "a-z";
 
-  snakeskinRgxp = snakeskinRgxp || Escaper.snakeskinRgxp || Escaper["snakeskinRgxp"] || new RegExp("[!$" + symbols + "_]", "i");
+  snakeskinRgxp = snakeskinRgxp || Escaper.snakeskinRgxp || new RegExp("[!$" + symbols + "_]", "i");
 
   var isObj = opt_withCommentsOrParams instanceof Object;
   var p = isObj ? Object(opt_withCommentsOrParams) : {};
