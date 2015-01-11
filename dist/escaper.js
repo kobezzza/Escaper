@@ -1,18 +1,18 @@
 /*!
- * Escaper v2.1.6
+ * Escaper v2.1.7
  * https://github.com/kobezzza/Escaper
  *
  * Released under the MIT license
  * https://github.com/kobezzza/Escaper/blob/master/LICENSE
  *
- * Date: Sat, 10 Jan 2015 12:24:49 GMT
+ * Date: Sun, 11 Jan 2015 08:55:22 GMT
  */
 
 (function () {
 "use strict";
 
 var Escaper = {
-  VERSION: [2, 1, 6]
+  VERSION: [2, 1, 7]
 };
 
 if (typeof define === "function" && (define.amd || define["amd"])) {
@@ -53,7 +53,8 @@ var multComments = {
   "/*!": true
 };
 
-var keyArr = [], finalMap = {};
+var keyArr = [],
+    finalMap = {};
 
 for (var key in literals) {
   if (!literals.hasOwnProperty(key)) {
@@ -131,7 +132,8 @@ var escapeEndWordMap = {
   "of": true
 };
 
-var cache = {}, content = [];
+var cache = {},
+    content = [];
 
 /**
  * @param {!Object} obj
@@ -156,7 +158,10 @@ function mix(obj, p, val) {
  */
 Escaper.quotContent = content;
 
-var uSRgxp = /[^\s\/]/, wRgxp = /[a-z]/, sRgxp = /\s/, nRgxp = /\r|\n/;
+var uSRgxp = /[^\s\/]/,
+    wRgxp = /[a-z]/,
+    sRgxp = /\s/,
+    nRgxp = /\r|\n/;
 
 var symbols, snakeskinRgxp;
 
@@ -168,7 +173,7 @@ Escaper.symbols = Escaper.symbols || null;
  * __ESCAPER_QUOT__номер_ в указанной строке
  *
  * @param {string} str - исходная строка
- * @param {(Object|boolean)=} [opt_withCommentsOrParams=false] - таблица вырезаемых последовательностей:
+ * @param {(Object.<string, boolean>|boolean)=} [opt_withCommentsOrParams=false] - таблица вырезаемых последовательностей:
  *
  *     (если установить значение параметру -1, то он будет полностью вырезаться,
  *     т.е. без возможности обратной замены, иначе true/false - включить/исключить последовательность)
@@ -246,22 +251,29 @@ Escaper.replace = function (str, opt_withCommentsOrParams, opt_quotContent, opt_
     return cache[cacheKey][initStr];
   }
 
-  var begin = false, end = true;
+  var begin = false,
+      end = true;
 
-  var escape = false, comment = false;
+  var escape = false,
+      comment = false;
 
-  var selectionStart = 0, block = false;
+  var selectionStart = 0,
+      block = false;
 
-  var templateVar = 0, filterStart = false;
+  var templateVar = 0,
+      filterStart = false;
 
   var cut, label;
 
-  var part = "", rPart = "";
+  var part = "",
+      rPart = "";
 
   for (var i = -1; ++i < str.length;) {
-    var el = str.charAt(i), next = str.charAt(i + 1);
+    var el = str.charAt(i),
+        next = str.charAt(i + 1);
 
-    var word = str.substr(i, 2), extWord = str.substr(i, 3);
+    var word = str.substr(i, 2),
+        extWord = str.substr(i, 3);
 
     if (!comment) {
       if (!begin) {
