@@ -1,0 +1,21 @@
+{
+  "lang": "ru",
+
+  "ignoreUppercase": true,
+  "ignoreUrls": true,
+
+  "fileExtensions": [
+    "md",
+    "js"
+  ],
+
+  "excludeFiles": [
+    "node_modules",
+    "bower_components",
+    "test",
+    "demo",
+    "coverage",
+    "dist",
+    "predefs"
+  ]
+}

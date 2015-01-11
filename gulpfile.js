@@ -9,12 +9,17 @@ var to5 = require('gulp-6to5'),
 	download = require('gulp-download'),
 	istanbul = require('gulp-istanbul'),
 	jasmine = require('gulp-jasmine'),
+	run = require('gulp-run'),
 	eol = require('gulp-eol');
 
 function getVersion() {
 	delete require.cache[require.resolve('./dist/escaper')];
 	return require('./dist/escaper').VERSION.join('.');
 }
+
+gulp.task('yaspeller', function () {
+	run('node node_modules/yaspeller/bin/cli.js ./').exec();
+});
 
 gulp.task('build', function (callback) {
 	var fullHead =
