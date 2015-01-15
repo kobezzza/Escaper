@@ -38,7 +38,10 @@ gulp.task('build', function (callback) {
 		.pipe(to5({
 			blacklist: [
 				'specPropertyLiterals',
-				'specMemberExpressionLiterals',
+				'specMemberExpressionLiterals'
+			],
+
+			optional: [
 				'undefinedToVoid'
 			]
 		}))
@@ -65,38 +68,18 @@ gulp.task('bump', ['build'], function () {
 });
 
 gulp.task('predefs', ['build'], function (callback) {
-	var i = 0;
-
-	function finish() {
-		i--;
-
-		if (!i) {
-			gulp.src('./predefs/src/index.js')
-				.pipe(monic())
-				.pipe(eol())
-				.pipe(gulp.dest('./predefs/build'))
-				.on('end', callback);
-		}
-	}
-
-	i++;
 	download([
 		'https://raw.githubusercontent.com/google/closure-compiler/master/contrib/externs/jasmine.js'
 	])
 		.pipe(eol())
 		.pipe(gulp.dest('./predefs/src/ws'))
-		.on('end', finish);
-
-	i++;
-	download([
-		'https://raw.githubusercontent.com/google/closure-compiler/master/contrib/externs/es6.js'
-	])
-
-		.pipe(replace(/\.<\[.*?]>/g, '.<?>'))
-		.pipe(replace(/\.\.\.([^[\]]+?)\)/g, '...[$1])'))
-		.pipe(eol())
-		.pipe(gulp.dest('./predefs/src/standart'))
-		.on('end', finish);
+		.on('end', function () {
+			gulp.src('./predefs/src/index.js')
+				.pipe(monic())
+				.pipe(eol())
+				.pipe(gulp.dest('./predefs/build'))
+				.on('end', callback);
+		});
 });
 
 gulp.task('compile', ['predefs'], function (callback) {

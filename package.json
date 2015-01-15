@@ -2,7 +2,7 @@
   "name": "escaper",
   "description": "Library for escaping string literals, regular expressions and comments in the syntax of JavaScript.",
   "homepage": "https://github.com/kobezzza/Escaper",
-  "version": "2.1.8",
+  "version": "2.1.9",
   "author": {
     "name": "kobezzza",
     "email": "kobezzza@mail.ru",
@@ -37,11 +37,11 @@
     "gulp-eol": "^0.1.1",
     "gulp-header": "^1.2.2",
     "gulp-istanbul": "^0.5.0",
-    "gulp-jasmine": "^1.0.1",
+    "gulp-jasmine": "^2.0.0",
     "gulp-monic": "^1.0.3",
     "gulp-replace": "^0.5.0",
     "gulp-run": "^1.6.6",
-    "gulp-wrap": "^0.5.0",
+    "gulp-wrap": "^0.9.0",
     "jasmine-node": "^2.0.0",
     "yaspeller": "^0.7.2"
   },
