@@ -76,7 +76,6 @@ gulp.task('predefs', ['build'], function (callback) {
 		.on('end', function () {
 			gulp.src('./predefs/src/index.js')
 				.pipe(monic())
-				.pipe(eol())
 				.pipe(gulp.dest('./predefs/build'))
 				.on('end', callback);
 		});
