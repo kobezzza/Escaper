@@ -107,7 +107,18 @@ gulp.task('compile', ['predefs'], function (callback) {
 					'deprecated',
 					'externsValidation',
 					'missingProperties',
-					'visibility'
+					'visibility',
+					'missingReturn',
+					'duplicate',
+					'internetExplorerChecks',
+					'suspiciousCode',
+					'uselessCode',
+					'misplacedTypeAnnotation',
+					'typeInvalidation'
+				],
+
+				jscomp_off: [
+					'nonStandardJsDocs'
 				]
 			}
 		}))
