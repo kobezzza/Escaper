@@ -1,6 +1,6 @@
 # Escaper
 
-Library for escaping string literals, regular expressions and comments in the syntax of JavaScript.
+It is a library for replacing string literals, regular expressions and comments in syntax of JavaScript.
 
 [Russian documentation](https://github.com/kobezzza/Escaper/blob/master/README.ru.md)
 
@@ -57,20 +57,20 @@ Escaper.paste(str, content);
 ## API
 ### Escaper.replace(str, opt_withComment, opt_quotContent)
 
-Replace blocks `' ... '`, `" ... "`, `` ` ... ` ``, `/ ... /`, `// ...`, `/* ... */` on
-`__ESCAPER_QUOT__number_` in the specified string.
+The method replaces all found blocks `' ... '`, `" ... "`, `` ` ... ` ``, `/ ... /`, `// ...`, `/* ... */` on
+`__ESCAPER_QUOT__number_` in a specified string and returns result.
 
 **Arguments**
 
-* `string` `str` — source string
+* `string` `str` — a source string
 * `(Object|boolean)=` `opt_withCommentsOrParams = false` — parameters:
 
 ```js
 {
-	'@all'     : true, // Replace all sequences
-	'@comments': true, // Replace all kinds of comments
-	'@strings' : true, // Replace all kinds of string literals
-	'@literals': true, // Replace all kinds of string literals
+	'@all'     : true, // Replaces all matches
+	'@comments': true, // Replaces all kinds of comments
+	'@strings' : true, // Replaces all kinds of string literals
+	'@literals': true, // Replaces all kinds of string literals
 	                   // and regular expressions
 
 	"'"        : true,
@@ -84,28 +84,28 @@ Replace blocks `' ... '`, `" ... "`, `` ` ... ` ``, `/ ... /`, `// ...`, `/* ...
 }
 ```
 
-If set value to `-1`, it will be removal, without the possibility of replacing back,
-or `true`/`false` — include/exclude.
+If a value of parameter will be set to `-1`, then all found matches will be removed from a final string, or if the value will set to
+`true`/`false` they will be included/excluded.
 
 If parameter `opt_withCommentsOrParams` is boolean:
 
 ```js
-true  // Replace all sequences
-false // Replace all kinds of string literals and regular expressions
+true  // Replaces all matches
+false // Replaces all kinds of string literals and regular expressions
 ```
 
-* `Array=` `opt_quotContent = Escaper.quotContent` — content store
+* `Array=` `opt_quotContent = Escaper.quotContent` — content stack
 
 `@return {string}`
 
 ### Escaper.paste(str, opt_quotContent)
 
-Replace `__ESCAPER_QUOT__number_` in the specified string on the real content.
+The method replaces all found blocks `__ESCAPER_QUOT__number_` on real content in a specified string and returns result.
 
 **Arguments**
 
 * `string` `str` — source string
-* `Array=` `opt_quotContent = Escaper.quotContent` — content store
+* `Array=` `opt_quotContent = Escaper.quotContent` — content stack
 
 `@return {string}`
 
