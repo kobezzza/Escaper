@@ -94,7 +94,7 @@ true  // Replaces all matches
 false // Replaces all kinds of string literals and regular expressions
 ```
 
-* `Array=` `opt_quotContent = Escaper.quotContent` — content stack
+* `Array=` `opt_quotContent = Escaper.quotContent` — stack of content
 
 `@return {string}`
 
@@ -105,7 +105,7 @@ The method replaces all found blocks `__ESCAPER_QUOT__number_` on real content i
 **Arguments**
 
 * `string` `str` — source string
-* `Array=` `opt_quotContent = Escaper.quotContent` — content stack
+* `Array=` `opt_quotContent = Escaper.quotContent` — stack of content
 
 `@return {string}`
 
