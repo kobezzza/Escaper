@@ -57,7 +57,7 @@ Escaper.paste(str, content);
 ## API
 ### Escaper.replace(str, opt_withComment, opt_quotContent)
 
-The method replaces all found blocks `' ... '`, `" ... "`, `` ` ... ` ``, `/ ... /`, `// ...`, `/* ... */` on
+The method replaces all found blocks `' ... '`, `" ... "`, `` ` ... ` ``, `/ ... /`, `// ...`, `/* ... */` to
 `__ESCAPER_QUOT__number_` in a specified string and returns result.
 
 **Arguments**
@@ -84,7 +84,7 @@ The method replaces all found blocks `' ... '`, `" ... "`, `` ` ... ` ``, `/ ...
 }
 ```
 
-If a value of parameter will be set to `-1`, then all found matches will be removed from a final string, or if the value will be set to
+If a value of parameter is set to `-1`, then all found matches will be removed from a final string, or if the value will be set to
 `true`/`false` they will be included/excluded.
 
 If parameter `opt_withCommentsOrParams` is boolean:
@@ -100,7 +100,7 @@ false // Replaces all kinds of string literals and regular expressions
 
 ### Escaper.paste(str, opt_quotContent)
 
-The method replaces all found blocks `__ESCAPER_QUOT__number_` on real content in a specified string and returns result.
+The method replaces all found blocks `__ESCAPER_QUOT__number_` to real content in a specified string and returns result.
 
 **Arguments**
 
