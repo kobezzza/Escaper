@@ -37,12 +37,12 @@ gulp.task('build', function (callback) {
 		.pipe(monic())
 		.pipe(to5({
 			blacklist: [
-				'specPropertyLiterals',
-				'specMemberExpressionLiterals'
+				'minification.propertyLiterals',
+				'minification.memberExpressionLiterals'
 			],
 
 			optional: [
-				'undefinedToVoid'
+				'spec.undefinedToVoid'
 			]
 		}))
 
