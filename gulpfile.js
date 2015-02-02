@@ -38,7 +38,8 @@ gulp.task('build', function (callback) {
 		.pipe(to5({
 			blacklist: [
 				'minification.propertyLiterals',
-				'minification.memberExpressionLiterals'
+				'minification.memberExpressionLiterals',
+				'useStrict'
 			],
 
 			optional: [
@@ -48,6 +49,10 @@ gulp.task('build', function (callback) {
 
 		.pipe(wrap(
 			'(function () {' +
+				'\n' +
+				'\'use strict\';' +
+				'\n' +
+				'var self = this;' +
 				'\n' +
 				'<%= contents %>' +
 				'\n' +
