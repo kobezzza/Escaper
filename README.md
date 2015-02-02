@@ -1,6 +1,6 @@
 # Escaper
 
-It is a library for replacing string literals, regular expressions and comments in syntax of JavaScript.
+Escaper is a small JavaScript library for replacing string literals, regular expressions and comments in syntax of JavaScript.
 
 [Russian documentation](https://github.com/kobezzza/Escaper/blob/master/README.ru.md)
 
