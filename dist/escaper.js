@@ -5,14 +5,14 @@
  * Released under the MIT license
  * https://github.com/kobezzza/Escaper/blob/master/LICENSE
  *
- * Date: Mon, 02 Feb 2015 11:33:12 GMT
+ * Date: Tue, 03 Feb 2015 08:05:48 GMT
  */
 
 (function () {
 'use strict';
 var self = this;
 var Escaper = {
-	VERSION: [2, 1, 13]
+	VERSION: [2, 1, 14]
 };
 
 if (typeof define === "function" && define.amd) {
@@ -166,7 +166,7 @@ Escaper.symbols = null;
 Escaper.snakeskinRgxp = null;
 
 /**
- * Replace all found blocks ' ... ', " ... ", ` ... `, / ... /, // ..., /* ... *\/ to
+ * Replaces all found blocks ' ... ', " ... ", ` ... `, / ... /, // ..., /* ... *\/ to
  * __ESCAPER_QUOT__number_ in a specified string
  *
  * @param {string} str - source string
@@ -413,7 +413,7 @@ Escaper.replace = function (str, opt_withCommentsOrParams, opt_quotContent, opt_
 var pasteRgxp = /__ESCAPER_QUOT__(\d+)_/g;
 
 /**
- * Replace all found blocks __ESCAPER_QUOT__number_ to real content in a specified string
+ * Replaces all found blocks __ESCAPER_QUOT__number_ to real content in a specified string
  *
  * @param {string} str - source string
  * @param {Array=} [opt_quotContent=Escaper.quotContent] - stack of content
