@@ -1,6 +1,6 @@
 # Escaper
 
-Escaper is a small JavaScript library for replacing string literals, regular expressions and comments in syntax of JavaScript.
+Escaper is a small JavaScript library for replacing string literals, regular expressions and comments in the syntax of JavaScript.
 
 [Russian documentation](https://github.com/kobezzza/Escaper/blob/master/README.ru.md)
 
@@ -58,11 +58,11 @@ Escaper.paste(str, content);
 ### Escaper.replace(str, opt_withComment, opt_quotContent)
 
 The method replaces all found blocks `' ... '`, `" ... "`, `` ` ... ` ``, `/ ... /`, `// ...`, `/* ... */` to
-`__ESCAPER_QUOT__number_` in a specified string and returns result.
+`__ESCAPER_QUOT__number_` in a string and returns a new string.
 
 **Arguments**
 
-* `string` `str` — a source string
+* `string` `str` — the source string
 * `(Object|boolean)=` `opt_withCommentsOrParams = false` — parameters:
 
 ```js
@@ -94,18 +94,18 @@ true  // Replaces all matches
 false // Replaces all kinds of string literals and regular expressions
 ```
 
-* `Array=` `opt_quotContent = Escaper.quotContent` — stack of content
+* `Array=` `opt_quotContent = Escaper.quotContent` — an array for matches
 
 `@return {string}`
 
 ### Escaper.paste(str, opt_quotContent)
 
-The method replaces all found blocks `__ESCAPER_QUOT__number_` to real content in a specified string and returns result.
+The method replaces all found blocks `__ESCAPER_QUOT__number_` to real content in a string and returns a new string.
 
 **Arguments**
 
-* `string` `str` — source string
-* `Array=` `opt_quotContent = Escaper.quotContent` — stack of content
+* `string` `str` — the source string
+* `Array=` `opt_quotContent = Escaper.quotContent` — an array of matches
 
 `@return {string}`
 
