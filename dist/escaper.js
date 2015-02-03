@@ -5,14 +5,14 @@
  * Released under the MIT license
  * https://github.com/kobezzza/Escaper/blob/master/LICENSE
  *
- * Date: Tue, 03 Feb 2015 09:53:16 GMT
+ * Date: Tue, 03 Feb 2015 10:44:52 GMT
  */
 
 (function () {
 'use strict';
 var self = this;
 var Escaper = {
-	VERSION: [2, 1, 15]
+	VERSION: [2, 1, 16]
 };
 
 if (typeof define === "function" && define.amd) {
@@ -172,10 +172,10 @@ Escaper.snakeskinRgxp = null;
  * @param {string} str - the source string
  * @param {(Object.<string, boolean>|boolean)=} [opt_withCommentsOrParams=false] - parameters:
  *
- *     (if a value of parameter is set to -1, then all found matches will be removed from the final string,
+ *     (if a value of a parameter is set to -1, then all found matches will be removed from the final string,
  *          or if the value will be set to true/false they will be included/excluded)
  *
- *     *) @all      - replaces all matches
+ *     *) @all      - replaces all found matches
  *     *) @comments - replaces all kinds of comments
  *     *) @strings  - replaces all kinds of string literals
  *     *) @literals - replaces all kinds of string literals and regular expressions
