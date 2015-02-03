@@ -84,7 +84,7 @@ The method replaces all found blocks `' ... '`, `" ... "`, `` ` ... ` ``, `/ ...
 }
 ```
 
-If a value of parameter is set to `-1`, then all found matches will be removed from a final string, or if the value will be set to
+If a value of parameter is set to `-1`, then all found matches will be removed from the final string, or if the value will be set to
 `true`/`false` they will be included/excluded.
 
 If parameter `opt_withCommentsOrParams` is boolean:
