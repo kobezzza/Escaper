@@ -56,11 +56,11 @@ Escaper.paste(str, content);
 ### Escaper.replace(str, opt_withComment, opt_quotContent)
 
 Заметить блоки вида `' ... '`, `" ... "`, `` ` ... ` ``, `/ ... /`, `// ...`, `/* ... */` на
-`__ESCAPER_QUOT__номер_` в указанной строке.
+`__ESCAPER_QUOT__номер_` в указанной строке и вернуть новую строку.
 
 **Аргументы**
 
-* `string` `str` — исходная строка
+* `string` `str` — исходная строка;
 * `(Object|boolean)=` `opt_withCommentsOrParams = false` — таблица вырезаемых последовательностей:
 
 Если установить значение параметру `-1`, то последовательность будет удаляться,
@@ -92,18 +92,18 @@ true  // Вырезаются литералы с комментариями
 false // Вырезаются одни литералы
 ```
 
-* `Array=` `opt_quotContent = Escaper.quotContent` — стек содержимого
+* `Array=` `opt_quotContent = Escaper.quotContent` — стек содержимого.
 
 `@return {string}`
 
 ### Escaper.paste(str, opt_quotContent)
 
-Заметить `__ESCAPER_QUOT__номер_` в указанной строке на реальное содержимое.
+Заметить `__ESCAPER_QUOT__номер_` в указанной строке на реальное содержимое и вернуть новую строку.
 
 **Аргументы**
 
-* `string` `str` — исходная строка
-* `Array=` `opt_quotContent = Escaper.quotContent` — стек содержимого
+* `string` `str` — исходная строка;
+* `Array=` `opt_quotContent = Escaper.quotContent` — стек содержимого.
 
 `@return {string}`
 
