@@ -84,13 +84,13 @@ The method replaces all found blocks `' ... '`, `" ... "`, `` ` ... ` ``, `/ ...
 }
 ```
 
-If a value of a parameter is set to `-1`, then all found matches will be removed from the final string, or if the value will be set to
+If a parameter value is set to `-1`, then all found matches will be removed from the final string, or if the value will be set to
 `true`/`false` they will be included/excluded.
 
 If parameter `opt_withCommentsOrParams` is boolean:
 
 ```js
-true  // Replaces all matches
+true  // Replaces all found matches
 false // Replaces all kinds of string literals and regular expressions
 ```
 

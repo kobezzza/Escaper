@@ -1,11 +1,11 @@
 /*!
- * Escaper v2.1.15
+ * Escaper v2.1.16
  * https://github.com/kobezzza/Escaper
  *
  * Released under the MIT license
  * https://github.com/kobezzza/Escaper/blob/master/LICENSE
  *
- * Date: Tue, 03 Feb 2015 10:44:52 GMT
+ * Date: Wed, 04 Feb 2015 08:05:57 GMT
  */
 
 (function () {
@@ -172,7 +172,7 @@ Escaper.snakeskinRgxp = null;
  * @param {string} str - the source string
  * @param {(Object.<string, boolean>|boolean)=} [opt_withCommentsOrParams=false] - parameters:
  *
- *     (if a value of a parameter is set to -1, then all found matches will be removed from the final string,
+ *     (if a parameter value is set to -1, then all found matches will be removed from the final string,
  *          or if the value will be set to true/false they will be included/excluded)
  *
  *     *) @all      - replaces all found matches
