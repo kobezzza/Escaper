@@ -43,7 +43,7 @@
     "gulp-run": "^1.6.6",
     "gulp-wrap": "^0.10.0",
     "jasmine-node": "^2.0.0",
-    "yaspeller": "^0.8.1"
+    "yaspeller": "^1.0.0"
   },
   "scripts": {
     "test": "jasmine-node test",

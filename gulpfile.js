@@ -18,7 +18,7 @@ function getVersion() {
 }
 
 gulp.task('yaspeller', function () {
-	run('node node_modules/yaspeller/bin/cli.js ./').exec();
+	run('node node_modules/yaspeller/bin/yaspeller ./').exec();
 });
 
 gulp.task('build', function (callback) {
