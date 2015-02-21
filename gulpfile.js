@@ -1,5 +1,5 @@
 var gulp = require('gulp');
-var to5 = require('gulp-6to5'),
+var to5 = require('gulp-babel'),
 	monic = require('gulp-monic'),
 	wrap = require('gulp-wrap'),
 	bump = require('gulp-bump'),
@@ -37,8 +37,8 @@ gulp.task('build', function (callback) {
 		.pipe(monic())
 		.pipe(to5({
 			blacklist: [
-				'minification.propertyLiterals',
-				'minification.memberExpressionLiterals',
+				'es3.propertyLiterals',
+				'es3.memberExpressionLiterals',
 				'useStrict'
 			],
 
