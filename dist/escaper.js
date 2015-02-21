@@ -1,18 +1,18 @@
 /*!
- * Escaper v2.1.16
+ * Escaper v2.1.18
  * https://github.com/kobezzza/Escaper
  *
  * Released under the MIT license
  * https://github.com/kobezzza/Escaper/blob/master/LICENSE
  *
- * Date: Tue, 10 Feb 2015 16:58:02 GMT
+ * Date: Sat, 21 Feb 2015 09:19:39 GMT
  */
 
 (function () {
 'use strict';
 var self = this;
 var Escaper = {
-	VERSION: [2, 1, 17]
+	VERSION: [2, 1, 18]
 };
 
 if (typeof define === "function" && define.amd) {
