@@ -39,7 +39,6 @@ gulp.task('build', function (callback) {
 		' */\n\n';
 
 	gulp.src('./lib/escaper.js')
-		.pipe(monic())
 		.pipe(to5({
 			blacklist: [
 				'es3.propertyLiterals',
