@@ -31,7 +31,8 @@
   ],
 
   "disallowKeywords": [
-    "with"
+    "with",
+    "var"
   ],
 
   "disallowKeywordsOnNewLine": [
