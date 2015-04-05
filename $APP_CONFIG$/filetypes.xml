@@ -1,0 +1,20 @@
+<application>
+  <component name="FileTypeManager" version="13">
+    <ignoreFiles list="*.hprof;*.pyc;*.pyo;*.rbc;*~;.DS_Store;.bundle;.git;.hg;.svn;CVS;RCS;SCCS;__pycache__;_svn;rcs;" />
+    <extensionMap>
+      <removed_mapping ext="es6" type="ECMAScript 6" />
+      <mapping ext="manifest" type="JSON" />
+      <mapping ext="yaspellerrc" type="JSON" />
+      <mapping ext="jsn" type="JavaScript" />
+      <mapping ext="es6" type="JavaScript" />
+      <mapping pattern=".gitattributes" type="PLAIN_TEXT" />
+      <mapping pattern=".editorconfig" type="PLAIN_TEXT" />
+      <mapping ext="config" type="PLAIN_TEXT" />
+      <mapping ext="stage" type="PLAIN_TEXT" />
+      <mapping ext="template" type="PLAIN_TEXT" />
+      <mapping ext="php" type="PLAIN_TEXT" />
+      <mapping ext="hack" type="PLAIN_TEXT" />
+      <mapping ext="ss" type="Snakeskin" />
+    </extensionMap>
+  </component>
+</application>

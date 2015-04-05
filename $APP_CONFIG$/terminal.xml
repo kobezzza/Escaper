@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<application>
+  <component name="TerminalOptionsProvider">
+    <option name="myShellPath" value="C:\Program Files (x86)\Git\bin\sh.exe --login -i" />
+  </component>
+</application>
+
