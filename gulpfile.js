@@ -1,7 +1,11 @@
-var gulp = require('gulp');
-var to5 = require('gulp-babel'),
+var
+	gulp = require('gulp'),
+	path = require('path'),
+	fs = require('fs');
+
+var
+	to5 = require('gulp-babel'),
 	monic = require('gulp-monic'),
-	wrap = require('gulp-wrap'),
 	bump = require('gulp-bump'),
 	gcc = require('gulp-closure-compiler'),
 	header = require('gulp-header'),
@@ -12,8 +16,10 @@ var to5 = require('gulp-babel'),
 	run = require('gulp-run');
 
 function getVersion() {
-	delete require.cache[require.resolve('./dist/escaper')];
-	return require('./dist/escaper').VERSION.join('.');
+	var file = fs.readFileSync(path.join(__dirname, 'lib/escaper.js'));
+	return /VERSION\s*(?::|=)\s*\[(\d+,\s*\d+,\s*\d+)]/.exec(file)[1]
+		.split(/\s*,\s*/)
+		.join('.');
 }
 
 gulp.task('yaspeller', function () {
@@ -37,28 +43,17 @@ gulp.task('build', function (callback) {
 		.pipe(to5({
 			blacklist: [
 				'es3.propertyLiterals',
-				'es3.memberExpressionLiterals',
-				'strict'
+				'es3.memberExpressionLiterals'
 			],
 
 			optional: [
 				'spec.undefinedToVoid'
 			],
 
-			modules: 'umd'
+			modules: 'umd',
+			moduleId: 'Escaper',
+			compact: false
 		}))
-
-		.pipe(wrap(
-			'(function () {' +
-				'\n' +
-				'\'use strict\';' +
-				'\n' +
-				'var self = this;' +
-				'\n' +
-				'<%= contents %>' +
-				'\n' +
-			'}).call(new Function(\'return this\')());'
-		))
 
 		.pipe(header(fullHead))
 		.pipe(gulp.dest('./dist/'))
