@@ -15,9 +15,9 @@
   },
 
   "safeContextKeyword"    : "that",
-  "disallowYodaConditions": true,
-  "validateQuoteMarks"    : "'" ,
-  "requireSemicolons"     : true,
+  "disallowYodaConditions": true  ,
+  "validateQuoteMarks"    : "'"   ,
+  "requireSemicolons"     : true  ,
 
   "requireCommaBeforeLineBreak": true,
   "disallowMultipleLineStrings": true,
