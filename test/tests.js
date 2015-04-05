@@ -1,146 +1,157 @@
 describe('Escaper', function () {
-	it('экранирование строк вида " ... "', function () {
-		var str = Escaper.replace('Привет "друг\\\""!');
+	it('should work with " ... "', function () {
+		var str = Escaper.replace('Hello "friend\\\""!');
 
 		expect(str)
-			.toBe('Привет __ESCAPER_QUOT__0_!');
+			.toBe('Hello __ESCAPER_QUOT__0_!');
 
 		expect(Escaper.paste(str))
-			.toBe('Привет "друг\\\""!');
+			.toBe('Hello "friend\\\""!');
 
-		var str2 = Escaper.replace('Привет "друг\\\""!');
+		var str2 = Escaper.replace('Hello "friend\\\""!');
 
 		expect(str2)
-			.toBe('Привет __ESCAPER_QUOT__0_!');
+			.toBe('Hello __ESCAPER_QUOT__0_!');
 
 		expect(Escaper.paste(str2))
-			.toBe('Привет "друг\\\""!');
+			.toBe('Hello "friend\\\""!');
 
 		var stack = [];
-		var str3 = Escaper.replace('Привет "друг\\\""!', false, stack);
+		var str3 = Escaper.replace('Hello "friend\\\""!', false, stack);
 
 		expect(str3)
-			.toBe('Привет __ESCAPER_QUOT__0_!');
+			.toBe('Hello __ESCAPER_QUOT__0_!');
 
 		expect(Escaper.paste(str3, stack))
-			.toBe('Привет "друг\\\""!');
+			.toBe('Hello "friend\\\""!');
 
 		stack = [];
-		var str4 = Escaper.replace('Привет "друг\\\""!', {'"': -1}, stack);
+		var str4 = Escaper.replace('Hello "friend\\\""!', {'"': -1}, stack);
 
 		expect(str4)
-			.toBe('Привет !');
+			.toBe('Hello !');
 
 		expect(Escaper.paste(str4, stack))
-			.toBe('Привет !');
+			.toBe('Hello !');
 	});
 
-	it("экранирование строк вида ' ... '", function () {
-		var str = Escaper.replace("Привет 'друг\\\''!");
+	it("should work with ' ... '", function () {
+		var str = Escaper.replace("Hello 'friend\\\''!");
 
 		expect(str)
-			.toBe('Привет __ESCAPER_QUOT__1_!');
+			.toBe('Hello __ESCAPER_QUOT__1_!');
 
 		expect(Escaper.paste(str))
-			.toBe("Привет 'друг\\\''!");
+			.toBe("Hello 'friend\\\''!");
 
 		var stack = [];
-		var str2 = Escaper.replace("Привет 'друг\\\''!", false, stack);
+		var str2 = Escaper.replace("Hello 'friend\\\''!", false, stack);
 
 		expect(str2)
-			.toBe('Привет __ESCAPER_QUOT__0_!');
+			.toBe('Hello __ESCAPER_QUOT__0_!');
 
 		expect(Escaper.paste(str2, stack))
-			.toBe("Привет 'друг\\\''!");
+			.toBe("Hello 'friend\\\''!");
 	});
 
-	it('экранирование строк вида ` ... `', function () {
+	it('should work with ` ... `', function () {
 		var stack = [];
-		var str = Escaper.replace('Привет `друг`!', false, stack);
+		var str = Escaper.replace('Hello `friend`!', false, stack);
 
 		expect(str)
-			.toBe('Привет __ESCAPER_QUOT__0_!');
+			.toBe('Hello __ESCAPER_QUOT__0_!');
 
 		expect(Escaper.paste(str, stack))
-			.toBe("Привет `друг`!");
+			.toBe("Hello `friend`!");
 
-		var str2 = Escaper.replace('Привет `друг${1 + {foo: {}} + `foo` + /1/}`!', false, stack);
+		var str2 = Escaper.replace('Hello `friend${1 + {foo: {}} + `foo` + /1/}`!', false, stack);
 
 		expect(str2)
-			.toBe('Привет __ESCAPER_QUOT__1_1 + {foo: {}} + __ESCAPER_QUOT__2_ + __ESCAPER_QUOT__3___ESCAPER_QUOT__4_!');
+			.toBe('Hello __ESCAPER_QUOT__1_1 + {foo: {}} + __ESCAPER_QUOT__2_ + __ESCAPER_QUOT__3___ESCAPER_QUOT__4_!');
 
 		expect(Escaper.paste(str2, stack))
-			.toBe("Привет `друг${1 + {foo: {}} + `foo` + /1/}`!");
+			.toBe("Hello `friend${1 + {foo: {}} + `foo` + /1/}`!");
 
-		var str3 = Escaper.replace('Привет `друг\\${foo}`!', false, stack);
+		var str3 = Escaper.replace('Hello `friend\\${foo}`!', false, stack);
 
 		expect(str3)
-			.toBe('Привет __ESCAPER_QUOT__5_!');
+			.toBe('Hello __ESCAPER_QUOT__5_!');
 
 		expect(Escaper.paste(str3, stack))
-			.toBe('Привет `друг\\${foo}`!');
+			.toBe('Hello `friend\\${foo}`!');
 
-		var str4 = Escaper.replace('Привет `друг${foo/* fooo */}`!', true, stack);
+		var str4 = Escaper.replace('Hello `friend${foo/* fooo */}`!', true, stack);
 
 		expect(str4)
-			.toBe('Привет __ESCAPER_QUOT__6_foo__ESCAPER_QUOT__7___ESCAPER_QUOT__8_!');
+			.toBe('Hello __ESCAPER_QUOT__6_foo__ESCAPER_QUOT__7___ESCAPER_QUOT__8_!');
 
 		expect(Escaper.paste(str4, stack))
-			.toBe('Привет `друг${foo/* fooo */}`!');
+			.toBe('Hello `friend${foo/* fooo */}`!');
 	});
 
-	it("экранирование регулярных выражений", function () {
+	it("should work with / ... /", function () {
 		var stack = [];
-		var str = Escaper.replace("Привет + /друг\\//gmi!", false, stack);
+		var str = Escaper.replace("Hello + /friend\\//gmi!", false, stack);
 
 		expect(str)
-			.toBe('Привет + __ESCAPER_QUOT__0_!');
+			.toBe('Hello + __ESCAPER_QUOT__0_!');
 
 		expect(Escaper.paste(str, stack))
-			.toBe('Привет + /друг\\//gmi!');
+			.toBe('Hello + /friend\\//gmi!');
 
-		var str2 = Escaper.replace("Привет, /друг\\/[//.]/gmi!", false, stack);
+		var str2 = Escaper.replace("Hello, /friend\\/[//.]/gmi!", false, stack);
 
 		expect(str2)
-			.toBe('Привет, __ESCAPER_QUOT__1_!');
+			.toBe('Hello, __ESCAPER_QUOT__1_!');
 
 		expect(Escaper.paste(str2, stack))
-			.toBe('Привет, /друг\\/[//.]/gmi!');
+			.toBe('Hello, /friend\\/[//.]/gmi!');
 
-		var str3 = Escaper.replace('/друг\\/[//.]/gmi!, /друг\\/[//.]/gmi', false, stack);
+		var str3 = Escaper.replace('/friend\\/[//.]/gmi!, /friend\\/[//.]/gmi', false, stack);
 
 		expect(str3)
 			.toBe('__ESCAPER_QUOT__2_!, __ESCAPER_QUOT__3_');
 
 		expect(Escaper.paste(str3, stack))
-			.toBe('/друг\\/[//.]/gmi!, /друг\\/[//.]/gmi');
+			.toBe('/friend\\/[//.]/gmi!, /friend\\/[//.]/gmi');
 	});
 
-	it("экранирование однострочного комментария", function () {
+	it("should work with / ... / (advanced test)", function () {
+		var stack = [];
+		var str = Escaper.replace('2 >> /foo/ < /bar/ ^ /car/ [/bar/] foo typeof /mu/ /mu/', true, stack);
+
+		expect(str)
+			.toBe('2 >> __ESCAPER_QUOT__0_ < __ESCAPER_QUOT__1_ ^ __ESCAPER_QUOT__2_ [__ESCAPER_QUOT__3_] foo typeof __ESCAPER_QUOT__4_ /mu/');
+
+		expect(Escaper.paste(str, stack))
+			.toBe('2 >> /foo/ < /bar/ ^ /car/ [/bar/] foo typeof /mu/ /mu/');
+	});
+
+	it("should work with single-line comments", function () {
 		var stack = [];
 		var str = Escaper.replace(
-			("Привет // это комментарий\
-\n			Друг!"), true, stack);
+			("Hello // the comment\
+\n			Friend!"), true, stack);
 
 		expect(str)
-			.toBe('Привет __ESCAPER_QUOT__0_\n\t\t\tДруг!');
+			.toBe('Hello __ESCAPER_QUOT__0_\n\t\t\tFriend!');
 
 		expect(Escaper.paste(str, stack))
-			.toBe('Привет // это комментарий\n\t\t\tДруг!');
+			.toBe('Hello // the comment\n\t\t\tFriend!');
 	});
 
-	it("экранирование многострочного комментария", function () {
+	it("should work with multiline comments", function () {
 		var stack = [];
-		var str = Escaper.replace('Привет /*/ это комментарий */ Друг!', true, stack);
+		var str = Escaper.replace('Hello /*/ the comment */ Friend!', true, stack);
 
 		expect(str)
-			.toBe('Привет __ESCAPER_QUOT__0_ Друг!');
+			.toBe('Hello __ESCAPER_QUOT__0_ Friend!');
 
 		expect(Escaper.paste(str, stack))
-			.toBe('Привет /*/ это комментарий */ Друг!');
+			.toBe('Hello /*/ the comment */ Friend!');
 	});
 
-	it("экранирование в фильтрах Snakeskin", function () {
+	it("should work with Snakeskin", function () {
 		var stack = [];
 		var str = Escaper.replace('foo|replace /hello/g|join "world"', true, stack, true);
 
@@ -151,69 +162,58 @@ describe('Escaper', function () {
 			.toBe('foo|replace /hello/g|join "world"');
 	});
 
-	it("настраиваемое экранирование", function () {
+	it("should work with custom parameters", function () {
 		var stack = [];
-		var str = Escaper.replace('"Привет" /* это комментарий */ + /Друг/gim /** foo */!', {'"': true, '/': true, '/*': true}, stack);
+		var str = Escaper.replace('"Hello" /* the comment */ + /Friend/gim /** foo */!', {'"': true, '/': true, '/*': true}, stack);
 
 		expect(str)
 			.toBe('__ESCAPER_QUOT__0_ __ESCAPER_QUOT__1_ + __ESCAPER_QUOT__2_ /** foo */!');
 
 		expect(Escaper.paste(str, stack))
-			.toBe('"Привет" /* это комментарий */ + /Друг/gim /** foo */!');
+			.toBe('"Hello" /* the comment */ + /Friend/gim /** foo */!');
 	});
 
-	it("настраиваемое экранирование с вложенными литералами", function () {
+	it("should work with deep literals", function () {
 		var stack = [];
-		var str = Escaper.replace('"Привет" /** "foo" */', {'"': true}, stack);
+		var str = Escaper.replace('"Hello" /** "foo" */', {'"': true}, stack);
 
 		expect(str)
 			.toBe('__ESCAPER_QUOT__0_ /** "foo" */');
 
 		expect(Escaper.paste(str, stack))
-			.toBe('"Привет" /** "foo" */');
+			.toBe('"Hello" /** "foo" */');
 	});
 
-	it("настраиваемое экранирование c флагом @all", function () {
+	it("should work with @all", function () {
 		var stack = [];
-		var str = Escaper.replace('"Привет" /* это комментарий */ + /Друг/gim /** foo */!', {'@all': true, '/*': -1}, stack);
+		var str = Escaper.replace('"Hello" /* the comment */ + /Friend/gim /** foo */!', {'@all': true, '/*': -1}, stack);
 
 		expect(str)
 			.toBe('__ESCAPER_QUOT__0_  + __ESCAPER_QUOT__1_ __ESCAPER_QUOT__2_!');
 
 		expect(Escaper.paste(str, stack))
-			.toBe('"Привет"  + /Друг/gim /** foo */!');
+			.toBe('"Hello"  + /Friend/gim /** foo */!');
 	});
 
-	it("настраиваемое экранирование c флагом @comments", function () {
+	it("should work with @comments", function () {
 		var stack = [];
-		var str = Escaper.replace('"Привет" /* это комментарий */ + /Друг/gim /** foo */!', {'@comments': -1}, stack);
+		var str = Escaper.replace('"Hello" /* the comment */ + /Friend/gim /** foo */!', {'@comments': -1}, stack);
 
 		expect(str)
-			.toBe('"Привет"  + /Друг/gim !');
+			.toBe('"Hello"  + /Friend/gim !');
 
 		expect(Escaper.paste(str, stack))
-			.toBe('"Привет"  + /Друг/gim !');
+			.toBe('"Hello"  + /Friend/gim !');
 	});
 
-	it("настраиваемое экранирование c флагом @comments, @literals и @all", function () {
+	it("should work with @comments, @literals and @all", function () {
 		var stack = [];
-		var str = Escaper.replace('"Привет" /* это комментарий */ + /Друг/gim /** foo */!', {'@all': -1, '@comments': false, '@literals': true}, stack);
+		var str = Escaper.replace('"Hello" /* the comment */ + /Friend/gim /** foo */!', {'@all': -1, '@comments': false, '@literals': true}, stack);
 
 		expect(str)
-			.toBe('__ESCAPER_QUOT__0_ /* это комментарий */ + __ESCAPER_QUOT__1_ /** foo */!');
+			.toBe('__ESCAPER_QUOT__0_ /* the comment */ + __ESCAPER_QUOT__1_ /** foo */!');
 
 		expect(Escaper.paste(str, stack))
-			.toBe('"Привет" /* это комментарий */ + /Друг/gim /** foo */!');
-	});
-
-	it("дополнительная проверка регулярных выражений", function () {
-		var stack = [];
-		var str = Escaper.replace('2 >> /foo/ < /bar/ ^ /car/ [/bar/] foo typeof /mu/ /mu/', true, stack);
-
-		expect(str)
-			.toBe('2 >> __ESCAPER_QUOT__0_ < __ESCAPER_QUOT__1_ ^ __ESCAPER_QUOT__2_ [__ESCAPER_QUOT__3_] foo typeof __ESCAPER_QUOT__4_ /mu/');
-
-		expect(Escaper.paste(str, stack))
-			.toBe('2 >> /foo/ < /bar/ ^ /car/ [/bar/] foo typeof /mu/ /mu/');
+			.toBe('"Hello" /* the comment */ + /Friend/gim /** foo */!');
 	});
 });
