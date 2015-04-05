@@ -27,13 +27,31 @@ gulp.task('yaspeller', function () {
 	run('node node_modules/yaspeller/bin/yaspeller ./').exec();
 });
 
+var map = {
+	jscs: 'https://raw.githubusercontent.com/kobezzza/project-settings/master/.jscsrc',
+	gitignore: 'https://raw.githubusercontent.com/kobezzza/project-settings/master/.gitignore',
+	gitattributes: 'https://raw.githubusercontent.com/kobezzza/project-settings/master/.gitattributes',
+	editorconfig: 'https://raw.githubusercontent.com/kobezzza/project-settings/master/.editorconfig'
+};
+
+for (var key in map) {
+	if (!map.hasOwnProperty(key)) {
+		continue;
+	}
+
+	(function (key, url) {
+		gulp.task('get-settings:' + key, ['build'], function () {
+			download([url]).pipe(gulp.dest('./'));
+		});
+	})(key, map[key]);
+}
+
 gulp.task('get-settings', ['build'], function () {
-	download([
-		'https://raw.githubusercontent.com/kobezzza/project-settings/master/.jscsrc',
-		'https://raw.githubusercontent.com/kobezzza/project-settings/master/.gitignore',
-		'https://raw.githubusercontent.com/kobezzza/project-settings/master/.gitattributes',
-		'https://raw.githubusercontent.com/kobezzza/project-settings/master/.editorconfig'
-	]).pipe(gulp.dest('./'));
+	download(
+		Object.keys(map).map(function (key) {
+			return map[key]
+		}
+	)).pipe(gulp.dest('./'));
 });
 
 gulp.task('build', function (cb) {
