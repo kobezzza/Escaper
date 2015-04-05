@@ -1,5 +1,12 @@
 {
-  "esnext": true,
+  "esnext"        : true   ,
+  "fileExtensions": [".js"],
+  "excludeFiles"  : [
+    "gulpfile.js",
+    "externs.js",
+    "dist/*",
+    "predefs/*"
+  ],
 
   "validateIndentation"       : "\t"   ,
   "disallowMixedSpacesAndTabs": "smart",
