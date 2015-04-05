@@ -1,6 +1,9 @@
 {
   "esnext": true,
   "fileExtensions": [".js"],
+  "excludeFiles": [
+    "gulpfile.js"
+  ],
 
   "requireCurlyBraces": [
     "if",
