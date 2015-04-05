@@ -5,6 +5,7 @@
     "gulpfile.js",
     "externs.js",
     "dist/*",
+    "test/*",
     "predefs/*"
   ],
 
