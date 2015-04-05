@@ -70,6 +70,8 @@ gulp.task('build', function (cb) {
 		.pipe(to5({
 			compact: false,
 			highlightCode: false,
+
+			auxiliaryComment: 'istanbul ignore next',
 			modules: 'umd',
 
 			blacklist: [
@@ -171,7 +173,7 @@ function test(cb) {
 		.pipe(istanbul())
 		.pipe(istanbul.hookRequire())
 		.on('finish', function () {
-			gulp.src('./test/index_spec.js')
+			gulp.src('./spec/index_spec.js')
 				.pipe(jasmine())
 				.pipe(istanbul.writeReports())
 				.on('end', cb);

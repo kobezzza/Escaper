@@ -42,11 +42,11 @@
     "gulp-rename": "^1.2.2",
     "gulp-replace": "^0.5.0",
     "gulp-run": "^1.6.6",
-    "jasmine-node": "^2.0.0",
+    "jasmine": "^2.2.1",
     "yaspeller": "^1.0.0"
   },
   "scripts": {
-    "test": "jasmine-node test",
+    "test": "node node_modules/jasmine/bin/jasmine",
     "test-travis": "gulp test",
     "install": "node node_modules/bower/bin/bower install"
   }
