@@ -2,7 +2,7 @@
   "lang": "en,ru",
 
   "ignoreUppercase": true,
-  "ignoreUrls": true,
+  "ignoreUrls"     : true,
 
   "fileExtensions": [
     "md",

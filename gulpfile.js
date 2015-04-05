@@ -27,7 +27,16 @@ gulp.task('yaspeller', function () {
 	run('node node_modules/yaspeller/bin/yaspeller ./').exec();
 });
 
-gulp.task('build', function (callback) {
+gulp.task('get-settings', ['build'], function () {
+	download([
+		'https://raw.githubusercontent.com/kobezzza/project-settings/master/.jscsrc',
+		'https://raw.githubusercontent.com/kobezzza/project-settings/master/.gitignore',
+		'https://raw.githubusercontent.com/kobezzza/project-settings/master/.gitattributes',
+		'https://raw.githubusercontent.com/kobezzza/project-settings/master/.editorconfig'
+	]).pipe(gulp.dest('./'));
+});
+
+gulp.task('build', function (cb) {
 	var fullHead =
 		'/*!\n' +
 		' * Escaper v' + getVersion() + '\n' +
@@ -43,6 +52,8 @@ gulp.task('build', function (callback) {
 		.pipe(to5({
 			compact: false,
 			highlightCode: false,
+			modules: 'umd',
+
 			blacklist: [
 				'es3.propertyLiterals',
 				'es3.memberExpressionLiterals'
@@ -50,9 +61,7 @@ gulp.task('build', function (callback) {
 
 			optional: [
 				'spec.undefinedToVoid'
-			],
-
-			modules: 'umd'
+			]
 		}))
 
 		.pipe(header(fullHead))
@@ -61,7 +70,7 @@ gulp.task('build', function (callback) {
 		}))
 
 		.pipe(gulp.dest('./dist/'))
-		.on('end', callback);
+		.on('end', cb);
 });
 
 gulp.task('bump', ['build'], function () {
@@ -70,7 +79,7 @@ gulp.task('bump', ['build'], function () {
 		.pipe(gulp.dest('./'));
 });
 
-gulp.task('predefs', ['build'], function (callback) {
+gulp.task('predefs', ['build'], function (cb) {
 	download([
 		'https://raw.githubusercontent.com/google/closure-compiler/master/contrib/externs/jasmine.js'
 	])
@@ -79,12 +88,12 @@ gulp.task('predefs', ['build'], function (callback) {
 			gulp.src('./predefs/src/index.js')
 				.pipe(monic())
 				.pipe(gulp.dest('./predefs/build'))
-				.on('end', callback);
+				.on('end', cb);
 		});
 });
 
 function compile(opt_dev) {
-	return function (callback) {
+	return function (cb) {
 		var params = {
 			compilerPath: './bower_components/closure-compiler/compiler.jar',
 			fileName: 'escaper.min.js',
@@ -132,14 +141,14 @@ function compile(opt_dev) {
 			.pipe(header('/*! Escaper v' + getVersion() + ' | https://github.com/kobezzza/Escaper/blob/master/LICENSE */\n'))
 			.pipe(replace(/\(function\(.*?\)\{/, '$&\'use strict\';'))
 			.pipe(gulp.dest('./dist'))
-			.on('end', callback);
+			.on('end', cb);
 	};
 }
 
 gulp.task('compile', ['predefs'], compile());
 gulp.task('compile-dev', ['predefs'], compile(true));
 
-function test(callback) {
+function test(cb) {
 	gulp.src('./dist/escaper.min.js')
 		.pipe(istanbul())
 		.pipe(istanbul.hookRequire())
@@ -147,7 +156,7 @@ function test(callback) {
 			gulp.src('./test/index_spec.js')
 				.pipe(jasmine())
 				.pipe(istanbul.writeReports())
-				.on('end', callback);
+				.on('end', cb);
 		});
 }
 

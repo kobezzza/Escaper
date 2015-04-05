@@ -1,4 +1,5 @@
-# Escaper
+Escaper
+=======
 
 Escaper is a small JavaScript library for replacing string literals, regular expressions and comments in JavaScript syntax.
 
