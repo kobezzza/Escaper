@@ -9,8 +9,7 @@ var to5 = require('gulp-babel'),
 	download = require('gulp-download'),
 	istanbul = require('gulp-istanbul'),
 	jasmine = require('gulp-jasmine'),
-	run = require('gulp-run'),
-	eol = require('gulp-eol');
+	run = require('gulp-run');
 
 function getVersion() {
 	delete require.cache[require.resolve('./dist/escaper')];
@@ -39,12 +38,14 @@ gulp.task('build', function (callback) {
 			blacklist: [
 				'es3.propertyLiterals',
 				'es3.memberExpressionLiterals',
-				'useStrict'
+				'strict'
 			],
 
 			optional: [
 				'spec.undefinedToVoid'
-			]
+			],
+
+			modules: 'umd'
 		}))
 
 		.pipe(wrap(
@@ -60,7 +61,6 @@ gulp.task('build', function (callback) {
 		))
 
 		.pipe(header(fullHead))
-		.pipe(eol())
 		.pipe(gulp.dest('./dist/'))
 		.on('end', callback);
 });
@@ -68,7 +68,6 @@ gulp.task('build', function (callback) {
 gulp.task('bump', ['build'], function () {
 	gulp.src('./*.json')
 		.pipe(bump({version: getVersion()}))
-		.pipe(eol())
 		.pipe(gulp.dest('./'));
 });
 
@@ -76,7 +75,6 @@ gulp.task('predefs', ['build'], function (callback) {
 	download([
 		'https://raw.githubusercontent.com/google/closure-compiler/master/contrib/externs/jasmine.js'
 	])
-		.pipe(eol())
 		.pipe(gulp.dest('./predefs/src/ws'))
 		.on('end', function () {
 			gulp.src('./predefs/src/index.js')
@@ -130,7 +128,6 @@ gulp.task('compile', ['predefs'], function (callback) {
 
 		.pipe(header('/*! Escaper v' + getVersion() + ' | https://github.com/kobezzza/Escaper/blob/master/LICENSE */\n'))
 		.pipe(replace(/\(function\(.*?\)\{/, '$&\'use strict\';'))
-		.pipe(eol())
 		.pipe(gulp.dest('./dist'))
 		.on('end', callback);
 });
