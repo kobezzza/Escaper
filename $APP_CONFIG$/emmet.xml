@@ -1,0 +1,10 @@
+<application>
+  <component name="EmmetOptions">
+    <option name="filtersEnabledByDefault">
+      <set>
+        <option value="bem" />
+      </set>
+    </option>
+    <option name="previewEnabled" value="true" />
+  </component>
+</application>

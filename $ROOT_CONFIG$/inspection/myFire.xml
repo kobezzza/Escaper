@@ -1,0 +1,38 @@
+<inspections profile_name="myFire" version="1.0">
+  <option name="myName" value="myFire" />
+  <option name="myLocal" value="true" />
+  <inspection_tool class="CssInvalidAtRule" enabled="false" level="ERROR" enabled_by_default="false" />
+  <inspection_tool class="CssInvalidPseudoSelector" enabled="false" level="ERROR" enabled_by_default="false" />
+  <inspection_tool class="CssMissingSemicolon" enabled="true" level="WARNING" enabled_by_default="true" />
+  <inspection_tool class="CssUnknownProperty" enabled="false" level="WARNING" enabled_by_default="false">
+    <option name="myCustomPropertiesEnabled" value="false" />
+    <option name="myIgnoreVendorSpecificProperties" value="false" />
+    <option name="myCustomPropertiesList">
+      <value>
+        <list size="0" />
+      </value>
+    </option>
+  </inspection_tool>
+  <inspection_tool class="DefaultNotLastCaseInSwitchJS" enabled="true" level="WARNING" enabled_by_default="true" />
+  <inspection_tool class="DuplicateConditionJS" enabled="true" level="WARNING" enabled_by_default="true" />
+  <inspection_tool class="EmptyTryBlockJS" enabled="true" level="WARNING" enabled_by_default="true" />
+  <inspection_tool class="ForLoopReplaceableByWhileJS" enabled="true" level="WARNING" enabled_by_default="true">
+    <option name="m_ignoreLoopsWithoutConditions" value="false" />
+  </inspection_tool>
+  <inspection_tool class="IfStatementWithIdenticalBranchesJS" enabled="true" level="WARNING" enabled_by_default="true" />
+  <inspection_tool class="IfStatementWithTooManyBranchesJS" enabled="true" level="WARNING" enabled_by_default="true">
+    <option name="m_limit" value="3" />
+  </inspection_tool>
+  <inspection_tool class="JSPotentiallyInvalidConstructorUsage" enabled="false" level="WARNING" enabled_by_default="false">
+    <option name="myConsiderUppercaseFunctionsToBeConstructors" value="true" />
+  </inspection_tool>
+  <inspection_tool class="JSPotentiallyInvalidUsageOfThis" enabled="false" level="WARNING" enabled_by_default="false" />
+  <inspection_tool class="SpellCheckingInspection" enabled="false" level="TYPO" enabled_by_default="false">
+    <option name="processCode" value="true" />
+    <option name="processLiterals" value="true" />
+    <option name="processComments" value="true" />
+  </inspection_tool>
+  <inspection_tool class="UnusedCatchParameterJS" enabled="true" level="WARNING" enabled_by_default="true">
+    <option name="m_ignoreCatchBlocksWithComments" value="false" />
+  </inspection_tool>
+</inspections>
