@@ -3,6 +3,7 @@
   "fileExtensions": [".js"],
   "excludeFiles": [
     "gulpfile.js",
+    "externs.js",
     "dist/*"
   ],
 
