@@ -5,16 +5,14 @@
   "ignoreUrls": true,
 
   "fileExtensions": [
-    "md",
-    "js"
+    ".md",
+    ".js"
   ],
 
   "excludeFiles": [
     ".git",
     "node_modules",
     "bower_components",
-    "test",
-    "demo",
     "coverage",
     "dist",
     "predefs"

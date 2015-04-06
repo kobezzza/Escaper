@@ -9,12 +9,9 @@ var
 	bump = require('gulp-bump'),
 	gcc = require('gulp-closure-compiler'),
 	header = require('gulp-header'),
-	replace = require('gulp-replace'),
 	download = require('gulp-download'),
 	istanbul = require('gulp-istanbul'),
-	jasmine = require('gulp-jasmine'),
-	rename = require("gulp-rename"),
-	run = require('gulp-run');
+	jasmine = require('gulp-jasmine');
 
 function getVersion() {
 	var file = fs.readFileSync(path.join(__dirname, 'lib/escaper.js'));
@@ -22,10 +19,6 @@ function getVersion() {
 		.split(/\s*,\s*/)
 		.join('.');
 }
-
-gulp.task('yaspeller', function () {
-	run('node node_modules/yaspeller/bin/yaspeller ./').exec();
-});
 
 var map = {
 	jscs: 'https://raw.githubusercontent.com/kobezzza/project-settings/master/.jscsrc',
@@ -87,10 +80,6 @@ gulp.task('build', function (cb) {
 		}))
 
 		.pipe(header(fullHead))
-		.pipe(rename({
-			basename: 'escaper'
-		}))
-
 		.pipe(gulp.dest('./dist/'))
 		.on('end', cb);
 });
@@ -187,6 +176,7 @@ gulp.task('test', test);
 gulp.task('watch', function () {
 	gulp.watch('./lib/*.js', ['build']);
 	gulp.watch('./lib/escaper.js', ['bump']);
+	gulp.watch('./*.md', ['typograf']);
 });
 
 gulp.task('default', ['test-dev', 'bump']);
