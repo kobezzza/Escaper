@@ -66,14 +66,16 @@ gulp.task('build', function (cb) {
 		' * Date: ' + new Date().toUTCString() + '\n' +
 		' */\n\n';
 
-	gulp.src('./lib/Escaper.js')
+	gulp.src('./lib/escaper.js')
 		.pipe(to5({
 			compact: false,
 			highlightCode: false,
-
 			auxiliaryComment: 'istanbul ignore next',
-			modules: 'umd',
 
+			modules: 'umd',
+			moduleId: 'Escaper',
+
+			loose: 'all',
 			blacklist: [
 				'es3.propertyLiterals',
 				'es3.memberExpressionLiterals'
@@ -159,7 +161,6 @@ function compile(opt_dev) {
 		gulp.src(['./dist/escaper.js'])
 			.pipe(gcc(params))
 			.pipe(header('/*! Escaper v' + getVersion() + ' | https://github.com/kobezzza/Escaper/blob/master/LICENSE */\n'))
-			.pipe(replace(/\(function\(.*?\)\{/, '$&\'use strict\';'))
 			.pipe(gulp.dest('./dist'))
 			.on('end', cb);
 	};
