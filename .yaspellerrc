@@ -5,8 +5,7 @@
   "ignoreUrls": true,
 
   "fileExtensions": [
-    ".md",
-    ".js"
+    ".md"
   ],
 
   "excludeFiles": [
@@ -16,5 +15,13 @@
     "coverage",
     "dist",
     "predefs"
+  ],
+
+  "dictionary": [
+    "maintainers",
+    "Escaper",
+    "quotContent",
+    "str",
+    "withComment"
   ]
 }
