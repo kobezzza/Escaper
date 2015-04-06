@@ -5,8 +5,10 @@
     "gulpfile.js",
     "externs.js",
     "dist/*",
-    "spec/*",
-    "predefs/*"
+    "spec/**/*",
+    "predefs/**/*",
+    "node_modules/**/*",
+    "bower_components/**/*"
   ],
 
   "validateIndentation": "\t",
