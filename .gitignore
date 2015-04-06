@@ -41,7 +41,6 @@ bower_components
 node_modules
 
 # Build && test
-dist
 build
 deploy
 coverage
