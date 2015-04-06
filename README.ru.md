@@ -44,7 +44,7 @@ git clone https://github.com/kobezzza/Escaper
 
 ```js
 var str = '"foo" 1 + /foo/ + 2 /* 1 */ 3',
-	content = [];
+    content = [];
 
 // __ESCAPER_QUOT__0_ 1 + __ESCAPER_QUOT__1_ + 2 __ESCAPER_QUOT__2_ 3
 str = Escaper.replace(str, true, content);
@@ -69,20 +69,20 @@ Escaper.paste(str, content);
 
 ```js
 {
-	'@all'     : true, // Вырезаются все последовательности
-	'@comments': true, // Вырезаются все виды комментариев
-	'@strings' : true, // Вырезаются все виды литералов строк
-	'@literals': true, // Вырезаются все виды литералов строк
-	                   // и регулярных выражений
+  '@all'     : true, // Вырезаются все последовательности
+  '@comments': true, // Вырезаются все виды комментариев
+  '@strings' : true, // Вырезаются все виды литералов строк
+  '@literals': true, // Вырезаются все виды литералов строк
+                     // и регулярных выражений
 
-	"'"        : true,
-	'"'        : true,
-	'`'        : true,
-	'/'        : true,
-	'//'       : true,
-	'/*'       : true,
-	'/**'      : true,
-	'/*!'      : true
+  "'"        : true,
+  '"'        : true,
+  '`'        : true,
+  '/'        : true,
+  '//'       : true,
+  '/*'       : true,
+  '/**'      : true,
+  '/*!'      : true
 }
 ```
 

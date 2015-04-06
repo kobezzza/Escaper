@@ -46,7 +46,7 @@ git clone https://github.com/kobezzza/Escaper
 
 ```js
 var str = '"foo" 1 + /foo/ + 2 /* 1 */ 3',
-	content = [];
+    content = [];
 
 // __ESCAPER_QUOT__0_ 1 + __ESCAPER_QUOT__1_ + 2 __ESCAPER_QUOT__2_ 3
 str = Escaper.replace(str, true, content);
@@ -68,20 +68,20 @@ The method replaces all found blocks `' ... '`, `" ... "`, `` ` ... ` ``, `/ ...
 
 ```js
 {
-	'@all'     : true, // Replaces all found matches
-	'@comments': true, // Replaces all kinds of comments
-	'@strings' : true, // Replaces all kinds of string literals
-	'@literals': true, // Replaces all kinds of string literals
-	                   // and regular expressions
+  '@all'     : true, // Replaces all found matches
+  '@comments': true, // Replaces all kinds of comments
+  '@strings' : true, // Replaces all kinds of string literals
+  '@literals': true, // Replaces all kinds of string literals
+                     // and regular expressions
 
-	"'"        : true,
-	'"'        : true,
-	'`'        : true,
-	'/'        : true,
-	'//'       : true,
-	'/*'       : true,
-	'/**'      : true,
-	'/*!'      : true
+  "'"        : true,
+  '"'        : true,
+  '`'        : true,
+  '/'        : true,
+  '//'       : true,
+  '/*'       : true,
+  '/**'      : true,
+  '/*!'      : true
 }
 ```
 
