@@ -1,11 +1,11 @@
 /*!
- * Escaper v2.2.0
+ * Escaper v2.2.2
  * https://github.com/kobezzza/Escaper
  *
  * Released under the MIT license
  * https://github.com/kobezzza/Escaper/blob/master/LICENSE
  *
- * Date: Mon, 06 Apr 2015 15:14:51 GMT
+ * Date: Mon, 06 Apr 2015 17:10:30 GMT
  */
 
 (function (global, factory) {
@@ -23,7 +23,7 @@
 })(this, function (exports, module) {
 	'use strict';
 
-	var Escaper = { VERSION: [2, 2, 0] };
+	var Escaper = { VERSION: [2, 2, 2] };
 	module.exports = Escaper;
 
 	var stringLiterals = {

@@ -2,7 +2,7 @@
   "name": "escaper",
   "description": "Small JavaScript library for replacing string literals, regular expressions and comments in JavaScript syntax.",
   "homepage": "https://github.com/kobezzza/Escaper",
-  "version": "2.2.1",
+  "version": "2.2.2",
   "author": {
     "name": "kobezzza",
     "email": "kobezzza@mail.ru",
@@ -45,7 +45,7 @@
   "scripts": {
     "test": "node node_modules/jasmine/bin/jasmine",
     "test-travis": "gulp test",
-    "install": "node node_modules/bower/bin/bower install || exit 0",
+    "bower": "node node_modules/bower/bin/bower install",
     "yaspeller": "node node_modules/yaspeller/bin/yaspeller ./"
   }
 }
