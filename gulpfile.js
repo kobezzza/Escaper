@@ -90,7 +90,7 @@ gulp.task('bump', ['build'], function () {
 		.pipe(gulp.dest('./'));
 });
 
-gulp.task('predefs', ['build'], function (cb) {
+gulp.task('predefs', function (cb) {
 	download([
 		'https://raw.githubusercontent.com/google/closure-compiler/master/contrib/externs/jasmine.js'
 	])
@@ -155,8 +155,8 @@ function compile(opt_dev) {
 	};
 }
 
-gulp.task('compile', ['predefs'], compile());
-gulp.task('compile-dev', ['predefs'], compile(true));
+gulp.task('compile', ['build'], compile());
+gulp.task('compile-dev', ['build'], compile(true));
 
 function test(cb) {
 	gulp.src('./dist/escaper.min.js')
