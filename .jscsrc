@@ -24,7 +24,6 @@
     "allowUrlComments": true
   },
 
-  "safeContextKeyword": "that",
   "disallowYodaConditions": true,
   "validateQuoteMarks": "'",
   "requireSemicolons": true,
