@@ -4,7 +4,7 @@ var
 	fs = require('fs');
 
 var
-	to5 = require('gulp-babel'),
+	babel = require('gulp-babel'),
 	monic = require('gulp-monic'),
 	bump = require('gulp-bump'),
 	gcc = require('gulp-closure-compiler'),
@@ -60,7 +60,7 @@ gulp.task('build', function (cb) {
 		' */\n\n';
 
 	gulp.src('./lib/escaper.js')
-		.pipe(to5({
+		.pipe(babel({
 			compact: false,
 			highlightCode: false,
 			auxiliaryComment: 'istanbul ignore next',
@@ -176,7 +176,6 @@ gulp.task('test', test);
 gulp.task('watch', function () {
 	gulp.watch('./lib/*.js', ['build']);
 	gulp.watch('./lib/escaper.js', ['bump']);
-	gulp.watch('./*.md', ['typograf']);
 });
 
 gulp.task('default', ['test-dev', 'bump']);
