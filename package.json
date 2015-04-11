@@ -27,6 +27,7 @@
     "string"
   ],
   "devDependencies": {
+    "bower": "^1.4.1",
     "closurecompiler-externs": "^1.0.4",
     "coveralls": "^2.11.2",
     "del": "^1.1.1",
@@ -44,12 +45,9 @@
     "yaspeller": "^1.0.0"
   },
   "scripts": {
-    "test": "jasmine",
-    "test-travis": "gulp test",
-    "install": "bower install",
+    "test": "bower install && jasmine",
+    "test-coverage": "bower install && gulp test",
+    "full-test": "npm run test-coverage && npm run yaspeller",
     "yaspeller": "yaspeller ./"
-  },
-  "dependencies": {
-    "bower": "^1.4.1"
   }
 }
