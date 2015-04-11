@@ -11,7 +11,8 @@ var
 	header = require('gulp-header'),
 	download = require('gulp-download'),
 	istanbul = require('gulp-istanbul'),
-	jasmine = require('gulp-jasmine');
+	jasmine = require('gulp-jasmine'),
+	del = require('del');
 
 function getVersion() {
 	var file = fs.readFileSync(path.join(__dirname, 'lib/escaper.js'));
@@ -151,7 +152,10 @@ function compile(opt_dev) {
 			.pipe(gcc(params))
 			.pipe(header('/*! Escaper v' + getVersion() + ' | https://github.com/kobezzza/Escaper/blob/master/LICENSE */\n'))
 			.pipe(gulp.dest('./dist'))
-			.on('end', cb);
+			.on('end', function () {
+				// https://github.com/steida/gulp-closure-compiler/issues/24
+				del(['./escaper.min.js'], cb);
+			});
 	};
 }
 
