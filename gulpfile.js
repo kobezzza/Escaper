@@ -159,8 +159,8 @@ function compile(opt_dev) {
 	};
 }
 
-gulp.task('compile', ['build'], compile());
-gulp.task('compile-dev', ['build'], compile(true));
+gulp.task('compile', ['predefs', 'build'], compile());
+gulp.task('compile-dev', ['predefs', 'build'], compile(true));
 
 function test(cb) {
 	gulp.src('./dist/escaper.min.js')
