@@ -126,7 +126,7 @@ function compile(opt_dev) {
 		};
 
 		if (opt_dev) {
-			params.jscomp_warning = [
+			params.compilerFlags.jscomp_warning = [
 				'invalidCasts',
 				'accessControls',
 				'checkDebuggerStatement',
@@ -146,6 +146,9 @@ function compile(opt_dev) {
 				'misplacedTypeAnnotation',
 				'typeInvalidation'
 			];
+
+		} else {
+			params.compilerFlags.warning_level = 'QUIET';
 		}
 
 		gulp.src(['./dist/escaper.js'])
