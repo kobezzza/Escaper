@@ -104,14 +104,15 @@ gulp.task('predefs', function (cb) {
 		});
 });
 
-function compile(opt_dev) {
-	return function (cb) {
-		var params = {
-			compilerPath: './bower_components/closure-compiler/compiler.jar',
+gulp.task('compile', ['predefs', 'build'], function (cb) {
+	gulp.src(['./dist/escaper.js'])
+		.pipe(gcc({
 			fileName: 'escaper.min.js',
+			compilerPath: './bower_components/closure-compiler/compiler.jar',
+			continueWithWarnings: true,
 
 			compilerFlags: {
-				compilation_level: 'ADVANCED_OPTIMIZATIONS',
+				compilation_level: 'ADVANCED',
 				use_types_for_optimization: null,
 
 				language_in: 'ES5',
@@ -121,49 +122,38 @@ function compile(opt_dev) {
 
 				jscomp_off: [
 					'nonStandardJsDocs'
+				],
+
+				jscomp_warning: [
+					'invalidCasts',
+					'accessControls',
+					'checkDebuggerStatement',
+					'checkRegExp',
+					'checkTypes',
+					'const',
+					'constantProperty',
+					'deprecated',
+					'externsValidation',
+					'missingProperties',
+					'visibility',
+					'missingReturn',
+					'duplicate',
+					'internetExplorerChecks',
+					'suspiciousCode',
+					'uselessCode',
+					'misplacedTypeAnnotation',
+					'typeInvalidation'
 				]
 			}
-		};
+		}))
 
-		if (opt_dev) {
-			params.compilerFlags.jscomp_warning = [
-				'invalidCasts',
-				'accessControls',
-				'checkDebuggerStatement',
-				'checkRegExp',
-				'checkTypes',
-				'const',
-				'constantProperty',
-				'deprecated',
-				'externsValidation',
-				'missingProperties',
-				'visibility',
-				'missingReturn',
-				'duplicate',
-				'internetExplorerChecks',
-				'suspiciousCode',
-				'uselessCode',
-				'misplacedTypeAnnotation',
-				'typeInvalidation'
-			];
-
-		} else {
-			params.compilerFlags.warning_level = 'QUIET';
-		}
-
-		gulp.src(['./dist/escaper.js'])
-			.pipe(gcc(params))
-			.pipe(header('/*! Escaper v' + getVersion() + ' | https://github.com/kobezzza/Escaper/blob/master/LICENSE */\n'))
-			.pipe(gulp.dest('./dist'))
-			.on('end', function () {
-				// https://github.com/steida/gulp-closure-compiler/issues/24
-				del(['./escaper.min.js'], cb);
-			});
-	};
-}
-
-gulp.task('compile', ['predefs', 'build'], compile());
-gulp.task('compile-dev', ['predefs', 'build'], compile(true));
+		.pipe(header('/*! Escaper v' + getVersion() + ' | https://github.com/kobezzza/Escaper/blob/master/LICENSE */\n'))
+		.pipe(gulp.dest('./dist'))
+		.on('end', function () {
+			// https://github.com/steida/gulp-closure-compiler/issues/24
+			del(['./escaper.min.js'], cb);
+		});
+});
 
 function test(cb) {
 	gulp.src('./dist/escaper.min.js')

@@ -3,10 +3,8 @@
 //#include ../../node_modules/closurecompiler-externs/stream.js
 //#include ../../node_modules/closurecompiler-externs/process.js
 //#include ../../node_modules/closurecompiler-externs/core.js
-
-//#include ./standart/*.js
 //#include ../../externs.js
 
 /** @abstract */
-function define(dependencies, fn) {}
+function define(moduleName, dependencies, fn) {}
 define.amd = null;
