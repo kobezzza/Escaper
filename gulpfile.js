@@ -105,7 +105,7 @@ gulp.task('predefs', function (cb) {
 });
 
 gulp.task('compile', ['predefs', 'build'], function (cb) {
-	gulp.src(['./dist/escaper.js'])
+	gulp.src('./dist/escaper.js')
 		.pipe(gcc({
 			fileName: 'escaper.min.js',
 			compilerPath: './bower_components/closure-compiler/compiler.jar',
