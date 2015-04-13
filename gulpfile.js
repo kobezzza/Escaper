@@ -115,7 +115,9 @@ gulp.task('compile', ['predefs', 'build'], function (cb) {
 				compilation_level: 'ADVANCED',
 				use_types_for_optimization: null,
 
-				language_in: 'ES5',
+				language_in: 'ES6',
+				language_out: 'ES5',
+
 				externs: [
 					'./predefs/build/index.js'
 				],
@@ -149,10 +151,7 @@ gulp.task('compile', ['predefs', 'build'], function (cb) {
 
 		.pipe(header('/*! Escaper v' + getVersion() + ' | https://github.com/kobezzza/Escaper/blob/master/LICENSE */\n'))
 		.pipe(gulp.dest('./dist'))
-		.on('end', function () {
-			// https://github.com/steida/gulp-closure-compiler/issues/24
-			del(['./escaper.min.js'], cb);
-		});
+		.on('end', cb);
 });
 
 function test(cb) {
