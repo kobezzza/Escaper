@@ -11,8 +11,7 @@ var
 	header = require('gulp-header'),
 	download = require('gulp-download'),
 	istanbul = require('gulp-istanbul'),
-	jasmine = require('gulp-jasmine'),
-	del = require('del');
+	jasmine = require('gulp-jasmine');
 
 function getVersion() {
 	var file = fs.readFileSync(path.join(__dirname, 'lib/escaper.js'));
