@@ -2,7 +2,7 @@
   "name": "Escaper",
   "description": "Small JavaScript library for replacing string literals, regular expressions and comments in JavaScript syntax.",
   "main": "dist/escaper.min.js",
-  "version": "2.2.13",
+  "version": "2.2.14",
   "homepage": "https://github.com/kobezzza/Escaper",
   "keywords": [
     "javascript",

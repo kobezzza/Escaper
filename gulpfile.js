@@ -80,7 +80,7 @@ gulp.task('build', function (cb) {
 		}))
 
 		.pipe(header(fullHead))
-		.pipe(gulp.dest('./dist/'))
+		.pipe(gulp.dest('./dist'))
 		.on('end', cb);
 });
 
