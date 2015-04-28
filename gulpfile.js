@@ -62,7 +62,6 @@ gulp.task('build', function (cb) {
 	gulp.src('./lib/escaper.js')
 		.pipe(babel({
 			compact: false,
-			highlightCode: false,
 			auxiliaryComment: 'istanbul ignore next',
 
 			modules: 'umd',
