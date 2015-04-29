@@ -36,14 +36,15 @@ function getHead(opt_version) {
 var
 	headRgxp = /\/\*![\s\S]*?\*\/\n{2}/;
 
-gulp.task('copyright', function () {
+gulp.task('copyright', function (cb) {
 	gulp.src('./LICENSE')
 		.pipe(replace(/(Copyright \(c\) )(\d+)-?(\d*)/, function (sstr, intro, from, to) {
 			var year = new Date().getFullYear();
 			return intro + from + (to || from != year ? '-' + year : '');
 		}))
 
-		.pipe(gulp.dest('./'));
+		.pipe(gulp.dest('./'))
+		.on('end', cb);
 });
 
 gulp.task('head', function (cb) {
@@ -110,10 +111,11 @@ gulp.task('build', function (cb) {
 		.on('end', cb);
 });
 
-gulp.task('bump', ['build'], function () {
+gulp.task('bump', ['build'], function (cb) {
 	gulp.src('./*.json')
 		.pipe(bump({version: getVersion()}))
-		.pipe(gulp.dest('./'));
+		.pipe(gulp.dest('./'))
+		.on('end', cb);
 });
 
 gulp.task('predefs', function (cb) {
