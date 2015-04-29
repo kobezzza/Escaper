@@ -106,6 +106,11 @@ gulp.task('build', function (cb) {
 			]
 		}))
 
+		.on('error', function (err) {
+			console.error(err.message);
+			cb();
+		})
+
 		.pipe(header(fullHead))
 		.pipe(gulp.dest('./dist'))
 		.on('end', cb);
@@ -176,6 +181,11 @@ function compile(cb) {
 				]
 			}
 		}))
+
+		.on('error', function (err) {
+			console.error(err.message);
+			cb();
+		})
 
 		.pipe(header('/*! Escaper v' + getVersion() + ' | https://github.com/kobezzza/Escaper/blob/master/LICENSE */\n'))
 		.pipe(gulp.dest('./dist'))
