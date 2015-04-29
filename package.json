@@ -34,7 +34,7 @@
     "gulp": "^3.8.9",
     "gulp-babel": "^5.0.0",
     "gulp-bump": "^0.3.0",
-    "gulp-changed": "^1.2.1",
+    "gulp-cached": "^1.0.4",
     "gulp-closure-compiler": "^0.2.10",
     "gulp-download": "0.0.1",
     "gulp-header": "^1.2.2",

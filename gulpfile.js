@@ -11,7 +11,7 @@ var
 	gcc = require('gulp-closure-compiler'),
 	header = require('gulp-header'),
 	replace = require('gulp-replace'),
-	changed = require('gulp-changed'),
+	cached = require('gulp-cached'),
 	download = require('gulp-download'),
 	istanbul = require('gulp-istanbul'),
 	jasmine = require('gulp-jasmine');
@@ -53,22 +53,18 @@ gulp.task('head', function (cb) {
 
 	async.parallel([
 		function (cb) {
-			var dest = './lib';
-			gulp.src('./lib/*.js')
-				.pipe(changed(dest))
+			gulp.src('./*(lib|spec)/*.js')
 				.pipe(replace(headRgxp, ''))
 				.pipe(header(fullHead))
-				.pipe(gulp.dest(dest))
+				.pipe(gulp.dest('./'))
 				.on('end', cb);
 		},
 
 		function (cb) {
-			var dest = './';
 			gulp.src('./externs.js')
-				.pipe(changed(dest))
 				.pipe(replace(headRgxp, ''))
 				.pipe(header(fullHead))
-				.pipe(gulp.dest(dest))
+				.pipe(gulp.dest('./'))
 				.on('end', cb);
 		},
 
@@ -83,7 +79,6 @@ gulp.task('head', function (cb) {
 });
 
 gulp.task('build', function (cb) {
-	var dest = './dist';
 	var fullHead =
 		getHead(true) +
 		' *\n' +
@@ -91,7 +86,7 @@ gulp.task('build', function (cb) {
 		' */\n\n';
 
 	gulp.src('./lib/escaper.js')
-		.pipe(changed(dest))
+		.pipe(cached('build'))
 		.pipe(babel({
 			compact: false,
 			auxiliaryComment: 'istanbul ignore next',
@@ -111,7 +106,7 @@ gulp.task('build', function (cb) {
 		}))
 
 		.pipe(header(fullHead))
-		.pipe(gulp.dest(dest))
+		.pipe(gulp.dest('./dist'))
 		.on('end', cb);
 });
 
@@ -134,8 +129,9 @@ gulp.task('predefs', function (cb) {
 		});
 });
 
-gulp.task('compile', ['predefs', 'build'], function (cb) {
+function compile(cb) {
 	gulp.src('./dist/escaper.js')
+		.pipe(cached('compile'))
 		.pipe(gcc({
 			fileName: 'escaper.min.js',
 			compilerPath: './bower_components/closure-compiler/compiler.jar',
@@ -182,7 +178,11 @@ gulp.task('compile', ['predefs', 'build'], function (cb) {
 		.pipe(header('/*! Escaper v' + getVersion() + ' | https://github.com/kobezzza/Escaper/blob/master/LICENSE */\n'))
 		.pipe(gulp.dest('./dist'))
 		.on('end', cb);
-});
+}
+
+gulp.task('compile', ['predefs', 'build'], compile);
+gulp.task('compile-fast', compile);
+gulp.task('full-build', ['compile'], test);
 
 function test(cb) {
 	gulp.src('./dist/escaper.min.js')
@@ -196,12 +196,12 @@ function test(cb) {
 		});
 }
 
-gulp.task('test-dev', ['compile'], test);
+gulp.task('test-dev', ['compile-fast'], test);
 gulp.task('test', test);
 
 gulp.task('watch', function () {
-	gulp.watch('./lib/*.js', ['build']);
-	gulp.watch('./lib/escaper.js', ['head', 'bump']);
+	gulp.watch('./lib/escaper.js', ['build', 'bump']);
+	gulp.watch('./dist/*!(.min).js', ['test-dev']);
 });
 
-gulp.task('default', ['copyright', 'head', 'test-dev', 'bump']);
+gulp.task('default', ['copyright', 'head', 'full-build', 'bump']);
