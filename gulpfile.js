@@ -203,6 +203,11 @@ function test(cb) {
 		.on('finish', function () {
 			gulp.src('./spec/index_spec.js')
 				.pipe(jasmine())
+				.on('error', function (err) {
+					console.error(err.message);
+					cb();
+				})
+
 				.pipe(istanbul.writeReports())
 				.on('end', cb);
 		});
@@ -214,6 +219,7 @@ gulp.task('test', test);
 gulp.task('watch', function () {
 	gulp.watch('./lib/escaper.js', ['build', 'bump']);
 	gulp.watch('./dist/*!(.min).js', ['test-dev']);
+	gulp.watch('./spec/*.js', ['test']);
 });
 
 gulp.task('default', ['copyright', 'head', 'full-build', 'bump']);
