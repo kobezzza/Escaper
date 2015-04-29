@@ -2,7 +2,7 @@
   "name": "escaper",
   "description": "Small JavaScript library for replacing string literals, regular expressions and comments in JavaScript syntax.",
   "homepage": "https://github.com/kobezzza/Escaper",
-  "version": "2.2.15",
+  "version": "2.2.16",
   "author": {
     "name": "kobezzza",
     "email": "kobezzza@mail.ru",
@@ -27,18 +27,21 @@
     "string"
   ],
   "devDependencies": {
+    "async": "^0.9.0",
     "bower": "^1.4.1",
     "closurecompiler-externs": "^1.0.4",
     "coveralls": "^2.11.2",
     "gulp": "^3.8.9",
     "gulp-babel": "^5.0.0",
     "gulp-bump": "^0.3.0",
+    "gulp-changed": "^1.2.1",
     "gulp-closure-compiler": "^0.2.10",
     "gulp-download": "0.0.1",
     "gulp-header": "^1.2.2",
     "gulp-istanbul": "^0.8.1",
     "gulp-jasmine": "^2.0.0",
     "gulp-monic": "^1.0.3",
+    "gulp-replace": "^0.5.3",
     "jasmine": "^2.2.1",
     "jscs": "^1.12.0",
     "yaspeller": "^2.0.0"

@@ -1,3 +1,11 @@
+/*!
+ * Escaper
+ * https://github.com/kobezzza/Escaper
+ *
+ * Released under the MIT license
+ * https://github.com/kobezzza/Escaper/blob/master/LICENSE
+ */
+
 //#include ../../node_modules/closurecompiler-externs/buffer.js
 //#include ../../node_modules/closurecompiler-externs/events.js
 //#include ../../node_modules/closurecompiler-externs/stream.js

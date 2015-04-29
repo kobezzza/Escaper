@@ -38,6 +38,19 @@
   "requireSpaceBeforeObjectValues": true,
   "disallowTrailingComma": true,
 
+  "requireSpaceAfterLineComment": {
+    "allExcept": [
+      "#include",
+      "#without",
+      "#label",
+      "#endlabel",
+      "#if",
+      "#endif",
+      "#set",
+      "#unset"
+    ]
+  },
+
   "requireSpaceAfterLineComment": true,
   "requireLineBreakAfterVariableAssignment": true,
   "requirePaddingNewLinesAfterBlocks": true,

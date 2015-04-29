@@ -1,3 +1,11 @@
+/*!
+ * Escaper
+ * https://github.com/kobezzza/Escaper
+ *
+ * Released under the MIT license
+ * https://github.com/kobezzza/Escaper/blob/master/LICENSE
+ */
+
 /** @const */
 var Escaper = {
 	/** @type {!Array} */

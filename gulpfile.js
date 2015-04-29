@@ -1,7 +1,8 @@
 var
 	gulp = require('gulp'),
 	path = require('path'),
-	fs = require('fs');
+	fs = require('fs'),
+	async = require('async');
 
 var
 	babel = require('gulp-babel'),
@@ -9,6 +10,8 @@ var
 	bump = require('gulp-bump'),
 	gcc = require('gulp-closure-compiler'),
 	header = require('gulp-header'),
+	replace = require('gulp-replace'),
+	changed = require('gulp-changed'),
 	download = require('gulp-download'),
 	istanbul = require('gulp-istanbul'),
 	jasmine = require('gulp-jasmine');
@@ -20,46 +23,75 @@ function getVersion() {
 		.join('.');
 }
 
-var map = {
-	jscs: 'https://raw.githubusercontent.com/kobezzza/project-settings/master/.jscsrc',
-	gitignore: 'https://raw.githubusercontent.com/kobezzza/project-settings/master/.gitignore',
-	gitattributes: 'https://raw.githubusercontent.com/kobezzza/project-settings/master/.gitattributes',
-	editorconfig: 'https://raw.githubusercontent.com/kobezzza/project-settings/master/.editorconfig'
-};
-
-for (var key in map) {
-	if (!map.hasOwnProperty(key)) {
-		continue;
-	}
-
-	(function (key, url) {
-		gulp.task('get-settings:' + key, ['build'], function () {
-			download([url]).pipe(gulp.dest('./'));
-		});
-	})(key, map[key]);
-}
-
-gulp.task('get-settings', ['build'], function () {
-	download(
-		Object.keys(map).map(function (key) {
-			return map[key]
-		}
-	)).pipe(gulp.dest('./'));
-});
-
-gulp.task('build', function (cb) {
-	var fullHead =
+function getHead(opt_version) {
+	return '' +
 		'/*!\n' +
-		' * Escaper v' + getVersion() + '\n' +
+		' * Escaper' + (opt_version ? ' v' + getVersion() : '') + '\n' +
 		' * https://github.com/kobezzza/Escaper\n' +
 		' *\n' +
 		' * Released under the MIT license\n' +
-		' * https://github.com/kobezzza/Escaper/blob/master/LICENSE\n' +
+		' * https://github.com/kobezzza/Escaper/blob/master/LICENSE\n';
+}
+
+var
+	headRgxp = /\/\*![\s\S]*?\*\/\n{2}/;
+
+gulp.task('copyright', function () {
+	gulp.src('./LICENSE')
+		.pipe(replace(/(Copyright \(c\) )(\d+)-?(\d*)/, function (sstr, intro, from, to) {
+			var year = new Date().getFullYear();
+			return intro + from + (to || from != year ? '-' + year : '');
+		}))
+
+		.pipe(gulp.dest('./'));
+});
+
+gulp.task('head', function (cb) {
+	var fullHead =
+		getHead() +
+		' */\n\n';
+
+	async.parallel([
+		function (cb) {
+			var dest = './lib';
+			gulp.src('./lib/*.js')
+				.pipe(changed(dest))
+				.pipe(replace(headRgxp, ''))
+				.pipe(header(fullHead))
+				.pipe(gulp.dest(dest))
+				.on('end', cb);
+		},
+
+		function (cb) {
+			var dest = './';
+			gulp.src('./externs.js')
+				.pipe(changed(dest))
+				.pipe(replace(headRgxp, ''))
+				.pipe(header(fullHead))
+				.pipe(gulp.dest(dest))
+				.on('end', cb);
+		},
+
+		function (cb) {
+			gulp.src('./predefs/src/index.js')
+				.pipe(replace(headRgxp, ''))
+				.pipe(header(fullHead))
+				.pipe(gulp.dest('./predefs/src'))
+				.on('end', cb);
+		}
+	], cb);
+});
+
+gulp.task('build', function (cb) {
+	var dest = './dist';
+	var fullHead =
+		getHead(true) +
 		' *\n' +
 		' * Date: ' + new Date().toUTCString() + '\n' +
 		' */\n\n';
 
 	gulp.src('./lib/escaper.js')
+		.pipe(changed(dest))
 		.pipe(babel({
 			compact: false,
 			auxiliaryComment: 'istanbul ignore next',
@@ -79,7 +111,7 @@ gulp.task('build', function (cb) {
 		}))
 
 		.pipe(header(fullHead))
-		.pipe(gulp.dest('./dist'))
+		.pipe(gulp.dest(dest))
 		.on('end', cb);
 });
 
@@ -169,7 +201,7 @@ gulp.task('test', test);
 
 gulp.task('watch', function () {
 	gulp.watch('./lib/*.js', ['build']);
-	gulp.watch('./lib/escaper.js', ['bump']);
+	gulp.watch('./lib/escaper.js', ['head', 'bump']);
 });
 
-gulp.task('default', ['test-dev', 'bump']);
+gulp.task('default', ['copyright', 'head', 'test-dev', 'bump']);
