@@ -34,7 +34,8 @@ function getHead(opt_version) {
 }
 
 var
-	headRgxp = /\/\*![\s\S]*?\*\/\n{2}/;
+	headRgxp = /\/\*![\s\S]*?\*\/\n{2}/,
+	buildStatus = 0;
 
 gulp.task('copyright', function (cb) {
 	gulp.src('./LICENSE')
@@ -76,7 +77,10 @@ gulp.task('head', function (cb) {
 				.pipe(gulp.dest('./predefs/src'))
 				.on('end', cb);
 		}
-	], cb);
+	], function () {
+		buildStatus++;
+		cb();
+	});
 });
 
 gulp.task('build', function (cb) {
@@ -217,9 +221,20 @@ gulp.task('test-dev', ['compile-fast'], test);
 gulp.task('test', test);
 
 gulp.task('watch', function () {
-	gulp.watch('./lib/escaper.js', ['build', 'bump']);
-	gulp.watch('./dist/*!(.min).js', ['test-dev']);
-	gulp.watch('./spec/*.js', ['test']);
+	async.whilst(
+		function () {
+			return buildStatus < 1;
+		},
+
+		function (cb) {
+			setTimeout(cb, 500);
+		},
+
+		function () {
+			gulp.watch('./lib/escaper.js', ['test-dev', 'bump']);
+			gulp.watch('./spec/*.js', ['test']);
+		}
+	);
 });
 
 gulp.task('default', ['copyright', 'head', 'full-build', 'bump']);
