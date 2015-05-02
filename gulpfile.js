@@ -57,12 +57,8 @@ gulp.task('head', function (cb) {
 
 	gulp.src(['./@(lib|spec)/*.js', './externs.js', './predefs/src/index.js'], {base: './'})
 		.pipe(through.obj(function (file, enc, cb) {
-			var body = file.contents.toString();
-
-			if (headRgxp.exec(body)) {
-				if (RegExp.$1 !== fullHead) {
-					this.push(file);
-				}
+			if (headRgxp.exec(file.contents.toString()) && RegExp.$1 !== fullHead) {
+				this.push(file);
 			}
 
 			return cb();
