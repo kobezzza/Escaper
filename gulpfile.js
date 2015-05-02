@@ -2,7 +2,8 @@ var
 	gulp = require('gulp'),
 	path = require('path'),
 	fs = require('fs'),
-	async = require('async');
+	async = require('async'),
+	through = require('through2');
 
 var
 	babel = require('gulp-babel'),
@@ -14,7 +15,8 @@ var
 	cached = require('gulp-cached'),
 	download = require('gulp-download'),
 	istanbul = require('gulp-istanbul'),
-	jasmine = require('gulp-jasmine');
+	jasmine = require('gulp-jasmine'),
+	run = require('gulp-run');
 
 function getVersion() {
 	var file = fs.readFileSync(path.join(__dirname, 'lib/escaper.js'));
@@ -34,8 +36,8 @@ function getHead(opt_version) {
 }
 
 var
-	headRgxp = /\/\*![\s\S]*?\*\/\n{2}/,
-	buildStatus = 0;
+	headRgxp = /(\/\*![\s\S]*?\*\/\n{2})/,
+	readyToWatcher = false;
 
 gulp.task('copyright', function (cb) {
 	gulp.src('./LICENSE')
@@ -53,34 +55,26 @@ gulp.task('head', function (cb) {
 		getHead() +
 		' */\n\n';
 
-	async.parallel([
-		function (cb) {
-			gulp.src('./*(lib|spec)/*.js')
-				.pipe(replace(headRgxp, ''))
-				.pipe(header(fullHead))
-				.pipe(gulp.dest('./'))
-				.on('end', cb);
-		},
+	gulp.src(['./@(lib|spec)/*.js', './externs.js', './predefs/src/index.js'], {base: './'})
+		.pipe(through.obj(function (file, enc, cb) {
+			var body = file.contents.toString();
 
-		function (cb) {
-			gulp.src('./externs.js')
-				.pipe(replace(headRgxp, ''))
-				.pipe(header(fullHead))
-				.pipe(gulp.dest('./'))
-				.on('end', cb);
-		},
+			if (headRgxp.exec(body)) {
+				if (RegExp.$1 !== fullHead) {
+					this.push(file);
+				}
+			}
 
-		function (cb) {
-			gulp.src('./predefs/src/index.js')
-				.pipe(replace(headRgxp, ''))
-				.pipe(header(fullHead))
-				.pipe(gulp.dest('./predefs/src'))
-				.on('end', cb);
-		}
-	], function () {
-		buildStatus++;
-		cb();
-	});
+			return cb();
+		}))
+
+		.pipe(replace(headRgxp, ''))
+		.pipe(header(fullHead))
+		.pipe(gulp.dest('./'))
+		.on('end', function () {
+			readyToWatcher = true;
+			cb();
+		});
 });
 
 gulp.task('build', function (cb) {
@@ -92,6 +86,7 @@ gulp.task('build', function (cb) {
 
 	gulp.src('./lib/escaper.js')
 		.pipe(cached('build'))
+		.pipe(replace(headRgxp, ''))
 		.pipe(babel({
 			compact: false,
 			auxiliaryComment: 'istanbul ignore next',
@@ -128,16 +123,30 @@ gulp.task('bump', ['build'], function (cb) {
 });
 
 gulp.task('predefs', function (cb) {
-	download([
-		'https://raw.githubusercontent.com/google/closure-compiler/master/contrib/externs/jasmine.js'
-	])
-		.pipe(gulp.dest('./predefs/src/ws'))
-		.on('end', function () {
-			gulp.src('./predefs/src/index.js')
-				.pipe(monic())
-				.pipe(gulp.dest('./predefs/build'))
-				.on('end', cb);
-		});
+	async.parallel([
+		function (cb) {
+			download([
+				'https://raw.githubusercontent.com/google/closure-compiler/master/contrib/externs/jasmine.js'
+			])
+				.pipe(gulp.dest('./predefs/src/ws'))
+				.on('end', function () {
+					gulp.src('./predefs/src/index.js')
+						.pipe(monic())
+						.pipe(gulp.dest('./predefs/build'))
+						.on('end', cb);
+				});
+		},
+
+		function (cb) {
+			run('bower install').exec()
+				.on('error', function (err) {
+					console.error(err.message);
+					cb();
+				})
+
+				.on('finish', cb);
+		}
+	], cb);
 });
 
 function compile(cb) {
@@ -223,7 +232,7 @@ gulp.task('test', test);
 gulp.task('watch', function () {
 	async.whilst(
 		function () {
-			return buildStatus < 1;
+			return !readyToWatcher;
 		},
 
 		function (cb) {
