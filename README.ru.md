@@ -70,7 +70,7 @@ Escaper.paste(str, content);
 ```js
 {
    // Шаблон замены
-  '@label':  '__ESCAPER_QUOT__${pos}_',
+  '@label'   : '__ESCAPER_QUOT__${pos}_',
 
   '@all'     : true, // Вырезаются все последовательности
   '@comments': true, // Вырезаются все виды комментариев
