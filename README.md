@@ -69,7 +69,7 @@ The method replaces all found blocks `' ... '`, `" ... "`, `` ` ... ` ``, `/ ...
 ```js
 {
   // Template for replacement
-  '@label'   '__ESCAPER_QUOT__${pos}_',
+  '@label':  '__ESCAPER_QUOT__${pos}_',
 
   '@all'     : true, // Replaces all found matches
   '@comments': true, // Replaces all kinds of comments
