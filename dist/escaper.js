@@ -1,11 +1,11 @@
 /*!
- * Escaper v2.2.25
+ * Escaper v2.3.0
  * https://github.com/kobezzza/Escaper
  *
  * Released under the MIT license
  * https://github.com/kobezzza/Escaper/blob/master/LICENSE
  *
- * Date: Mon, 04 May 2015 14:03:12 GMT
+ * Date: Mon, 04 May 2015 16:19:50 GMT
  */
 
 (function (global, factory) {
@@ -23,7 +23,7 @@
 })(this, function (exports, module) {
 	'use strict';
 
-	var Escaper = { VERSION: [2, 2, 25] };
+	var Escaper = { VERSION: [2, 3, 0] };
 	module.exports = Escaper;
 
 	var stringLiterals = {
@@ -49,7 +49,10 @@
 	    multComments = {
 		'/*': true,
 		'/**': true,
-		'/*!': true
+		'/*!': true,
+		'/*#': true,
+		'/*@': true,
+		'/*$': true
 	};
 
 	var keyArr = [],
@@ -180,6 +183,7 @@
   *     (if a parameter value is set to -1, then all found matches will be removed from the final string,
   *          or if the value will be set to true/false they will be included/excluded)
   *
+  *     *) @label    - template for replacement, e.g. __ESCAPER_QUOT__${pos}_
   *     *) @all      - replaces all found matches
   *     *) @comments - replaces all kinds of comments
   *     *) @strings  - replaces all kinds of string literals
@@ -192,6 +196,9 @@
   *     *) /*
   *     *) /**
   *     *) /*!
+  *     *) /*#
+  *     *) /*@
+  *     *) /*$
   *
   *     OR if the value is boolean, then will be replaced all found comments (true) / literals (false)
   *
@@ -206,6 +213,15 @@
 
 		var isObj = Boolean(opt_withCommentsOrParams && objMap[typeof opt_withCommentsOrParams]),
 		    p = isObj ? Object(opt_withCommentsOrParams) : {};
+
+		var posRgxp = /\$\{pos}/g;
+		function mark(pos) {
+			if (p['@label']) {
+				return p['@label'].replace(posRgxp, pos);
+			}
+
+			return '__ESCAPER_QUOT__' + pos + '_';
+		}
 
 		var withComments = false;
 		if (typeof opt_withCommentsOrParams === 'boolean') {
@@ -381,7 +397,7 @@
 						if (p[el] === -1) {
 							label = '';
 						} else {
-							label = '__ESCAPER_QUOT__' + stack.length + '_';
+							label = mark(stack.length);
 							stack.push(cut);
 						}
 
@@ -396,7 +412,7 @@
 					if (p[comment] === -1) {
 						label = '';
 					} else {
-						label = '__ESCAPER_QUOT__' + stack.length + '_';
+						label = mark(stack.length);
 						stack.push(cut);
 					}
 
@@ -424,10 +440,11 @@
   *
   * @param {string} str - the source string
   * @param {Array=} [opt_quotContent=Escaper.quotContent] - an array of matches
+  * @param {RegExp=} [opt_rgxp] - RegExp for searching, e.g. /__ESCAPER_QUOT__(\d+)_/g
   * @return {string}
   */
-	Escaper.paste = function (str, opt_quotContent) {
-		return str.replace(pasteRgxp, function (sstr, pos) {
+	Escaper.paste = function (str, opt_quotContent, opt_rgxp) {
+		return str.replace(opt_rgxp || pasteRgxp, function (sstr, pos) {
 			return (opt_quotContent || content)[pos];
 		});
 	};
