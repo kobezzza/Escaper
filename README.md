@@ -18,7 +18,7 @@ Escaper is a small JavaScript library for replacing string literals, regular exp
 * `` ` ... ` ``, `` ` ... ${...} ` ``
 * `/ ... /`
 * `// ...`
-* `/* ... */`, `/** ... */`, `/*! ... */`
+* `/* ... */`, `/** ... */`, `/*! ... */`, `/*# ... */`, `/*@ ... */`, `/*$ ... */`
 
 ## Install
 
@@ -68,6 +68,9 @@ The method replaces all found blocks `' ... '`, `" ... "`, `` ` ... ` ``, `/ ...
 
 ```js
 {
+  // Template for replacement
+  '@label'   '__ESCAPER_QUOT__${pos}_',
+
   '@all'     : true, // Replaces all found matches
   '@comments': true, // Replaces all kinds of comments
   '@strings' : true, // Replaces all kinds of string literals
@@ -81,7 +84,10 @@ The method replaces all found blocks `' ... '`, `" ... "`, `` ` ... ` ``, `/ ...
   '//'       : true,
   '/*'       : true,
   '/**'      : true,
-  '/*!'      : true
+  '/*!'      : true,
+  '/*#'      : true,
+  '/*@'      : true,
+  '/*$'      : true
 }
 ```
 
@@ -106,7 +112,8 @@ The method replaces all found blocks `__ESCAPER_QUOT__number_` to real content i
 **Arguments**
 
 * `string` `str` — the source string;
-* `Array=` `opt_quotContent = Escaper.quotContent` — an array of matches.
+* `Array=` `opt_quotContent = Escaper.quotContent` — an array of matches;
+* `RegExp=` `opt_rgxp` — RegExp for searching, e.g. `/__ESCAPER_QUOT__(\d+)_/g`.
 
 `@return {string}`
 
