@@ -4,11 +4,11 @@
   "excludeFiles": [
     "gulpfile.js",
     "externs.js",
-    "dist/*",
-    "spec/**/*",
-    "predefs/**/*",
-    "node_modules/**/*",
-    "bower_components/**/*"
+    "dist/**",
+    "spec/**",
+    "predefs/**",
+    "node_modules/**",
+    "bower_components/**"
   ],
 
   "validateIndentation": "\t",

@@ -35,6 +35,13 @@ function getHead(opt_version) {
 		' * https://github.com/kobezzza/Escaper/blob/master/LICENSE\n';
 }
 
+function error(cb) {
+	return function (err) {
+		console.error(err.message);
+		cb();
+	}
+}
+
 var
 	headRgxp = /(\/\*![\s\S]*?\*\/\n{2})/,
 	readyToWatcher = false;
@@ -101,11 +108,7 @@ gulp.task('build', function (cb) {
 			]
 		}))
 
-		.on('error', function (err) {
-			console.error(err.message);
-			cb();
-		})
-
+		.on('error', error(cb))
 		.pipe(header(fullHead))
 		.pipe(gulp.dest('./dist'))
 		.on('end', cb);
@@ -124,10 +127,12 @@ gulp.task('predefs', function (cb) {
 			download([
 				'https://raw.githubusercontent.com/google/closure-compiler/master/contrib/externs/jasmine.js'
 			])
+				.on('error', error(cb))
 				.pipe(gulp.dest('./predefs/src/ws'))
 				.on('end', function () {
 					gulp.src('./predefs/src/index.js')
 						.pipe(monic())
+						.on('error', error(cb))
 						.pipe(gulp.dest('./predefs/build'))
 						.on('end', cb);
 				});
@@ -135,11 +140,7 @@ gulp.task('predefs', function (cb) {
 
 		function (cb) {
 			run('bower install').exec()
-				.on('error', function (err) {
-					console.error(err.message);
-					cb();
-				})
-
+				.on('error', error(cb))
 				.on('finish', cb);
 		}
 	], cb);
@@ -191,11 +192,7 @@ function compile(cb) {
 			}
 		}))
 
-		.on('error', function (err) {
-			console.error(err.message);
-			cb();
-		})
-
+		.on('error', error(cb))
 		.pipe(header('/*! Escaper v' + getVersion() + ' | https://github.com/kobezzza/Escaper/blob/master/LICENSE */\n'))
 		.pipe(gulp.dest('./dist'))
 		.on('end', cb);
@@ -212,11 +209,7 @@ function test(cb) {
 		.on('finish', function () {
 			gulp.src('./spec/index_spec.js')
 				.pipe(jasmine())
-				.on('error', function (err) {
-					console.error(err.message);
-					cb();
-				})
-
+				.on('error', error(cb))
 				.pipe(istanbul.writeReports())
 				.on('end', cb);
 		});
