@@ -18,6 +18,7 @@
   ],
 
   "dictionary": [
+    "/RegExp/i",
     "maintainers",
     "Escaper",
     "quotContent",
