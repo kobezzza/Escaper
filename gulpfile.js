@@ -1,3 +1,11 @@
+/*!
+ * Escaper
+ * https://github.com/kobezzza/Escaper
+ *
+ * Released under the MIT license
+ * https://github.com/kobezzza/Escaper/blob/master/LICENSE
+ */
+
 var
 	gulp = require('gulp'),
 	path = require('path'),
@@ -62,9 +70,9 @@ gulp.task('head', function (cb) {
 		getHead() +
 		' */\n\n';
 
-	gulp.src(['./@(lib|spec)/*.js', './externs.js', './predefs/src/index.js'], {base: './'})
+	gulp.src(['./@(lib|spec)/*.js', './@(externs|gulpfile).js', './predefs/src/index.js'], {base: './'})
 		.pipe(through.obj(function (file, enc, cb) {
-			if (headRgxp.exec(file.contents.toString()) && RegExp.$1 !== fullHead) {
+			if (!headRgxp.exec(file.contents.toString()) || RegExp.$1 !== fullHead) {
 				this.push(file);
 			}
 
