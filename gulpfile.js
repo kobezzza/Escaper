@@ -225,6 +225,11 @@ function test(cb) {
 
 gulp.task('test-dev', ['compile-fast'], test);
 gulp.task('test', test);
+gulp.task('yaspeller', function (cb) {
+	run('yaspeller ./').exec()
+		.on('error', error(cb))
+		.on('finish', cb);
+});
 
 gulp.task('watch', function () {
 	async.whilst(
@@ -239,8 +244,9 @@ gulp.task('watch', function () {
 		function () {
 			gulp.watch('./lib/escaper.js', ['test-dev', 'bump']);
 			gulp.watch('./spec/*.js', ['test']);
+			gulp.watch('./*.md', ['yaspeller']);
 		}
 	);
 });
 
-gulp.task('default', ['copyright', 'head', 'full-build', 'bump']);
+gulp.task('default', ['copyright', 'head', 'full-build', 'bump', 'yaspeller']);
