@@ -231,7 +231,7 @@ gulp.task('yaspeller', function (cb) {
 		.on('finish', cb);
 });
 
-gulp.task('watch', function () {
+gulp.task('watch', ['head'], function () {
 	async.whilst(
 		function () {
 			return !readyToWatcher;
