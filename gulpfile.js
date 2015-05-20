@@ -123,7 +123,7 @@ gulp.task('build', function (cb) {
 		.on('end', cb);
 });
 
-gulp.task('bump', ['build'], function (cb) {
+gulp.task('bump', function (cb) {
 	gulp.src('./*.json')
 		.pipe(bump({version: getVersion()}))
 		.pipe(gulp.dest('./'))
@@ -208,7 +208,7 @@ function compile(cb) {
 }
 
 gulp.task('compile', ['predefs', 'build'], compile);
-gulp.task('compile-fast', compile);
+gulp.task('fast-compile', ['build'], compile);
 gulp.task('full-build', ['compile'], test);
 
 function test(cb) {
@@ -224,7 +224,7 @@ function test(cb) {
 		});
 }
 
-gulp.task('test-dev', ['compile-fast'], test);
+gulp.task('test-dev', ['fast-compile'], test);
 gulp.task('test', test);
 gulp.task('yaspeller', function (cb) {
 	run('yaspeller ./').exec()
@@ -233,6 +233,14 @@ gulp.task('yaspeller', function (cb) {
 });
 
 gulp.task('watch', function () {
+	function unbind(name) {
+		return function (e) {
+			if (e.type === 'deleted') {
+				delete cached.caches[name][e.path];
+			}
+		}
+	}
+
 	async.whilst(
 		function () {
 			return readyToWatcher === false;
@@ -243,7 +251,7 @@ gulp.task('watch', function () {
 		},
 
 		function () {
-			gulp.watch('./lib/escaper.js', ['test-dev', 'bump']);
+			gulp.watch('./lib/escaper.js', ['test-dev', 'bump']).on('change', unbind('build'));
 			gulp.watch('./spec/*.js', ['test']);
 			gulp.watch('./*.md', ['yaspeller']);
 		}
