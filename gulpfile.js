@@ -232,7 +232,7 @@ gulp.task('yaspeller', function (cb) {
 		.on('finish', cb);
 });
 
-gulp.task('watch', function () {
+gulp.task('watch', ['default'], function () {
 	function unbind(name) {
 		return function (e) {
 			if (e.type === 'deleted') {
