@@ -1,11 +1,11 @@
 /*!
- * Escaper v2.3.4
+ * Escaper v2.3.5
  * https://github.com/kobezzza/Escaper
  *
  * Released under the MIT license
  * https://github.com/kobezzza/Escaper/blob/master/LICENSE
  *
- * Date: Sun, 24 May 2015 13:53:31 GMT
+ * Date: Sun, 24 May 2015 17:14:34 GMT
  */
 
 (function (global, factory) {
@@ -23,7 +23,7 @@
 })(this, function (exports, module) {
 	'use strict';
 
-	var Escaper = { VERSION: [2, 3, 4] };
+	var Escaper = { VERSION: [2, 3, 5] };
 	module.exports = Escaper;
 
 	var stringLiterals = {
@@ -162,8 +162,8 @@
 	    sRgxp = /\s/,
 	    nRgxp = /\r|\n/;
 
-	var symbols = void 0,
-	    snakeskinRgxp = void 0;
+	var symbols = undefined,
+	    snakeskinRgxp = undefined;
 
 	Escaper.symbols = null;
 	Escaper.snakeskinRgxp = null;
@@ -281,8 +281,8 @@
 		var templateVar = 0,
 		    filterStart = false;
 
-		var cut = void 0,
-		    label = void 0;
+		var cut = undefined,
+		    label = undefined;
 
 		var part = '',
 		    rPart = '';
