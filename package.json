@@ -27,7 +27,7 @@
     "string"
   ],
   "devDependencies": {
-    "async": "^0.9.0",
+    "async": "^1.0.0",
     "bower": "^1.4.1",
     "closurecompiler-externs": "^1.0.4",
     "coveralls": "^2.11.2",
