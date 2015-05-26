@@ -2,7 +2,9 @@
   "name": "escaper",
   "description": "Small JavaScript library for replacing string literals, regular expressions and comments in JavaScript syntax.",
   "homepage": "https://github.com/kobezzza/Escaper",
-  "version": "2.3.6",
+  "main": "dist/escaper.js",
+  "version": "2.3.7",
+  "license": "MIT",
   "author": {
     "name": "kobezzza",
     "email": "kobezzza@mail.ru",
@@ -15,8 +17,6 @@
   "bugs": {
     "url": "https://github.com/kobezzza/Escaper/issues"
   },
-  "license": "MIT",
-  "main": "dist/escaper.js",
   "keywords": [
     "javascript",
     "string"
