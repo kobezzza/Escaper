@@ -20,7 +20,6 @@
     "/lib",
     "/spec",
     "/predefs",
-    "/npmignore",
     "/package.json",
     "/gulpfile.js",
     "/externs.js",

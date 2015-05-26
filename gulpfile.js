@@ -132,7 +132,7 @@ gulp.task('bump', function (cb) {
 });
 
 gulp.task('npmignore', function (cb) {
-	gulp.src('./npmignore')
+	gulp.src('./predefs/npmignore')
 		.pipe(monic())
 		.on('error', error(cb))
 		.pipe(rename('.npmignore'))
@@ -264,7 +264,7 @@ gulp.task('watch', ['default'], function () {
 			gulp.watch('./lib/escaper.js', ['test-dev', 'bump']).on('change', unbind('build'));
 			gulp.watch('./spec/*.js', ['test']);
 			gulp.watch('./*.md', ['yaspeller']);
-			gulp.watch(['./npmignore', './.gitignore'], ['npmignore']);
+			gulp.watch(['./predefs/npmignore', './.gitignore'], ['npmignore']);
 		}
 	);
 });

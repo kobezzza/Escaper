@@ -1,11 +1,10 @@
-//#include .gitignore
+//#include ../.gitignore
 # NPM ignore
 /lib
 /predefs
 /spec
 /gulpfile.js
 /externs.js
-/npmignore
 /.editorconfig
 /.jscsrc
 /.yaspellerrc
