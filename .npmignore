@@ -41,7 +41,7 @@ bower_components
 node_modules
 
 # Build && test
-coverage
+/coverage
 
 # NPM ignore
 /lib

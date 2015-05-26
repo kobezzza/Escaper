@@ -264,7 +264,7 @@ gulp.task('watch', ['default'], function () {
 			gulp.watch('./lib/escaper.js', ['test-dev', 'bump']).on('change', unbind('build'));
 			gulp.watch('./spec/*.js', ['test']);
 			gulp.watch('./*.md', ['yaspeller']);
-			gulp.watch('./npmignore', ['npmignore']);
+			gulp.watch(['./npmignore', './.gitignore'], ['npmignore']);
 		}
 	);
 });
