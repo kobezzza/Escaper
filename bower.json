@@ -9,7 +9,11 @@
     "string"
   ],
   "authors": [
-    "kobezzza <kobezzza@mail.ru>"
+    {
+      "name": "kobezzza",
+      "email": "kobezzza@mail.ru",
+      "homepage": "https://github.com/kobezzza"
+    }
   ],
   "license": "MIT",
   "ignore": [
