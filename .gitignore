@@ -41,14 +41,4 @@ bower_components
 node_modules
 
 # Build && test
-build
-deploy
 coverage
-
-# Log
-*.log
-error.txt
-
-# Temporary
-*.tmp
-tmp
