@@ -43,7 +43,9 @@ node_modules
 # Build && test
 /coverage
 
-# NPM ignore
+
+# npmignore - content above this line is automatically generated and modifications may be omitted
+# see npmjs.com/npmignore for more details.
 /lib
 /predefs
 /spec
@@ -55,4 +57,3 @@ node_modules
 /.travis.yml
 /.gitignore
 /.gitattributes
-
