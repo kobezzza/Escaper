@@ -20,7 +20,6 @@ var
 	gcc = require('gulp-closure-compiler'),
 	header = require('gulp-header'),
 	replace = require('gulp-replace'),
-	rename = require('gulp-rename'),
 	cached = require('gulp-cached'),
 	download = require('gulp-download'),
 	istanbul = require('gulp-istanbul'),

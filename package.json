@@ -36,7 +36,6 @@
     "gulp-istanbul": "^0.9.0",
     "gulp-jasmine": "^2.0.0",
     "gulp-monic": "^2.0.1",
-    "gulp-rename": "^1.2.2",
     "gulp-replace": "^0.5.3",
     "gulp-run": "^1.6.8",
     "jasmine": "^2.2.1",
