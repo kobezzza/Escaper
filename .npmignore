@@ -42,10 +42,9 @@ node_modules
 
 # Build && test
 /coverage
+/predefs/build
 
-
-# npmignore - content above this line is automatically generated and modifications may be omitted
-# see npmjs.com/npmignore for more details.
+# NPM ignore list
 /lib
 /predefs
 /spec

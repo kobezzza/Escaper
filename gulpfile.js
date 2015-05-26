@@ -8,7 +8,6 @@
 
 var
 	gulp = require('gulp'),
-	path = require('path'),
 	fs = require('fs'),
 	async = require('async'),
 	through = require('through2');
@@ -27,7 +26,7 @@ var
 	run = require('gulp-run');
 
 function getVersion() {
-	var file = fs.readFileSync(path.join(__dirname, 'lib/escaper.js'));
+	var file = fs.readFileSync('./lib/escaper.js');
 	return /VERSION\s*(?::|=)\s*\[(\d+,\s*\d+,\s*\d+)]/.exec(file)[1]
 		.split(/\s*,\s*/)
 		.join('.');
@@ -131,9 +130,10 @@ gulp.task('bump', function (cb) {
 });
 
 gulp.task('npmignore', function (cb) {
-	run('npmignore ./').exec()
-		.on('error', error(cb))
-		.on('finish', cb);
+	gulp.src('./.npmignore')
+		.pipe(replace(/([\s\S]*?)(?=# NPM ignore list)/, fs.readFileSync('./.gitignore') + '\n'))
+		.pipe(gulp.dest('./'))
+		.on('end', cb);
 });
 
 gulp.task('predefs', function (cb) {

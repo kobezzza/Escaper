@@ -42,3 +42,4 @@ node_modules
 
 # Build && test
 /coverage
+/predefs/build
