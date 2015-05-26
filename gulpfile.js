@@ -20,6 +20,7 @@ var
 	gcc = require('gulp-closure-compiler'),
 	header = require('gulp-header'),
 	replace = require('gulp-replace'),
+	rename = require('gulp-rename'),
 	cached = require('gulp-cached'),
 	download = require('gulp-download'),
 	istanbul = require('gulp-istanbul'),
@@ -126,6 +127,15 @@ gulp.task('build', function (cb) {
 gulp.task('bump', function (cb) {
 	gulp.src('./*.json')
 		.pipe(bump({version: getVersion()}))
+		.pipe(gulp.dest('./'))
+		.on('end', cb);
+});
+
+gulp.task('npmignore', function (cb) {
+	gulp.src('./npmignore')
+		.pipe(monic())
+		.on('error', error(cb))
+		.pipe(rename('.npmignore'))
 		.pipe(gulp.dest('./'))
 		.on('end', cb);
 });
@@ -254,8 +264,9 @@ gulp.task('watch', ['default'], function () {
 			gulp.watch('./lib/escaper.js', ['test-dev', 'bump']).on('change', unbind('build'));
 			gulp.watch('./spec/*.js', ['test']);
 			gulp.watch('./*.md', ['yaspeller']);
+			gulp.watch('./npmignore', ['npmignore']);
 		}
 	);
 });
 
-gulp.task('default', ['copyright', 'head', 'full-build', 'bump', 'yaspeller']);
+gulp.task('default', ['copyright', 'head', 'full-build', 'bump', 'yaspeller', 'npmignore']);
