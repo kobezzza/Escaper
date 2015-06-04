@@ -17,7 +17,7 @@ Escaper is a small JavaScript library for replacing string literals, regular exp
 * `" ... "`
 * `` ` ... ` ``, `` ` ... ${...} ` ``
 * `/ ... /`
-* `// ...`
+* `// ...`, `//* ...`, `//! ...`, `//# ...`, `//@ ...`, `//$ ...`
 * `/* ... */`, `/** ... */`, `/*! ... */`, `/*# ... */`, `/*@ ... */`, `/*$ ... */`
 
 ## Install
@@ -82,6 +82,11 @@ The method replaces all found blocks `' ... '`, `" ... "`, `` ` ... ` ``, `/ ...
   '`'        : true,
   '/'        : true,
   '//'       : true,
+  '//*'       : true,
+  '//!'       : true,
+  '//#'       : true,
+  '//@'       : true,
+  '//$'       : true,
   '/*'       : true,
   '/**'      : true,
   '/*!'      : true,

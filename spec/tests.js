@@ -148,6 +148,20 @@ describe('Escaper', function () {
 			.toBe('Hello // the comment\n\t\t\tFriend!');
 	});
 
+	it("should work with //!", function () {
+		var stack = [];
+		var str = Escaper.replace(
+			("Hello // the comment //! fffuuu\
+\n//! fffuuuu\
+\n			Friend!"), {'//!': true}, stack);
+
+		expect(str)
+			.toBe('Hello // the comment //! fffuuu\n__ESCAPER_QUOT__0_\n\t\t\tFriend!');
+
+		expect(Escaper.paste(str, stack))
+			.toBe('Hello // the comment //! fffuuu\n//! fffuuuu\n\t\t\tFriend!');
+	});
+
 	it("should work with multiline comments", function () {
 		var stack = [];
 		var str = Escaper.replace('Hello /*/ the comment */ Friend!', true, stack);

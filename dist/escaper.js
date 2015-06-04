@@ -1,11 +1,11 @@
 /*!
- * Escaper v2.3.9
+ * Escaper v2.4.0
  * https://github.com/kobezzza/Escaper
  *
  * Released under the MIT license
  * https://github.com/kobezzza/Escaper/blob/master/LICENSE
  *
- * Date: Tue, 26 May 2015 06:55:31 GMT
+ * Date: Thu, 04 Jun 2015 17:58:01 GMT
  */
 
 (function (global, factory) {
@@ -23,7 +23,7 @@
 })(this, function (exports, module) {
 	'use strict';
 
-	var Escaper = { VERSION: [2, 3, 9] };
+	var Escaper = { VERSION: [2, 4, 0] };
 	module.exports = Escaper;
 
 	var stringLiterals = {
@@ -44,7 +44,12 @@
 	}
 
 	var singleComments = {
-		'//': true
+		'//': true,
+		'//*': true,
+		'//!': true,
+		'//#': true,
+		'//@': true,
+		'//$': true
 	},
 	    multComments = {
 		'/*': true,
@@ -193,6 +198,11 @@
   *     *) "
   *     *) /
   *     *) //
+  *     *) //*
+  *     *) //!
+  *     *) //#
+  *     *) //@
+  *     *) //$
   *     *) /*
   *     *) /**
   *     *) /*!
