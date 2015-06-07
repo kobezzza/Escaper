@@ -43,3 +43,10 @@ node_modules
 # Build && test
 /coverage
 /predefs/build
+
+# Log
+*.log
+
+# Temporary
+*.tmp
+/tmp

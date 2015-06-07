@@ -6,13 +6,13 @@
  * https://github.com/kobezzza/Escaper/blob/master/LICENSE
  */
 
-var
+const
 	gulp = require('gulp'),
 	fs = require('fs'),
 	async = require('async'),
 	through = require('through2');
 
-var
+const
 	babel = require('gulp-babel'),
 	monic = require('gulp-monic'),
 	bump = require('gulp-bump'),
@@ -26,7 +26,7 @@ var
 	run = require('gulp-run');
 
 function getVersion() {
-	var file = fs.readFileSync('./lib/escaper.js');
+	const file = fs.readFileSync('./lib/escaper.js');
 	return /VERSION\s*(?::|=)\s*\[(\d+,\s*\d+,\s*\d+)]/.exec(file)[1]
 		.split(/\s*,\s*/)
 		.join('.');
@@ -46,11 +46,13 @@ function error(cb) {
 	return function (err) {
 		console.error(err.message);
 		cb();
-	}
+	};
 }
 
+const
+	headRgxp = /(\/\*![\s\S]*?\*\/\n{2})/;
+
 var
-	headRgxp = /(\/\*![\s\S]*?\*\/\n{2})/,
 	readyToWatcher = null;
 
 gulp.task('copyright', function (cb) {
@@ -66,7 +68,7 @@ gulp.task('copyright', function (cb) {
 
 gulp.task('head', function (cb) {
 	readyToWatcher = false;
-	var fullHead =
+	const fullHead =
 		getHead() +
 		' */\n\n';
 
@@ -89,7 +91,7 @@ gulp.task('head', function (cb) {
 });
 
 gulp.task('build', function (cb) {
-	var fullHead =
+	const fullHead =
 		getHead(true) +
 		' *\n' +
 		' * Date: ' + new Date().toUTCString() + '\n' +
@@ -158,6 +160,7 @@ gulp.task('predefs', function (cb) {
 				.on('error', error(cb))
 				.on('finish', cb);
 		}
+
 	], cb);
 });
 
@@ -244,7 +247,7 @@ gulp.task('watch', ['default'], function () {
 			if (e.type === 'deleted') {
 				delete cached.caches[name][e.path];
 			}
-		}
+		};
 	}
 
 	async.whilst(
@@ -262,6 +265,7 @@ gulp.task('watch', ['default'], function () {
 			gulp.watch('./*.md', ['yaspeller']);
 			gulp.watch('./.gitignore', ['npmignore']);
 		}
+
 	);
 });
 
