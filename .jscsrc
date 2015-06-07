@@ -51,7 +51,6 @@
     ]
   },
 
-  "requireSpaceAfterLineComment": true,
   "requireLineBreakAfterVariableAssignment": true,
   "requirePaddingNewLinesAfterBlocks": true,
   "requireSpaceBeforeBlockStatements": true,
@@ -109,8 +108,7 @@
 
   "disallowOperatorBeforeLineBreak": [
     "~",
-    ".",
-    "::"
+    "."
   ],
 
   "requireSpacesInFunctionDeclaration": {
