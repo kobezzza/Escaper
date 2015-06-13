@@ -102,7 +102,7 @@ gulp.task('build', function (cb) {
 		.pipe(replace(headRgxp, ''))
 		.pipe(babel({
 			compact: false,
-			auxiliaryComment: 'istanbul ignore next',
+			auxiliaryCommentBefore: 'istanbul ignore next',
 
 			modules: 'umd',
 			moduleId: 'Escaper',
