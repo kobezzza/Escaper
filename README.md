@@ -63,7 +63,7 @@ The method replaces all found blocks `' ... '`, `" ... "`, `` ` ... ` ``, `/ ...
 
 **Arguments**
 
-* `string` `str` — the source string;
+* `string` `str` — source string;
 * `(Object|boolean)=` `opt_withCommentsOrParams = false` — parameters:
 
 ```js
@@ -116,8 +116,8 @@ The method replaces all found blocks `__ESCAPER_QUOT__number_` to real content i
 
 **Arguments**
 
-* `string` `str` — the source string;
-* `Array=` `opt_quotContent = Escaper.quotContent` — an array of matches;
+* `string` `str` — source string;
+* `Array=` `opt_quotContent = Escaper.quotContent` — array of matches;
 * `RegExp=` `opt_rgxp` — RegExp for searching, e.g. `/__ESCAPER_QUOT__(\d+)_/g`.
 
 `@return {string}`
