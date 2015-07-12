@@ -1,11 +1,11 @@
 /*!
- * Escaper v2.4.4
+ * Escaper v2.4.5
  * https://github.com/kobezzza/Escaper
  *
  * Released under the MIT license
  * https://github.com/kobezzza/Escaper/blob/master/LICENSE
  *
- * Date: Sat, 13 Jun 2015 08:52:20 GMT
+ * Date: Sun, 12 Jul 2015 10:22:52 GMT
  */
 
 (function (global, factory) {
@@ -23,7 +23,7 @@
 })(this, function (exports, module) {
 	'use strict';
 
-	var Escaper = { VERSION: [2, 4, 4] };
+	var Escaper = { VERSION: [2, 4, 5] };
 	module.exports = Escaper;
 
 	var stringLiterals = {
@@ -182,7 +182,7 @@
   * Replaces all found blocks ' ... ', " ... ", ` ... `, / ... /, // ..., /* ... *\/ to
   * __ESCAPER_QUOT__number_ in a string and returns a new string
   *
-  * @param {string} str - the source string
+  * @param {string} str - source string
   * @param {(Object.<string, boolean>|boolean)=} [opt_withCommentsOrParams=false] - parameters:
   *
   *     (if a parameter value is set to -1, then all found matches will be removed from the final string,
@@ -212,8 +212,8 @@
   *
   *     OR if the value is boolean, then will be replaced all found comments (true) / literals (false)
   *
-  * @param {Array=} [opt_quotContent=Escaper.quotContent] - an array for matches
-  * @param {?boolean=} [opt_snakeskin] - a private parameter for using with Snakeskin
+  * @param {Array=} [opt_quotContent=Escaper.quotContent] - array for matches
+  * @param {?boolean=} [opt_snakeskin] - private parameter for using with Snakeskin
   * @return {string}
   */
 	Escaper.replace = function (str, opt_withCommentsOrParams, opt_quotContent, opt_snakeskin) {
@@ -448,8 +448,8 @@
   * Replaces all found blocks __ESCAPER_QUOT__number_ to real content in a string
   * and returns a new string
   *
-  * @param {string} str - the source string
-  * @param {Array=} [opt_quotContent=Escaper.quotContent] - an array of matches
+  * @param {string} str - source string
+  * @param {Array=} [opt_quotContent=Escaper.quotContent] - array of matches
   * @param {RegExp=} [opt_rgxp] - RegExp for searching, e.g. /__ESCAPER_QUOT__(\d+)_/g
   * @return {string}
   */
