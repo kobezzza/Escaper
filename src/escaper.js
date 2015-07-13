@@ -6,7 +6,7 @@
  * https://github.com/kobezzza/Escaper/blob/master/LICENSE
  */
 
-const Escaper = { VERSION: [2, 4, 5] };
+const Escaper = { VERSION: [2, 4, 6] };
 export default Escaper;
 
 const
