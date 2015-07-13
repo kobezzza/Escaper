@@ -26,7 +26,7 @@ const
 	run = require('gulp-run');
 
 function getVersion() {
-	const file = fs.readFileSync('./lib/escaper.js');
+	const file = fs.readFileSync('./src/escaper.js');
 	return /VERSION\s*(?::|=)\s*\[(\d+,\s*\d+,\s*\d+)]/.exec(file)[1]
 		.split(/\s*,\s*/)
 		.join('.');
@@ -72,7 +72,7 @@ gulp.task('head', function (cb) {
 		getHead() +
 		' */\n\n';
 
-	gulp.src(['./@(lib|spec)/*.js', './@(externs|gulpfile).js', './predefs/src/index.js'], {base: './'})
+	gulp.src(['./@(src|spec)/*.js', './@(externs|gulpfile).js', './predefs/src/index.js'], {base: './'})
 		.pipe(through.obj(function (file, enc, cb) {
 			if (!headRgxp.exec(file.contents.toString()) || RegExp.$1 !== fullHead) {
 				this.push(file);
@@ -97,7 +97,7 @@ gulp.task('build', function (cb) {
 		' * Date: ' + new Date().toUTCString() + '\n' +
 		' */\n\n';
 
-	gulp.src('./lib/escaper.js')
+	gulp.src('./src/escaper.js')
 		.pipe(cached('build'))
 		.pipe(replace(headRgxp, ''))
 		.pipe(babel({
@@ -260,7 +260,7 @@ gulp.task('watch', ['default'], function () {
 		},
 
 		function () {
-			gulp.watch('./lib/escaper.js', ['test-dev', 'bump']).on('change', unbind('build'));
+			gulp.watch('./src/escaper.js', ['test-dev', 'bump']).on('change', unbind('build'));
 			gulp.watch('./spec/*.js', ['test']);
 			gulp.watch('./*.md', ['yaspeller']);
 			gulp.watch('./.gitignore', ['npmignore']);
