@@ -23,7 +23,7 @@ var Escaper = {
 	/**
 	 * @abstract
 	 * @param {string} str
-	 * @param {(Object|boolean)=} [opt_withCommentsOrParams]
+	 * @param {(Object<string, boolean>|boolean)=} [opt_withCommentsOrParams]
 	 * @param {Array=} [opt_quotContent]
 	 * @param {?boolean=} [opt_snakeskin]
 	 * @return {string}

@@ -174,7 +174,7 @@ const objMap = {
  * __ESCAPER_QUOT__number_ in a string and returns a new string
  *
  * @param {string} str - source string
- * @param {(Object.<string, boolean>|boolean)=} [opt_withCommentsOrParams=false] - parameters:
+ * @param {(Object<string, boolean>|boolean)=} [opt_withCommentsOrParams=false] - parameters:
  *
  *     (if a parameter value is set to -1, then all found matches will be removed from the final string,
  *          or if the value will be set to true/false they will be included/excluded)
