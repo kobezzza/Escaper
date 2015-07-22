@@ -1,11 +1,11 @@
 /*!
- * Escaper v2.4.7
+ * Escaper v2.4.8
  * https://github.com/kobezzza/Escaper
  *
  * Released under the MIT license
  * https://github.com/kobezzza/Escaper/blob/master/LICENSE
  *
- * Date: Wed, 22 Jul 2015 05:01:15 GMT
+ * Date: Wed, 22 Jul 2015 07:44:47 GMT
  */
 
 (function (global, factory) {
@@ -23,7 +23,7 @@
 })(this, function (exports, module) {
 	'use strict';
 
-	var Escaper = { VERSION: [2, 4, 7] };
+	var Escaper = { VERSION: [2, 4, 8] };
 	module.exports = Escaper;
 
 	var stringLiterals = {
@@ -186,7 +186,7 @@
   * __ESCAPER_QUOT__number_ in a string and returns a new string
   *
   * @param {string} str - source string
-  * @param {(Object.<string, boolean>|boolean)=} [opt_withCommentsOrParams=false] - parameters:
+  * @param {(Object<string, boolean>|boolean)=} [opt_withCommentsOrParams=false] - parameters:
   *
   *     (if a parameter value is set to -1, then all found matches will be removed from the final string,
   *          or if the value will be set to true/false they will be included/excluded)
