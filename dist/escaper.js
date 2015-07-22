@@ -1,11 +1,11 @@
 /*!
- * Escaper v2.4.6
+ * Escaper v2.4.7
  * https://github.com/kobezzza/Escaper
  *
  * Released under the MIT license
  * https://github.com/kobezzza/Escaper/blob/master/LICENSE
  *
- * Date: Mon, 13 Jul 2015 20:59:49 GMT
+ * Date: Wed, 22 Jul 2015 05:01:15 GMT
  */
 
 (function (global, factory) {
@@ -23,15 +23,16 @@
 })(this, function (exports, module) {
 	'use strict';
 
-	var Escaper = { VERSION: [2, 4, 6] };
+	var Escaper = { VERSION: [2, 4, 7] };
 	module.exports = Escaper;
 
 	var stringLiterals = {
 		'"': true,
 		'\'': true,
 		'`': true
-	},
-	    literals = {
+	};
+
+	var literals = {
 		'/': true
 	};
 
@@ -50,8 +51,9 @@
 		'//#': true,
 		'//@': true,
 		'//$': true
-	},
-	    multComments = {
+	};
+
+	var multComments = {
 		'/*': true,
 		'/**': true,
 		'/*!': true,
@@ -165,7 +167,8 @@
 	var uSRgxp = /[^\s\/]/,
 	    wRgxp = /[a-z]/,
 	    sRgxp = /\s/,
-	    nRgxp = /\r|\n/;
+	    nRgxp = /\r|\n/,
+	    posRgxp = /\$\{pos}/g;
 
 	var symbols = undefined,
 	    snakeskinRgxp = undefined;
@@ -218,13 +221,12 @@
   */
 	Escaper.replace = function (str, opt_withCommentsOrParams, opt_quotContent, opt_snakeskin) {
 		symbols = symbols || Escaper.symbols || 'a-z';
-
 		snakeskinRgxp = snakeskinRgxp || Escaper.snakeskinRgxp || new RegExp('[!$' + symbols + '_]', 'i');
 
-		var isObj = Boolean(opt_withCommentsOrParams && objMap[typeof opt_withCommentsOrParams]),
-		    p = isObj ? Object(opt_withCommentsOrParams) : {};
+		var isObj = Boolean(opt_withCommentsOrParams && objMap[typeof opt_withCommentsOrParams]);
 
-		var posRgxp = /\$\{pos}/g;
+		var p = isObj ? Object(opt_withCommentsOrParams) : {};
+
 		function mark(pos) {
 			if (p['@label']) {
 				return p['@label'].replace(posRgxp, pos);
@@ -269,7 +271,7 @@
 				p[el] = p[el] || !isObj;
 			}
 
-			cacheKey += '' + p[el] + ',';
+			cacheKey += p[el] + ',';
 		}
 
 		var initStr = str,
@@ -298,10 +300,10 @@
 		    rPart = '';
 
 		for (var i = -1; ++i < str.length;) {
-			var el = str.charAt(i),
-			    next = str.charAt(i + 1);
+			var el = str.charAt(i);
 
-			var word = str.substr(i, 2),
+			var next = str.charAt(i + 1),
+			    word = str.substr(i, 2),
 			    extWord = str.substr(i, 3);
 
 			if (!comment) {
