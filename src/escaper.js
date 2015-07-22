@@ -6,19 +6,18 @@
  * https://github.com/kobezzza/Escaper/blob/master/LICENSE
  */
 
-const Escaper = { VERSION: [2, 4, 6] };
+const Escaper = { VERSION: [2, 4, 7] };
 export default Escaper;
 
-const
-	stringLiterals = {
-		'"': true,
-		'\'': true,
-		'`': true
-	},
+const stringLiterals = {
+	'"': true,
+	'\'': true,
+	'`': true
+};
 
-	literals = {
-		'/': true
-	};
+const literals = {
+	'/': true
+};
 
 for (let key in stringLiterals) {
 	if (!stringLiterals.hasOwnProperty(key)) {
@@ -28,24 +27,23 @@ for (let key in stringLiterals) {
 	literals[key] = true;
 }
 
-const
-	singleComments = {
-		'//': true,
-		'//*': true,
-		'//!': true,
-		'//#': true,
-		'//@': true,
-		'//$': true
-	},
+const singleComments = {
+	'//': true,
+	'//*': true,
+	'//!': true,
+	'//#': true,
+	'//@': true,
+	'//$': true
+};
 
-	multComments = {
-		'/*': true,
-		'/**': true,
-		'/*!': true,
-		'/*#': true,
-		'/*@': true,
-		'/*$': true
-	};
+const multComments = {
+	'/*': true,
+	'/**': true,
+	'/*!': true,
+	'/*#': true,
+	'/*@': true,
+	'/*$': true
+};
 
 const
 	keyArr = [],
@@ -96,39 +94,37 @@ for (let key in rgxpFlagsMap) {
 	rgxpFlags.push(key);
 }
 
-const
-	escapeEndMap = {
-		'-': true,
-		'+': true,
-		'*': true,
-		'%': true,
-		'~': true,
-		'>': true,
-		'<': true,
-		'^': true,
-		',': true,
-		';': true,
-		'=': true,
-		'|': true,
-		'&': true,
-		'!': true,
-		'?': true,
-		':': true,
-		'(': true,
-		'{': true,
-		'[': true
-	};
+const escapeEndMap = {
+	'-': true,
+	'+': true,
+	'*': true,
+	'%': true,
+	'~': true,
+	'>': true,
+	'<': true,
+	'^': true,
+	',': true,
+	';': true,
+	'=': true,
+	'|': true,
+	'&': true,
+	'!': true,
+	'?': true,
+	':': true,
+	'(': true,
+	'{': true,
+	'[': true
+};
 
-const
-	escapeEndWordMap = {
-		'typeof': true,
-		'void': true,
-		'instanceof': true,
-		'delete': true,
-		'in': true,
-		'new': true,
-		'of': true
-	};
+const escapeEndWordMap = {
+	'typeof': true,
+	'void': true,
+	'instanceof': true,
+	'delete': true,
+	'in': true,
+	'new': true,
+	'of': true
+};
 
 const
 	cache = {},
@@ -158,7 +154,8 @@ const
 	uSRgxp = /[^\s\/]/,
 	wRgxp = /[a-z]/,
 	sRgxp = /\s/,
-	nRgxp = /\r|\n/;
+	nRgxp = /\r|\n/,
+	posRgxp = /\$\{pos}/g;
 
 let
 	symbols,
@@ -167,11 +164,10 @@ let
 Escaper.symbols = null;
 Escaper.snakeskinRgxp = null;
 
-const
-	objMap = {
-		'object': true,
-		'function': true
-	};
+const objMap = {
+	'object': true,
+	'function': true
+};
 
 /**
  * Replaces all found blocks ' ... ', " ... ", ` ... `, / ... /, // ..., /* ... *\/ to
@@ -212,23 +208,17 @@ const
  * @return {string}
  */
 Escaper.replace = function (str, opt_withCommentsOrParams, opt_quotContent, opt_snakeskin) {
-	symbols = symbols ||
-		Escaper.symbols || 'a-z';
+	symbols = symbols || Escaper.symbols || 'a-z';
+	snakeskinRgxp = snakeskinRgxp || Escaper.snakeskinRgxp || new RegExp(`[!$${symbols}_]`, 'i');
 
-	snakeskinRgxp = snakeskinRgxp ||
-		Escaper.snakeskinRgxp ||
-		new RegExp(`[!$${symbols}_]`, 'i');
+	const isObj = Boolean(
+		opt_withCommentsOrParams &&
+			objMap[typeof opt_withCommentsOrParams]
+	);
 
-	const
-		isObj = Boolean(
-			opt_withCommentsOrParams &&
-				objMap[typeof opt_withCommentsOrParams]
-		),
+	const p = isObj ?
+		Object(opt_withCommentsOrParams) : {};
 
-		p = isObj ?
-			Object(opt_withCommentsOrParams) : {};
-
-	const posRgxp = /\$\{pos}/g;
 	function mark(pos) {
 		if (p['@label']) {
 			return p['@label'].replace(posRgxp, pos);
@@ -265,7 +255,8 @@ Escaper.replace = function (str, opt_withCommentsOrParams, opt_quotContent, opt_
 
 	let cacheKey = '';
 	for (let i = -1; ++i < keyArr.length;) {
-		let el = keyArr[i];
+		const
+			el = keyArr[i];
 
 		if (multComments[el] || singleComments[el]) {
 			p[el] = withComments || p[el];
@@ -311,10 +302,10 @@ Escaper.replace = function (str, opt_withCommentsOrParams, opt_quotContent, opt_
 
 	for (let i = -1; ++i < str.length;) {
 		let
-			el = str.charAt(i),
-			next = str.charAt(i + 1);
+			el = str.charAt(i);
 
-		let
+		const
+			next = str.charAt(i + 1),
 			word = str.substr(i, 2),
 			extWord = str.substr(i, 3);
 
