@@ -68,7 +68,7 @@ The method replaces all found blocks `' ... '`, `" ... "`, `` ` ... ` ``, `/ ...
 
 ```js
 {
-  // Template for replacement
+  // The template for replacement
   '@label'   : '__ESCAPER_QUOT__${pos}_',
 
   '@all'     : true, // Replaces all found matches
