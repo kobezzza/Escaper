@@ -3,7 +3,7 @@ Escaper
 
 Escaper is a small JavaScript library for replacing string literals, regular expressions and comments in JavaScript syntax.
 
-[Russian documentation](https://github.com/kobezzza/Escaper/blob/master/README.ru.md)
+[:ru: Russian documentation](https://github.com/kobezzza/Escaper/blob/master/README.ru.md)
 
 [![NPM version](http://img.shields.io/npm/v/escaper.svg?style=flat)](http://badge.fury.io/js/escaper)
 [![NPM dependencies](http://img.shields.io/david/kobezzza/Escaper.svg?style=flat)](https://david-dm.org/kobezzza/Escaper#info=dependencies&view=table)

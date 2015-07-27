@@ -3,6 +3,8 @@ Escaper
 
 Библиотека для «экранирования» литералов строк, регулярных выражений и комментариев в синтаксисе JavaScript.
 
+[:gb: Документация на английском](https://github.com/kobezzza/Escaper/blob/master/README.md)
+
 [![NPM version](http://img.shields.io/npm/v/escaper.svg?style=flat)](http://badge.fury.io/js/escaper)
 [![NPM dependencies](http://img.shields.io/david/kobezzza/Escaper.svg?style=flat)](https://david-dm.org/kobezzza/Escaper#info=dependencies&view=table)
 [![NPM devDependencies](http://img.shields.io/david/dev/kobezzza/Escaper.svg?style=flat)](https://david-dm.org/kobezzza/Escaper#info=devDependencies&view=table)
