@@ -5,7 +5,8 @@
   "ignoreUrls": true,
 
   "fileExtensions": [
-    ".md"
+    ".md",
+    ".html"
   ],
 
   "excludeFiles": [
@@ -18,11 +19,12 @@
   ],
 
   "dictionary": [
-    "/RegExp/i",
+    "regExp",
     "maintainers",
-    "Escaper",
+    "escaper",
     "quotContent",
     "str",
-    "withComment"
+    "withComment",
+    "ru|gb"
   ]
 }
