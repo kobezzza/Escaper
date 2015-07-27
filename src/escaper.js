@@ -6,7 +6,7 @@
  * https://github.com/kobezzza/Escaper/blob/master/LICENSE
  */
 
-const Escaper = { VERSION: [2, 4, 8] };
+const Escaper = { VERSION: [2, 4, 9] };
 export default Escaper;
 
 const stringLiterals = {
