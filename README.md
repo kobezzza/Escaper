@@ -56,7 +56,7 @@ Escaper.paste(str, content);
 ```
 
 ## API
-### Escaper.replace(str, opt_withComment, opt_quotContent)
+### Escaper.replace(str, opt_withComment, opt_content)
 
 The method replaces all found blocks `' ... '`, `" ... "`, `` ` ... ` ``, `/ ... /`, `// ...`, `/* ... */` to
 `__ESCAPER_QUOT__number_` in a string and returns a new string.
@@ -106,18 +106,18 @@ true  // Replaces all found matches
 false // Replaces all kinds of string literals and regular expressions
 ```
 
-* `Array=` `opt_quotContent = Escaper.quotContent` — an array for matches.
+* `Array=` `opt_content = Escaper.content` — an array for matches.
 
 `@return {string}`
 
-### Escaper.paste(str, opt_quotContent)
+### Escaper.paste(str, opt_content)
 
 The method replaces all found blocks `__ESCAPER_QUOT__number_` to real content in a string and returns a new string.
 
 **Arguments**
 
 * `string` `str` — source string;
-* `Array=` `opt_quotContent = Escaper.quotContent` — array of matches;
+* `Array=` `opt_content = Escaper.content` — array of matches;
 * `RegExp=` `opt_rgxp` — RegExp for searching, e.g. `/__ESCAPER_QUOT__(\d+)_/g`.
 
 `@return {string}`

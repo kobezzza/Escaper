@@ -56,7 +56,7 @@ Escaper.paste(str, content);
 ```
 
 ## API
-### Escaper.replace(str, opt_withComment, opt_quotContent)
+### Escaper.replace(str, opt_withComment, opt_content)
 
 Заметить блоки вида `' ... '`, `" ... "`, `` ` ... ` ``, `/ ... /`, `// ...`, `/* ... */` на
 `__ESCAPER_QUOT__номер_` в указанной строке и вернуть новую строку.
@@ -106,18 +106,18 @@ true  // Вырезаются литералы с комментариями
 false // Вырезаются одни литералы
 ```
 
-* `Array=` `opt_quotContent = Escaper.quotContent` — стек содержимого.
+* `Array=` `opt_content = Escaper.content` — стек содержимого.
 
 `@return {string}`
 
-### Escaper.paste(str, opt_quotContent)
+### Escaper.paste(str, opt_content)
 
 Заметить `__ESCAPER_QUOT__номер_` в указанной строке на реальное содержимое и вернуть новую строку.
 
 **Аргументы**
 
 * `string` `str` — исходная строка;
-* `Array=` `opt_quotContent = Escaper.quotContent` — стек содержимого;
+* `Array=` `opt_content = Escaper.content` — стек содержимого;
 * `RegExp=` `opt_rgxp` — регулярное выражение для поиска, например `/__ESCAPER_QUOT__(\d+)_/g`.
 
 `@return {string}`
