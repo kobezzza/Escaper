@@ -6,8 +6,20 @@
  * https://github.com/kobezzza/Escaper/blob/master/LICENSE
  */
 
-const Escaper = { VERSION: [2, 4, 11] };
-export default Escaper;
+const Escaper = {
+
+	VERSION: [2, 4, 12],
+	content: [],
+	cache: {},
+	snakeskinRgxp: null,
+	symbols: null,
+	replace,
+	paste
+
+};
+
+export default
+	Escaper;
 
 const stringLiterals = {
 	'"': true,
@@ -126,10 +138,6 @@ const escapeEndWordMap = {
 	'of': true
 };
 
-const
-	cache = {},
-	content = [];
-
 /**
  * @param {!Object} obj
  * @param {!Object} p
@@ -147,8 +155,9 @@ function mix(obj, p, val) {
 	}
 }
 
-/** @type {!Array} */
-Escaper.quotContent = content;
+let
+	symbols,
+	snakeskinRgxp;
 
 const
 	uSRgxp = /[^\s\/]/,
@@ -156,13 +165,6 @@ const
 	sRgxp = /\s/,
 	nRgxp = /\r|\n/,
 	posRgxp = /\$\{pos}/g;
-
-let
-	symbols,
-	snakeskinRgxp;
-
-Escaper.symbols = null;
-Escaper.snakeskinRgxp = null;
 
 const objMap = {
 	'object': true,
@@ -203,13 +205,17 @@ const objMap = {
  *
  *     OR if the value is boolean, then will be replaced all found comments (true) / literals (false)
  *
- * @param {Array=} [opt_quotContent=Escaper.quotContent] - array for matches
+ * @param {Array=} [opt_content=Escaper.content] - array for matches
  * @param {?boolean=} [opt_snakeskin] - private parameter for using with Snakeskin
  * @return {string}
  */
-Escaper.replace = function (str, opt_withCommentsOrParams, opt_quotContent, opt_snakeskin) {
+export function replace(str, opt_withCommentsOrParams, opt_content, opt_snakeskin) {
 	symbols = symbols || Escaper.symbols || 'a-z';
 	snakeskinRgxp = snakeskinRgxp || Escaper.snakeskinRgxp || new RegExp(`[!$${symbols}_]`, 'i');
+
+	const
+		cache = Escaper.cache,
+		content = Escaper.content;
 
 	const isObj = Boolean(
 		opt_withCommentsOrParams &&
@@ -270,7 +276,7 @@ Escaper.replace = function (str, opt_withCommentsOrParams, opt_quotContent, opt_
 
 	const
 		initStr = str,
-		stack = opt_quotContent || content;
+		stack = opt_content || content;
 
 	if (stack === content && cache[cacheKey] && cache[cacheKey][initStr]) {
 		return cache[cacheKey][initStr];
@@ -460,19 +466,20 @@ Escaper.replace = function (str, opt_withCommentsOrParams, opt_quotContent, opt_
 	}
 
 	return str;
-};
+}
 
-const pasteRgxp = /__ESCAPER_QUOT__(\d+)_/g;
+const
+	pasteRgxp = /__ESCAPER_QUOT__(\d+)_/g;
 
 /**
  * Replaces all found blocks __ESCAPER_QUOT__number_ to real content in a string
  * and returns a new string
  *
  * @param {string} str - source string
- * @param {Array=} [opt_quotContent=Escaper.quotContent] - array of matches
+ * @param {Array=} [opt_content=Escaper.content] - array of matches
  * @param {RegExp=} [opt_rgxp] - RegExp for searching, e.g. /__ESCAPER_QUOT__(\d+)_/g
  * @return {string}
  */
-Escaper.paste = function (str, opt_quotContent, opt_rgxp) {
-	return str.replace(opt_rgxp || pasteRgxp, (sstr, pos) => (opt_quotContent || content)[pos]);
-};
+export function paste(str, opt_content, opt_rgxp) {
+	return str.replace(opt_rgxp || pasteRgxp, (sstr, pos) => (opt_content || Escaper.content)[pos]);
+}
