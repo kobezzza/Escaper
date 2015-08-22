@@ -1,30 +1,44 @@
 /*!
- * Escaper v2.4.11
+ * Escaper v2.4.12
  * https://github.com/kobezzza/Escaper
  *
  * Released under the MIT license
  * https://github.com/kobezzza/Escaper/blob/master/LICENSE
  *
- * Date: Thu, 30 Jul 2015 09:04:39 GMT
+ * Date: Sat, 22 Aug 2015 14:05:44 GMT
  */
 
 (function (global, factory) {
 	if (typeof define === 'function' && define.amd) {
-		define('Escaper', ['exports', 'module'], factory);
-	} else if (typeof exports !== 'undefined' && typeof module !== 'undefined') {
-		factory(exports, module);
+		define('Escaper', ['exports'], factory);
+	} else if (typeof exports !== 'undefined') {
+		factory(exports);
 	} else {
 		var mod = {
 			exports: {}
 		};
-		factory(mod.exports, mod);
+		factory(mod.exports);
 		global.Escaper = mod.exports;
 	}
-})(this, function (exports, module) {
+})(this, function (exports) {
 	'use strict';
 
-	var Escaper = { VERSION: [2, 4, 11] };
-	module.exports = Escaper;
+	exports.__esModule = true;
+	exports.replace = replace;
+	exports.paste = paste;
+	var Escaper = {
+
+		VERSION: [2, 4, 12],
+		content: [],
+		cache: {},
+		snakeskinRgxp: null,
+		symbols: null,
+		replace: replace,
+		paste: paste
+
+	};
+
+	exports.default = Escaper;
 
 	var stringLiterals = {
 		'"': true,
@@ -141,9 +155,6 @@
 		'of': true
 	};
 
-	var cache = {},
-	    content = [];
-
 	/**
   * @param {!Object} obj
   * @param {!Object} p
@@ -161,20 +172,14 @@
 		}
 	}
 
-	/** @type {!Array} */
-	Escaper.quotContent = content;
+	var symbols = undefined,
+	    snakeskinRgxp = undefined;
 
 	var uSRgxp = /[^\s\/]/,
 	    wRgxp = /[a-z]/,
 	    sRgxp = /\s/,
 	    nRgxp = /\r|\n/,
 	    posRgxp = /\$\{pos}/g;
-
-	var symbols = undefined,
-	    snakeskinRgxp = undefined;
-
-	Escaper.symbols = null;
-	Escaper.snakeskinRgxp = null;
 
 	var objMap = {
 		'object': true,
@@ -215,13 +220,17 @@
   *
   *     OR if the value is boolean, then will be replaced all found comments (true) / literals (false)
   *
-  * @param {Array=} [opt_quotContent=Escaper.quotContent] - array for matches
+  * @param {Array=} [opt_content=Escaper.content] - array for matches
   * @param {?boolean=} [opt_snakeskin] - private parameter for using with Snakeskin
   * @return {string}
   */
-	Escaper.replace = function (str, opt_withCommentsOrParams, opt_quotContent, opt_snakeskin) {
+
+	function replace(str, opt_withCommentsOrParams, opt_content, opt_snakeskin) {
 		symbols = symbols || Escaper.symbols || 'a-z';
 		snakeskinRgxp = snakeskinRgxp || Escaper.snakeskinRgxp || new RegExp('[!$' + symbols + '_]', 'i');
+
+		var cache = Escaper.cache,
+		    content = Escaper.content;
 
 		var isObj = Boolean(opt_withCommentsOrParams && objMap[typeof opt_withCommentsOrParams]);
 
@@ -275,7 +284,7 @@
 		}
 
 		var initStr = str,
-		    stack = opt_quotContent || content;
+		    stack = opt_content || content;
 
 		if (stack === content && cache[cacheKey] && cache[cacheKey][initStr]) {
 			return cache[cacheKey][initStr];
@@ -442,7 +451,7 @@
 		}
 
 		return str;
-	};
+	}
 
 	var pasteRgxp = /__ESCAPER_QUOT__(\d+)_/g;
 
@@ -451,13 +460,14 @@
   * and returns a new string
   *
   * @param {string} str - source string
-  * @param {Array=} [opt_quotContent=Escaper.quotContent] - array of matches
+  * @param {Array=} [opt_content=Escaper.content] - array of matches
   * @param {RegExp=} [opt_rgxp] - RegExp for searching, e.g. /__ESCAPER_QUOT__(\d+)_/g
   * @return {string}
   */
-	Escaper.paste = function (str, opt_quotContent, opt_rgxp) {
+
+	function paste(str, opt_content, opt_rgxp) {
 		return str.replace(opt_rgxp || pasteRgxp, function (sstr, pos) {
-			return (opt_quotContent || content)[pos];
+			return (opt_content || Escaper.content)[pos];
 		});
-	};
+	}
 });
