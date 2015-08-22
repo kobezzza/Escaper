@@ -106,7 +106,7 @@ true  // Replaces all found matches
 false // Replaces all kinds of string literals and regular expressions
 ```
 
-* `Array=` `opt_content = Escaper.content` — an array for matches.
+* `Array=` `opt_content = Escaper.content` — array for matches.
 
 `@return {string}`
 
