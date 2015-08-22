@@ -7,7 +7,7 @@
  */
 
 describe('Escaper', function () {
-	it('should work with " ... "', function () {
+	it('should works with " ... "', function () {
 		var str = Escaper.replace('Hello "friend\\\""!');
 
 		expect(str)
@@ -43,7 +43,7 @@ describe('Escaper', function () {
 			.toBe('Hello !');
 	});
 
-	it("should work with ' ... '", function () {
+	it("should works with ' ... '", function () {
 		var str = Escaper.replace("Hello 'friend\\\''!");
 
 		expect(str)
@@ -62,7 +62,7 @@ describe('Escaper', function () {
 			.toBe("Hello 'friend\\\''!");
 	});
 
-	it('should work with ` ... `', function () {
+	it('should works with ` ... `', function () {
 		var stack = [];
 		var str = Escaper.replace('Hello `friend`!', false, stack);
 
@@ -97,7 +97,7 @@ describe('Escaper', function () {
 			.toBe('Hello `friend${foo/* fooo */}`!');
 	});
 
-	it("should work with / ... /", function () {
+	it("should works with / ... /", function () {
 		var stack = [];
 		var str = Escaper.replace("Hello + /friend\\//gmi!", false, stack);
 
@@ -124,7 +124,7 @@ describe('Escaper', function () {
 			.toBe('/friend\\/[//.]/gmi!, /friend\\/[//.]/gmi');
 	});
 
-	it("should work with / ... / (advanced test)", function () {
+	it("should works with / ... / (advanced test)", function () {
 		var stack = [];
 		var str = Escaper.replace('2 >> /foo/ < /bar/ ^ /car/ [/bar/] foo typeof /mu/ /mu/', true, stack);
 
@@ -135,7 +135,7 @@ describe('Escaper', function () {
 			.toBe('2 >> /foo/ < /bar/ ^ /car/ [/bar/] foo typeof /mu/ /mu/');
 	});
 
-	it("should work with single-line comments", function () {
+	it("should works with single-line comments", function () {
 		var stack = [];
 		var str = Escaper.replace(
 			("Hello // the comment\
@@ -148,7 +148,7 @@ describe('Escaper', function () {
 			.toBe('Hello // the comment\n\t\t\tFriend!');
 	});
 
-	it("should work with //!", function () {
+	it("should works with //!", function () {
 		var stack = [];
 		var str = Escaper.replace(
 			("Hello // the comment //! fffuuu\
@@ -162,7 +162,7 @@ describe('Escaper', function () {
 			.toBe('Hello // the comment //! fffuuu\n//! fffuuuu\n\t\t\tFriend!');
 	});
 
-	it("should work with multiline comments", function () {
+	it("should works with multiline comments", function () {
 		var stack = [];
 		var str = Escaper.replace('Hello /*/ the comment */ Friend!', true, stack);
 
@@ -173,7 +173,7 @@ describe('Escaper', function () {
 			.toBe('Hello /*/ the comment */ Friend!');
 	});
 
-	it("should work with Snakeskin", function () {
+	it("should works with Snakeskin", function () {
 		var stack = [];
 		var str = Escaper.replace('foo|replace /hello/g|join "world"', true, stack, true);
 
@@ -184,7 +184,7 @@ describe('Escaper', function () {
 			.toBe('foo|replace /hello/g|join "world"');
 	});
 
-	it("should work with custom parameters", function () {
+	it("should works with custom parameters", function () {
 		var stack = [];
 		var str = Escaper.replace('"Hello" /* the comment */ + /Friend/gim /** foo */!', {'"': true, '/': true, '/*': true}, stack);
 
@@ -195,7 +195,7 @@ describe('Escaper', function () {
 			.toBe('"Hello" /* the comment */ + /Friend/gim /** foo */!');
 	});
 
-	it("should work with deep literals", function () {
+	it("should works with deep literals", function () {
 		var stack = [];
 		var str = Escaper.replace('"Hello" /** "foo" */', {'"': true}, stack);
 
@@ -206,7 +206,7 @@ describe('Escaper', function () {
 			.toBe('"Hello" /** "foo" */');
 	});
 
-	it("should work with @all", function () {
+	it("should works with @all", function () {
 		var stack = [];
 		var str = Escaper.replace('"Hello" /* the comment */ + /Friend/gim /** foo */!', {'@all': true, '/*': -1}, stack);
 
@@ -217,7 +217,7 @@ describe('Escaper', function () {
 			.toBe('"Hello"  + /Friend/gim /** foo */!');
 	});
 
-	it("should work with @comments", function () {
+	it("should works with @comments", function () {
 		var stack = [];
 		var str = Escaper.replace('"Hello" /* the comment */ + /Friend/gim /** foo */!', {'@comments': -1}, stack);
 
@@ -228,7 +228,7 @@ describe('Escaper', function () {
 			.toBe('"Hello"  + /Friend/gim !');
 	});
 
-	it("should work with @comments, @literals and @all", function () {
+	it("should works with @comments, @literals and @all", function () {
 		var stack = [];
 		var str = Escaper.replace('"Hello" /* the comment */ + /Friend/gim /** foo */!', {'@all': -1, '@comments': false, '@literals': true}, stack);
 
