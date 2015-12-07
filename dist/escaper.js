@@ -5,11 +5,12 @@
  * Released under the MIT license
  * https://github.com/kobezzza/Escaper/blob/master/LICENSE
  *
- * Date: Mon, 07 Dec 2015 10:27:45 GMT
+ * Date: Mon, 07 Dec 2015 10:34:49 GMT
  */
 
-/*istanbul ignore next*/'use strict';
+'use strict';
 
+/*istanbul ignore next*/
 (function (global, factory) {
 	if (typeof define === "function" && define.amd) {
 		define('Escaper', ['exports'], factory);
