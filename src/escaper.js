@@ -7,7 +7,6 @@
  */
 
 const Escaper = {
-
 	VERSION: [2, 4, 13],
 	content: [],
 	cache: {},
@@ -15,7 +14,6 @@ const Escaper = {
 	symbols: null,
 	replace,
 	paste
-
 };
 
 export default
@@ -214,8 +212,7 @@ export function replace(str, opt_withCommentsOrParams, opt_content, opt_snakeski
 	snakeskinRgxp = snakeskinRgxp || Escaper.snakeskinRgxp || new RegExp(`[!$${symbols}_]`, 'i');
 
 	const
-		cache = Escaper.cache,
-		content = Escaper.content;
+		{cache, content} = Escaper;
 
 	const isObj = Boolean(
 		opt_withCommentsOrParams &&
