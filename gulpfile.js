@@ -196,7 +196,7 @@ function compile(cb) {
 		}))
 
 		.on('error', error(cb))
-		.pipe(header(`/*! Escaper v${getVersion()} | https://github.com/kobezzza/Escaper/blob/master/LICENSE */\n`))
+		.pipe(header(`'use strict'; /*! Escaper v${getVersion()} | https://github.com/kobezzza/Escaper/blob/master/LICENSE */\n`))
 		.pipe(gulp.dest('./dist'))
 		.on('end', cb);
 }
