@@ -1,3 +1,5 @@
+'use strict';
+
 /*!
  * Escaper
  * https://github.com/kobezzza/Escaper
@@ -43,22 +45,22 @@ function getHead(opt_version) {
 }
 
 function error(cb) {
-	return function (err) {
+	return (err) => {
 		console.error(err.message);
 		cb();
 	};
 }
 
 const
-	headRgxp = /(\/\*![\s\S]*?\*\/\n{2})/;
+	headRgxp = /(\/\*![\s\S]*?\*\/(?:\r?\n|\r){2})/;
 
-var
+let
 	readyToWatcher = null;
 
-gulp.task('copyright', function (cb) {
+gulp.task('copyright', (cb) => {
 	gulp.src('./LICENSE')
-		.pipe(replace(/(Copyright \(c\) )(\d+)-?(\d*)/, function (sstr, intro, from, to) {
-			var year = new Date().getFullYear();
+		.pipe(replace(/(Copyright \(c\) )(\d+)-?(\d*)/, (sstr, intro, from, to) => {
+			const year = new Date().getFullYear();
 			return intro + from + (to || from != year ? '-' + year : '');
 		}))
 
@@ -66,14 +68,14 @@ gulp.task('copyright', function (cb) {
 		.on('end', cb);
 });
 
-gulp.task('head', function (cb) {
+gulp.task('head', (cb) => {
 	readyToWatcher = false;
 	const fullHead =
 		getHead() +
 		' */\n\n';
 
 	gulp.src(['./@(src|spec)/*.js', './@(externs|gulpfile).js', './predefs/src/index.js'], {base: './'})
-		.pipe(through.obj(function (file, enc, cb) {
+		.pipe(through.obj((file, enc, cb) => {
 			if (!headRgxp.exec(file.contents.toString()) || RegExp.$1 !== fullHead) {
 				this.push(file);
 			}
@@ -84,13 +86,13 @@ gulp.task('head', function (cb) {
 		.pipe(replace(headRgxp, ''))
 		.pipe(header(fullHead))
 		.pipe(gulp.dest('./'))
-		.on('end', function () {
+		.on('end', () => {
 			readyToWatcher = true;
 			cb();
 		});
 });
 
-gulp.task('build', function (cb) {
+gulp.task('build', (cb) => {
 	const fullHead =
 		getHead(true) +
 		' *\n' +
@@ -100,47 +102,30 @@ gulp.task('build', function (cb) {
 	gulp.src('./src/escaper.js')
 		.pipe(cached('build'))
 		.pipe(replace(headRgxp, ''))
-		.pipe(babel({
-			compact: false,
-			auxiliaryCommentBefore: 'istanbul ignore next',
-
-			modules: 'umd',
-			moduleId: 'Escaper',
-
-			loose: 'all',
-			blacklist: [
-				'es3.propertyLiterals',
-				'es3.memberExpressionLiterals'
-			],
-
-			optional: [
-				'spec.undefinedToVoid'
-			]
-		}))
-
+		.pipe(babel())
 		.on('error', error(cb))
 		.pipe(header(fullHead))
 		.pipe(gulp.dest('./dist'))
 		.on('end', cb);
 });
 
-gulp.task('bump', function (cb) {
+gulp.task('bump', (cb) => {
 	gulp.src('./*.json')
 		.pipe(bump({version: getVersion()}))
 		.pipe(gulp.dest('./'))
 		.on('end', cb);
 });
 
-gulp.task('npmignore', function (cb) {
+gulp.task('npmignore', (cb) => {
 	gulp.src('./.npmignore')
 		.pipe(replace(/([\s\S]*?)(?=# NPM ignore list)/, fs.readFileSync('./.gitignore') + '\n'))
 		.pipe(gulp.dest('./'))
 		.on('end', cb);
 });
 
-gulp.task('predefs', function (cb) {
+gulp.task('predefs', (cb) => {
 	async.parallel([
-		function (cb) {
+		(cb) => {
 			download([
 				'https://raw.githubusercontent.com/google/closure-compiler/master/contrib/externs/jasmine.js'
 			])
@@ -155,7 +140,7 @@ gulp.task('predefs', function (cb) {
 				});
 		},
 
-		function (cb) {
+		(cb) => {
 			run('bower install').exec()
 				.on('error', error(cb))
 				.on('finish', cb);
@@ -211,7 +196,7 @@ function compile(cb) {
 		}))
 
 		.on('error', error(cb))
-		.pipe(header('/*! Escaper v' + getVersion() + ' | https://github.com/kobezzza/Escaper/blob/master/LICENSE */\n'))
+		.pipe(header(`/*! Escaper v${getVersion()} | https://github.com/kobezzza/Escaper/blob/master/LICENSE */\n`))
 		.pipe(gulp.dest('./dist'))
 		.on('end', cb);
 }
@@ -224,7 +209,7 @@ function test(cb) {
 	gulp.src('./dist/escaper.min.js')
 		.pipe(istanbul())
 		.pipe(istanbul.hookRequire())
-		.on('finish', function () {
+		.on('finish', () => {
 			gulp.src('./spec/index_spec.js')
 				.pipe(jasmine())
 				.on('error', error(cb))
@@ -235,15 +220,15 @@ function test(cb) {
 
 gulp.task('test-dev', ['fast-compile'], test);
 gulp.task('test', test);
-gulp.task('yaspeller', function (cb) {
+gulp.task('yaspeller', (cb) => {
 	run('yaspeller ./').exec()
 		.on('error', error(cb))
 		.on('finish', cb);
 });
 
-gulp.task('watch', ['default'], function () {
+gulp.task('watch', ['default'], () => {
 	function unbind(name) {
-		return function (e) {
+		return (e) => {
 			if (e.type === 'deleted') {
 				delete cached.caches[name][e.path];
 			}
@@ -251,15 +236,13 @@ gulp.task('watch', ['default'], function () {
 	}
 
 	async.whilst(
-		function () {
-			return readyToWatcher === false;
-		},
+		() =>
+			readyToWatcher === false,
 
-		function (cb) {
-			setTimeout(cb, 500);
-		},
+		(cb) =>
+			setTimeout(cb, 500),
 
-		function () {
+		() => {
 			gulp.watch('./src/escaper.js', ['test-dev', 'bump']).on('change', unbind('build'));
 			gulp.watch('./spec/*.js', ['test']);
 			gulp.watch('./*.md', ['yaspeller']);
