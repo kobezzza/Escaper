@@ -18,7 +18,6 @@
   ],
   "ignore": [
     "/src",
-    "/spec",
     "/predefs",
     "/package.json",
     "/gulpfile.js",

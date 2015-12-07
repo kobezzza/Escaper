@@ -54,7 +54,6 @@ node_modules
 # NPM ignore list
 /src
 /predefs
-/spec
 /bower.json
 /gulpfile.js
 /externs.js
