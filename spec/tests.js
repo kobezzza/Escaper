@@ -1,5 +1,3 @@
-'use strict';
-
 /*!
  * Escaper
  * https://github.com/kobezzza/Escaper
