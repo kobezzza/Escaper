@@ -9,7 +9,7 @@
  */
 
 const Escaper = {
-	VERSION: [2, 4, 15],
+	VERSION: [2, 4, 16],
 	content: [],
 	cache: {},
 	snakeskinRgxp: null,
