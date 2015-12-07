@@ -75,7 +75,7 @@ gulp.task('head', (cb) => {
 		' */\n\n';
 
 	gulp.src(['./@(src|spec)/*.js', './@(externs|gulpfile).js', './predefs/src/index.js'], {base: './'})
-		.pipe(through.obj((file, enc, cb) => {
+		.pipe(through.obj(function (file, enc, cb) {
 			if (!headRgxp.exec(file.contents.toString()) || RegExp.$1 !== fullHead) {
 				this.push(file);
 			}
