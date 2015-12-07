@@ -1,17 +1,19 @@
 /*!
- * Escaper v2.4.12
+ * Escaper v2.4.13
  * https://github.com/kobezzza/Escaper
  *
  * Released under the MIT license
  * https://github.com/kobezzza/Escaper/blob/master/LICENSE
  *
- * Date: Sat, 22 Aug 2015 14:05:44 GMT
+ * Date: Mon, 07 Dec 2015 10:27:45 GMT
  */
 
+/*istanbul ignore next*/'use strict';
+
 (function (global, factory) {
-	if (typeof define === 'function' && define.amd) {
+	if (typeof define === "function" && define.amd) {
 		define('Escaper', ['exports'], factory);
-	} else if (typeof exports !== 'undefined') {
+	} else if (typeof exports !== "undefined") {
 		factory(exports);
 	} else {
 		var mod = {
@@ -21,31 +23,31 @@
 		global.Escaper = mod.exports;
 	}
 })(this, function (exports) {
-	'use strict';
-
-	exports.__esModule = true;
+	Object.defineProperty(exports, "__esModule", {
+		value: true
+	});
 	exports.replace = replace;
 	exports.paste = paste;
-	var Escaper = {
 
-		VERSION: [2, 4, 12],
+	function _typeof(obj) {
+		return obj && typeof Symbol !== "undefined" && obj.constructor === Symbol ? "symbol" : typeof obj;
+	}
+
+	var Escaper = {
+		VERSION: [2, 4, 13],
 		content: [],
 		cache: {},
 		snakeskinRgxp: null,
 		symbols: null,
 		replace: replace,
 		paste: paste
-
 	};
-
 	exports.default = Escaper;
-
 	var stringLiterals = {
 		'"': true,
 		'\'': true,
 		'`': true
 	};
-
 	var literals = {
 		'/': true
 	};
@@ -66,7 +68,6 @@
 		'//@': true,
 		'//$': true
 	};
-
 	var multComments = {
 		'/*': true,
 		'/**': true,
@@ -75,7 +76,6 @@
 		'/*@': true,
 		'/*$': true
 	};
-
 	var keyArr = [],
 	    finalMap = {};
 
@@ -144,7 +144,6 @@
 		'{': true,
 		'[': true
 	};
-
 	var escapeEndWordMap = {
 		'typeof': true,
 		'void': true,
@@ -155,11 +154,6 @@
 		'of': true
 	};
 
-	/**
-  * @param {!Object} obj
-  * @param {!Object} p
-  * @param {(boolean|number)} val
-  */
 	function mix(obj, p, val) {
 		for (var key in obj) {
 			if (!obj.hasOwnProperty(key)) {
@@ -172,68 +166,24 @@
 		}
 	}
 
-	var symbols = undefined,
-	    snakeskinRgxp = undefined;
-
+	var symbols = void 0,
+	    snakeskinRgxp = void 0;
 	var uSRgxp = /[^\s\/]/,
 	    wRgxp = /[a-z]/,
 	    sRgxp = /\s/,
 	    nRgxp = /\r|\n/,
 	    posRgxp = /\$\{pos}/g;
-
 	var objMap = {
 		'object': true,
 		'function': true
 	};
 
-	/**
-  * Replaces all found blocks ' ... ', " ... ", ` ... `, / ... /, // ..., /* ... *\/ to
-  * __ESCAPER_QUOT__number_ in a string and returns a new string
-  *
-  * @param {string} str - source string
-  * @param {(Object<string, boolean>|boolean)=} [opt_withCommentsOrParams=false] - parameters:
-  *
-  *     (if a parameter value is set to -1, then all found matches will be removed from the final string,
-  *          or if the value will be set to true/false they will be included/excluded)
-  *
-  *     *) @label    - template for replacement, e.g. __ESCAPER_QUOT__${pos}_
-  *     *) @all      - replaces all found matches
-  *     *) @comments - replaces all kinds of comments
-  *     *) @strings  - replaces all kinds of string literals
-  *     *) @literals - replaces all kinds of string literals and regular expressions
-  *     *) `
-  *     *) '
-  *     *) "
-  *     *) /
-  *     *) //
-  *     *) //*
-  *     *) //!
-  *     *) //#
-  *     *) //@
-  *     *) //$
-  *     *) /*
-  *     *) /**
-  *     *) /*!
-  *     *) /*#
-  *     *) /*@
-  *     *) /*$
-  *
-  *     OR if the value is boolean, then will be replaced all found comments (true) / literals (false)
-  *
-  * @param {Array=} [opt_content=Escaper.content] - array for matches
-  * @param {?boolean=} [opt_snakeskin] - private parameter for using with Snakeskin
-  * @return {string}
-  */
-
 	function replace(str, opt_withCommentsOrParams, opt_content, opt_snakeskin) {
 		symbols = symbols || Escaper.symbols || 'a-z';
 		snakeskinRgxp = snakeskinRgxp || Escaper.snakeskinRgxp || new RegExp('[!$' + symbols + '_]', 'i');
-
-		var cache = Escaper.cache,
-		    content = Escaper.content;
-
-		var isObj = Boolean(opt_withCommentsOrParams && objMap[typeof opt_withCommentsOrParams]);
-
+		var cache = Escaper.cache;
+		var content = Escaper.content;
+		var isObj = Boolean(opt_withCommentsOrParams && objMap[typeof opt_withCommentsOrParams === 'undefined' ? 'undefined' : _typeof(opt_withCommentsOrParams)]);
 		var p = isObj ? Object(opt_withCommentsOrParams) : {};
 
 		function mark(pos) {
@@ -245,6 +195,7 @@
 		}
 
 		var withComments = false;
+
 		if (typeof opt_withCommentsOrParams === 'boolean') {
 			withComments = Boolean(opt_withCommentsOrParams);
 		}
@@ -271,6 +222,7 @@
 		}
 
 		var cacheKey = '';
+
 		for (var i = -1; ++i < keyArr.length;) {
 			var el = keyArr[i];
 
@@ -292,25 +244,19 @@
 
 		var begin = false,
 		    end = true;
-
 		var escape = false,
 		    comment = false;
-
 		var selectionStart = 0,
 		    block = false;
-
 		var templateVar = 0,
 		    filterStart = false;
-
-		var cut = undefined,
-		    label = undefined;
-
+		var cut = void 0,
+		    label = void 0;
 		var part = '',
 		    rPart = '';
 
 		for (var i = -1; ++i < str.length;) {
 			var el = str.charAt(i);
-
 			var next = str.charAt(i + 1),
 			    word = str.substr(i, 2),
 			    extWord = str.substr(i, 3);
@@ -347,6 +293,7 @@
 					}
 
 					var skip = false;
+
 					if (opt_snakeskin) {
 						if (el === '|' && snakeskinRgxp.test(next)) {
 							filterStart = true;
@@ -368,7 +315,6 @@
 					}
 				}
 
-				// [] inside RegExp
 				if (begin === '/' && !escape) {
 					if (el === '[') {
 						block = true;
@@ -454,16 +400,6 @@
 	}
 
 	var pasteRgxp = /__ESCAPER_QUOT__(\d+)_/g;
-
-	/**
-  * Replaces all found blocks __ESCAPER_QUOT__number_ to real content in a string
-  * and returns a new string
-  *
-  * @param {string} str - source string
-  * @param {Array=} [opt_content=Escaper.content] - array of matches
-  * @param {RegExp=} [opt_rgxp] - RegExp for searching, e.g. /__ESCAPER_QUOT__(\d+)_/g
-  * @return {string}
-  */
 
 	function paste(str, opt_content, opt_rgxp) {
 		return str.replace(opt_rgxp || pasteRgxp, function (sstr, pos) {
