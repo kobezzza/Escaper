@@ -52,7 +52,7 @@ function error(cb) {
 }
 
 const
-	headRgxp = /(\/\*![\s\S]*?\*\/(?:\r?\n|\r){2})/;
+	headRgxp = /(\/\*![\s\S]*?\*\/\n{2})/;
 
 let
 	readyToWatcher = null;
@@ -70,9 +70,9 @@ gulp.task('copyright', (cb) => {
 
 gulp.task('head', (cb) => {
 	readyToWatcher = false;
-	const fullHead =
-		getHead() +
-		' */\n\n';
+
+	const
+		fullHead = `${getHead()} */\n\n`;
 
 	gulp.src(['./@(src|spec)/*.js', './@(externs|gulpfile).js', './predefs/src/index.js'], {base: './'})
 		.pipe(through.obj(function (file, enc, cb) {
