@@ -27,6 +27,7 @@ const
 	download = require('gulp-download'),
 	istanbul = require('gulp-istanbul'),
 	jasmine = require('gulp-jasmine'),
+	eol = require('gulp-eol'),
 	run = require('gulp-run');
 
 function getVersion() {
@@ -113,7 +114,7 @@ gulp.task('build', (cb) => {
 		.on('error', error(cb))
 		.pipe(replace(headRgxp, ''))
 		.pipe(header(fullHead))
-		.pipe(wrap('<%= contents %>\n\n'))
+		.pipe(eol('\n'))
 		.pipe(gulp.dest('./dist'))
 		.on('end', cb);
 });
@@ -204,8 +205,9 @@ function compile(cb) {
 		}))
 
 		.on('error', error(cb))
-		.pipe(wrap('(function(){\'use strict\';<%= contents %>}).call(this);\n\n'))
+		.pipe(wrap('(function(){\'use strict\';<%= contents %>}).call(this);'))
 		.pipe(header(`/*! Escaper v${getVersion()} | https://github.com/kobezzza/Escaper/blob/master/LICENSE */\n`))
+		.pipe(eol('\n'))
 		.pipe(gulp.dest('./dist'))
 		.on('end', cb);
 }

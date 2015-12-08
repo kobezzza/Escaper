@@ -4,7 +4,7 @@
   "homepage": "https://github.com/kobezzza/Escaper",
   "main": "dist/escaper.js",
   "jsnext:main": "src/escaper.js",
-  "version": "2.4.20",
+  "version": "2.4.21",
   "license": "MIT",
   "author": {
     "name": "kobezzza",
@@ -34,6 +34,7 @@
     "gulp-cached": "^1.0.4",
     "gulp-closure-compiler": "^0.3.0",
     "gulp-download": "0.0.1",
+    "gulp-eol": "^0.1.1",
     "gulp-header": "^1.2.2",
     "gulp-istanbul": "^0.10.0",
     "gulp-jasmine": "^2.0.0",
