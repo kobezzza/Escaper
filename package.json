@@ -41,6 +41,7 @@
     "gulp-replace": "^0.5.3",
     "gulp-rollup": "^1.4.0",
     "gulp-run": "^1.6.8",
+    "gulp-wrap": "^0.11.0",
     "jasmine": "^2.2.1",
     "jscs": "^2.0.0",
     "rollup-plugin-babel": "^2.2.0",
