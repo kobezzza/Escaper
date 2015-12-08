@@ -1,11 +1,11 @@
 /*!
- * Escaper v2.4.18
+ * Escaper v2.4.19
  * https://github.com/kobezzza/Escaper
  *
  * Released under the MIT license
  * https://github.com/kobezzza/Escaper/blob/master/LICENSE
  *
- * Date: Tue, 08 Dec 2015 20:27:50 GMT
+ * Date: Tue, 08 Dec 2015 20:45:37 GMT
  */
 
 (function (global, factory) {
@@ -22,7 +22,7 @@
 
 	babelHelpers;
 	var Escaper = {
-		VERSION: [2, 4, 18],
+		VERSION: [2, 4, 19],
 		content: [],
 		cache: {},
 		snakeskinRgxp: null,
