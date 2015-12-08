@@ -15,8 +15,9 @@ const
 	through = require('through2');
 
 const
-	babel = require('gulp-babel'),
+	babel = require('rollup-plugin-babel'),
 	monic = require('gulp-monic'),
+	rollup = require('gulp-rollup'),
 	bump = require('gulp-bump'),
 	gcc = require('gulp-closure-compiler'),
 	header = require('gulp-header'),
@@ -101,9 +102,14 @@ gulp.task('build', (cb) => {
 
 	gulp.src('./src/escaper.js')
 		.pipe(cached('build'))
-		.pipe(replace(headRgxp, ''))
-		.pipe(babel())
+		.pipe(rollup({
+			format: 'umd',
+			moduleId: 'Escaper',
+			plugins: [babel()]
+		}))
+
 		.on('error', error(cb))
+		.pipe(replace(headRgxp, ''))
 		.pipe(header(fullHead))
 		.pipe(gulp.dest('./dist'))
 		.on('end', cb);

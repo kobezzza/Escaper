@@ -1,10 +1,5 @@
 {
-  "moduleId": "Escaper",
-  "presets": ["es2015"],
+  "presets": ["es2015-rollup"],
   "compact": false,
-  "auxiliaryCommentBefore": "istanbul ignore next",
-  "plugins": [
-    "transform-undefined-to-void",
-    "transform-es2015-modules-umd"
-  ]
+  "auxiliaryCommentBefore": "istanbul ignore next"
 }
