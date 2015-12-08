@@ -21,6 +21,7 @@ const
 	bump = require('gulp-bump'),
 	gcc = require('gulp-closure-compiler'),
 	header = require('gulp-header'),
+	wrap = require('gulp-wrap'),
 	replace = require('gulp-replace'),
 	cached = require('gulp-cached'),
 	download = require('gulp-download'),
@@ -105,6 +106,7 @@ gulp.task('build', (cb) => {
 		.pipe(rollup({
 			format: 'umd',
 			moduleId: 'Escaper',
+			moduleName: 'Escaper',
 			plugins: [babel()]
 		}))
 
@@ -202,9 +204,9 @@ function compile(cb) {
 		}))
 
 		.on('error', error(cb))
-		.pipe(header(
-			`'use strict'; /*! Escaper v${getVersion()} | https://github.com/kobezzza/Escaper/blob/master/LICENSE */\n`
-		))
+
+		.pipe(wrap('(function(){\'use strict\';<%= contents %>}).call(this);'))
+		.pipe(header(`/*! Escaper v${getVersion()} | https://github.com/kobezzza/Escaper/blob/master/LICENSE */\n`))
 
 		.pipe(gulp.dest('./dist'))
 		.on('end', cb);
