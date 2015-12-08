@@ -113,6 +113,7 @@ gulp.task('build', (cb) => {
 		.on('error', error(cb))
 		.pipe(replace(headRgxp, ''))
 		.pipe(header(fullHead))
+		.pipe(wrap('<%= contents %>\n\n'))
 		.pipe(gulp.dest('./dist'))
 		.on('end', cb);
 });
@@ -164,7 +165,6 @@ function compile(cb) {
 			fileName: 'escaper.min.js',
 			compilerPath: './bower_components/closure-compiler/compiler.jar',
 			continueWithWarnings: true,
-
 			compilerFlags: {
 				compilation_level: 'ADVANCED',
 				use_types_for_optimization: null,
@@ -204,10 +204,8 @@ function compile(cb) {
 		}))
 
 		.on('error', error(cb))
-
-		.pipe(wrap('(function(){\'use strict\';<%= contents %>}).call(this);'))
+		.pipe(wrap('(function(){\'use strict\';<%= contents %>}).call(this);\n\n'))
 		.pipe(header(`/*! Escaper v${getVersion()} | https://github.com/kobezzza/Escaper/blob/master/LICENSE */\n`))
-
 		.pipe(gulp.dest('./dist'))
 		.on('end', cb);
 }
