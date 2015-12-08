@@ -1,41 +1,28 @@
 /*!
- * Escaper v2.4.17
+ * Escaper v2.4.18
  * https://github.com/kobezzza/Escaper
  *
  * Released under the MIT license
  * https://github.com/kobezzza/Escaper/blob/master/LICENSE
  *
- * Date: Mon, 07 Dec 2015 14:42:19 GMT
+ * Date: Tue, 08 Dec 2015 19:15:12 GMT
  */
 
-'use strict';
-
-/*istanbul ignore next*/
 (function (global, factory) {
-	if (typeof define === "function" && define.amd) {
-		define('Escaper', ['exports'], factory);
-	} else if (typeof exports !== "undefined") {
-		factory(exports);
-	} else {
-		var mod = {
-			exports: {}
-		};
-		factory(mod.exports);
-		global.Escaper = mod.exports;
-	}
-})(this, function (exports) {
-	Object.defineProperty(exports, "__esModule", {
-		value: true
-	});
-	exports.replace = replace;
-	exports.paste = paste;
+	typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports) :
+	typeof define === 'function' && define.amd ? define('Escaper', ['exports'], factory) :
+	factory((global.Escaper = {}));
+}(this, function (exports) { 'use strict';
 
-	function _typeof(obj) {
-		return obj && typeof Symbol !== "undefined" && obj.constructor === Symbol ? "symbol" : typeof obj;
-	}
+	var babelHelpers = {};
 
+	babelHelpers.typeof = function (obj) {
+	  return obj && typeof Symbol !== "undefined" && obj.constructor === Symbol ? "symbol" : typeof obj;
+	};
+
+	babelHelpers;
 	var Escaper = {
-		VERSION: [2, 4, 17],
+		VERSION: [2, 4, 18],
 		content: [],
 		cache: {},
 		snakeskinRgxp: null,
@@ -43,12 +30,13 @@
 		replace: replace,
 		paste: paste
 	};
-	exports.default = Escaper;
+
 	var stringLiterals = {
 		'"': true,
 		'\'': true,
 		'`': true
 	};
+
 	var literals = {
 		'/': true
 	};
@@ -69,6 +57,7 @@
 		'//@': true,
 		'//$': true
 	};
+
 	var multComments = {
 		'/*': true,
 		'/**': true,
@@ -77,9 +66,9 @@
 		'/*@': true,
 		'/*$': true
 	};
-	var keyArr = [],
-	    finalMap = {};
 
+	var keyArr = [];
+	var finalMap = {};
 	for (var key in literals) {
 		if (!literals.hasOwnProperty(key)) {
 			continue;
@@ -107,15 +96,14 @@
 		finalMap[key] = true;
 	}
 
-	var rgxpFlags = [],
-	    rgxpFlagsMap = {
+	var rgxpFlags = [];
+	var rgxpFlagsMap = {
 		'g': true,
 		'm': true,
 		'i': true,
 		'y': true,
 		'u': true
 	};
-
 	for (var key in rgxpFlagsMap) {
 		if (!rgxpFlagsMap.hasOwnProperty(key)) {
 			continue;
@@ -145,6 +133,7 @@
 		'{': true,
 		'[': true
 	};
+
 	var escapeEndWordMap = {
 		'typeof': true,
 		'void': true,
@@ -155,6 +144,11 @@
 		'of': true
 	};
 
+	/**
+	 * @param {!Object} obj
+	 * @param {!Object} p
+	 * @param {(boolean|number)} val
+	 */
 	function mix(obj, p, val) {
 		for (var key in obj) {
 			if (!obj.hasOwnProperty(key)) {
@@ -167,24 +161,65 @@
 		}
 	}
 
-	var symbols = void 0,
-	    snakeskinRgxp = void 0;
-	var uSRgxp = /[^\s\/]/,
-	    wRgxp = /[a-z]/,
-	    sRgxp = /\s/,
-	    nRgxp = /\r|\n/,
-	    posRgxp = /\$\{pos}/g;
+	var symbols = /*istanbul ignore next*/undefined;
+	var snakeskinRgxp = /*istanbul ignore next*/undefined;
+	var uSRgxp = /[^\s\/]/;
+	var wRgxp = /[a-z]/;
+	var sRgxp = /\s/;
+	var nRgxp = /\r|\n/;
+	var posRgxp = /\$\{pos}/g;
 	var objMap = {
 		'object': true,
 		'function': true
 	};
 
+	/**
+	 * Replaces all found blocks ' ... ', " ... ", ` ... `, / ... /, // ..., /* ... *\/ to
+	 * __ESCAPER_QUOT__number_ in a string and returns a new string
+	 *
+	 * @param {string} str - source string
+	 * @param {(Object<string, boolean>|boolean)=} [opt_withCommentsOrParams=false] - parameters:
+	 *
+	 *     (if a parameter value is set to -1, then all found matches will be removed from the final string,
+	 *          or if the value will be set to true/false they will be included/excluded)
+	 *
+	 *     *) @label    - template for replacement, e.g. __ESCAPER_QUOT__${pos}_
+	 *     *) @all      - replaces all found matches
+	 *     *) @comments - replaces all kinds of comments
+	 *     *) @strings  - replaces all kinds of string literals
+	 *     *) @literals - replaces all kinds of string literals and regular expressions
+	 *     *) `
+	 *     *) '
+	 *     *) "
+	 *     *) /
+	 *     *) //
+	 *     *) //*
+	 *     *) //!
+	 *     *) //#
+	 *     *) //@
+	 *     *) //$
+	 *     *) /*
+	 *     *) /**
+	 *     *) /*!
+	 *     *) /*#
+	 *     *) /*@
+	 *     *) /*$
+	 *
+	 *     OR if the value is boolean, then will be replaced all found comments (true) / literals (false)
+	 *
+	 * @param {Array=} [opt_content=Escaper.content] - array for matches
+	 * @param {?boolean=} [opt_snakeskin] - private parameter for using with Snakeskin
+	 * @return {string}
+	 */
 	function replace(str, opt_withCommentsOrParams, opt_content, opt_snakeskin) {
 		symbols = symbols || Escaper.symbols || 'a-z';
-		snakeskinRgxp = snakeskinRgxp || Escaper.snakeskinRgxp || new RegExp('[!$' + symbols + '_]', 'i');
-		var cache = Escaper.cache;
-		var content = Escaper.content;
-		var isObj = Boolean(opt_withCommentsOrParams && objMap[typeof opt_withCommentsOrParams === 'undefined' ? 'undefined' : _typeof(opt_withCommentsOrParams)]);
+		snakeskinRgxp = snakeskinRgxp || Escaper.snakeskinRgxp || new RegExp( /*istanbul ignore next*/'[!$' + symbols + '_]', 'i');
+
+		/*istanbul ignore next*/var cache = Escaper.cache;
+		/*istanbul ignore next*/var content = Escaper.content;
+
+		var isObj = Boolean(opt_withCommentsOrParams && objMap[/*istanbul ignore next*/typeof opt_withCommentsOrParams === 'undefined' ? 'undefined' : babelHelpers.typeof(opt_withCommentsOrParams)]);
+
 		var p = isObj ? Object(opt_withCommentsOrParams) : {};
 
 		function mark(pos) {
@@ -192,11 +227,11 @@
 				return p['@label'].replace(posRgxp, pos);
 			}
 
-			return '__ESCAPER_QUOT__' + pos + '_';
+			return (/*istanbul ignore next*/'__ESCAPER_QUOT__' + pos + '_'
+			);
 		}
 
 		var withComments = false;
-
 		if (typeof opt_withCommentsOrParams === 'boolean') {
 			withComments = Boolean(opt_withCommentsOrParams);
 		}
@@ -223,7 +258,6 @@
 		}
 
 		var cacheKey = '';
-
 		for (var i = -1; ++i < keyArr.length;) {
 			var el = keyArr[i];
 
@@ -233,7 +267,7 @@
 				p[el] = p[el] || !isObj;
 			}
 
-			cacheKey += p[el] + ',';
+			cacheKey += /*istanbul ignore next*/p[el] + ',';
 		}
 
 		var initStr = str,
@@ -245,19 +279,25 @@
 
 		var begin = false,
 		    end = true;
+
 		var escape = false,
 		    comment = false;
+
 		var selectionStart = 0,
 		    block = false;
+
 		var templateVar = 0,
 		    filterStart = false;
-		var cut = void 0,
-		    label = void 0;
+
+		var cut = /*istanbul ignore next*/undefined,
+		    label = /*istanbul ignore next*/undefined;
+
 		var part = '',
 		    rPart = '';
 
 		for (var i = -1; ++i < str.length;) {
 			var el = str.charAt(i);
+
 			var next = str.charAt(i + 1),
 			    word = str.substr(i, 2),
 			    extWord = str.substr(i, 3);
@@ -294,7 +334,6 @@
 					}
 
 					var skip = false;
-
 					if (opt_snakeskin) {
 						if (el === '|' && snakeskinRgxp.test(next)) {
 							filterStart = true;
@@ -316,6 +355,7 @@
 					}
 				}
 
+				// [] inside RegExp
 				if (begin === '/' && !escape) {
 					if (el === '[') {
 						block = true;
@@ -402,9 +442,23 @@
 
 	var pasteRgxp = /__ESCAPER_QUOT__(\d+)_/g;
 
+	/**
+	 * Replaces all found blocks __ESCAPER_QUOT__number_ to real content in a string
+	 * and returns a new string
+	 *
+	 * @param {string} str - source string
+	 * @param {Array=} [opt_content=Escaper.content] - array of matches
+	 * @param {RegExp=} [opt_rgxp] - RegExp for searching, e.g. /__ESCAPER_QUOT__(\d+)_/g
+	 * @return {string}
+	 */
 	function paste(str, opt_content, opt_rgxp) {
-		return str.replace(opt_rgxp || pasteRgxp, function (sstr, pos) {
+		return str.replace(opt_rgxp || pasteRgxp, function (sstr, pos) /*istanbul ignore next*/{
 			return (opt_content || Escaper.content)[pos];
 		});
 	}
-});
+
+	exports['default'] = Escaper;
+	exports.replace = replace;
+	exports.paste = paste;
+
+}));
