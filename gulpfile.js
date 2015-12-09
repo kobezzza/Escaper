@@ -141,13 +141,15 @@ gulp.task('predefs', (cb) => {
 			])
 				.on('error', error(cb))
 				.pipe(gulp.dest('./predefs/src/ws'))
-				.on('end', function () {
-					gulp.src('./predefs/src/index.js')
-						.pipe(monic())
-						.on('error', error(cb))
-						.pipe(gulp.dest('./predefs/build'))
-						.on('end', cb);
-				});
+				.on('end', buildPredefs);
+
+			function buildPredefs() {
+				gulp.src('./predefs/src/index.js')
+					.pipe(monic())
+					.on('error', error(cb))
+					.pipe(gulp.dest('./predefs/build'))
+					.on('end', cb);
+			}
 		},
 
 		(cb) => {
@@ -162,48 +164,7 @@ gulp.task('predefs', (cb) => {
 function compile(cb) {
 	gulp.src('./dist/escaper.js')
 		.pipe(cached('compile'))
-		.pipe(gcc({
-			fileName: 'escaper.min.js',
-			compilerPath: './bower_components/closure-compiler/compiler.jar',
-			continueWithWarnings: true,
-			compilerFlags: {
-				compilation_level: 'ADVANCED',
-				use_types_for_optimization: null,
-
-				language_in: 'ES6',
-				language_out: 'ES5',
-
-				externs: [
-					'./predefs/build/index.js'
-				],
-
-				jscomp_off: [
-					'nonStandardJsDocs'
-				],
-
-				jscomp_warning: [
-					'invalidCasts',
-					'accessControls',
-					'checkDebuggerStatement',
-					'checkRegExp',
-					'checkTypes',
-					'const',
-					'constantProperty',
-					'deprecated',
-					'externsValidation',
-					'missingProperties',
-					'visibility',
-					'missingReturn',
-					'duplicate',
-					'internetExplorerChecks',
-					'suspiciousCode',
-					'uselessCode',
-					'misplacedTypeAnnotation',
-					'typeInvalidation'
-				]
-			}
-		}))
-
+		.pipe(gcc(require('./gcc.json')))
 		.on('error', error(cb))
 		.pipe(wrap('(function(){\'use strict\';<%= contents %>}).call(this);'))
 		.pipe(header(`/*! Escaper v${getVersion()} | https://github.com/kobezzza/Escaper/blob/master/LICENSE */\n`))
@@ -220,13 +181,15 @@ function test(cb) {
 	gulp.src('./dist/escaper.min.js')
 		.pipe(istanbul())
 		.pipe(istanbul.hookRequire())
-		.on('finish', () => {
-			gulp.src('./spec/index_spec.js')
-				.pipe(jasmine())
-				.on('error', error(cb))
-				.pipe(istanbul.writeReports())
-				.on('end', cb);
-		});
+		.on('finish', runTests);
+
+	function runTests() {
+		gulp.src('./spec/index_spec.js')
+			.pipe(jasmine())
+			.on('error', error(cb))
+			.pipe(istanbul.writeReports())
+			.on('end', cb);
+	}
 }
 
 gulp.task('test-dev', ['fast-compile'], test);
@@ -238,14 +201,6 @@ gulp.task('yaspeller', (cb) => {
 });
 
 gulp.task('watch', ['default'], () => {
-	function unbind(name) {
-		return (e) => {
-			if (e.type === 'deleted') {
-				delete cached.caches[name][e.path];
-			}
-		};
-	}
-
 	async.whilst(
 		() =>
 			readyToWatcher === false,
@@ -259,8 +214,15 @@ gulp.task('watch', ['default'], () => {
 			gulp.watch('./*.md', ['yaspeller']);
 			gulp.watch('./.gitignore', ['npmignore']);
 		}
-
 	);
+
+	function unbind(name) {
+		return (e) => {
+			if (e.type === 'deleted') {
+				delete cached.caches[name][e.path];
+			}
+		};
+	}
 });
 
 gulp.task('default', ['copyright', 'head', 'full-build', 'bump', 'yaspeller', 'npmignore']);
