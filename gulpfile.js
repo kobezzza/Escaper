@@ -38,6 +38,7 @@ function getVersion() {
 }
 
 function getHead(opt_version) {
+	// jscs:disable
 	return '' +
 		'/*!\n' +
 		` * Escaper${opt_version ? ` v${getVersion()}` : ''}\n` +
@@ -96,6 +97,7 @@ gulp.task('head', (cb) => {
 });
 
 gulp.task('build', (cb) => {
+	// jscs:disable
 	const fullHead =
 		getHead(true) +
 		' *\n' +
