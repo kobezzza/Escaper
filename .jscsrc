@@ -32,6 +32,9 @@
   "requireSpread": true,
   "requireParenthesesAroundArrowParam": true,
   "requireShorthandArrowFunctions": true,
+  "requireTemplateStrings": {
+    "allExcept": ["stringConcatenation"]
+  },
 
   "requireSemicolons": true,
   "requireSpaceAfterComma": true,
