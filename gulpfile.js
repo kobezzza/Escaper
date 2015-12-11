@@ -122,7 +122,7 @@ gulp.task('build', (cb) => {
 });
 
 gulp.task('bump', (cb) => {
-	gulp.src('./*.json')
+	gulp.src('./@(package|bower).json')
 		.pipe(bump({version: getVersion()}))
 		.pipe(gulp.dest('./'))
 		.on('end', cb);
