@@ -1,11 +1,11 @@
 /*!
- * Escaper v2.4.21
+ * Escaper v2.4.22
  * https://github.com/kobezzza/Escaper
  *
  * Released under the MIT license
  * https://github.com/kobezzza/Escaper/blob/master/LICENSE
  *
- * Date: Tue, 08 Dec 2015 20:58:54 GMT
+ * Date: Fri, 11 Dec 2015 13:37:52 GMT
  */
 
 (function (global, factory) {
@@ -22,7 +22,7 @@
 
 	babelHelpers;
 	var Escaper = {
-		VERSION: [2, 4, 21],
+		VERSION: [2, 4, 22],
 		content: [],
 		cache: {},
 		snakeskinRgxp: null,
@@ -161,8 +161,8 @@
 		}
 	}
 
-	var symbols = /*istanbul ignore next*/undefined;
-	var snakeskinRgxp = /*istanbul ignore next*/undefined;
+	var symbols = undefined;
+	var snakeskinRgxp = undefined;
 	var uSRgxp = /[^\s\/]/;
 	var wRgxp = /[a-z]/;
 	var sRgxp = /\s/;
@@ -213,12 +213,12 @@
 	 */
 	function replace(str, opt_withCommentsOrParams, opt_content, opt_snakeskin) {
 		symbols = symbols || Escaper.symbols || 'a-z';
-		snakeskinRgxp = snakeskinRgxp || Escaper.snakeskinRgxp || new RegExp( /*istanbul ignore next*/'[!$' + symbols + '_]', 'i');
+		snakeskinRgxp = snakeskinRgxp || Escaper.snakeskinRgxp || new RegExp('[!$' + symbols + '_]', 'i');
 
-		/*istanbul ignore next*/var cache = Escaper.cache;
-		/*istanbul ignore next*/var content = Escaper.content;
+		var cache = Escaper.cache;
+		var content = Escaper.content;
 
-		var isObj = Boolean(opt_withCommentsOrParams && objMap[/*istanbul ignore next*/typeof opt_withCommentsOrParams === 'undefined' ? 'undefined' : babelHelpers.typeof(opt_withCommentsOrParams)]);
+		var isObj = Boolean(opt_withCommentsOrParams && objMap[typeof opt_withCommentsOrParams === 'undefined' ? 'undefined' : babelHelpers.typeof(opt_withCommentsOrParams)]);
 
 		var p = isObj ? Object(opt_withCommentsOrParams) : {};
 
@@ -227,8 +227,7 @@
 				return p['@label'].replace(posRgxp, pos);
 			}
 
-			return (/*istanbul ignore next*/'__ESCAPER_QUOT__' + pos + '_'
-			);
+			return '__ESCAPER_QUOT__' + pos + '_';
 		}
 
 		var withComments = false;
@@ -267,7 +266,7 @@
 				p[el] = p[el] || !isObj;
 			}
 
-			cacheKey += /*istanbul ignore next*/p[el] + ',';
+			cacheKey += p[el] + ',';
 		}
 
 		var initStr = str,
@@ -289,8 +288,8 @@
 		var templateVar = 0,
 		    filterStart = false;
 
-		var cut = /*istanbul ignore next*/undefined,
-		    label = /*istanbul ignore next*/undefined;
+		var cut = undefined,
+		    label = undefined;
 
 		var part = '',
 		    rPart = '';
@@ -452,7 +451,7 @@
 	 * @return {string}
 	 */
 	function paste(str, opt_content, opt_rgxp) {
-		return str.replace(opt_rgxp || pasteRgxp, function (sstr, pos) /*istanbul ignore next*/{
+		return str.replace(opt_rgxp || pasteRgxp, function (sstr, pos) {
 			return (opt_content || Escaper.content)[pos];
 		});
 	}
