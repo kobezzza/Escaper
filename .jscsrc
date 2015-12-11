@@ -28,6 +28,7 @@
   "disallowIdenticalDestructuringNames": true,
   "requireEnhancedObjectLiterals": true,
   "requireObjectDestructuring": true,
+  "requireArrayDestructuring": true,
   "requireNumericLiterals": true,
   "requireSpread": true,
   "requireParenthesesAroundArrowParam": true,
