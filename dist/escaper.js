@@ -1,11 +1,11 @@
 /*!
- * Escaper v2.4.23
+ * Escaper v2.4.24
  * https://github.com/kobezzza/Escaper
  *
  * Released under the MIT license
  * https://github.com/kobezzza/Escaper/blob/master/LICENSE
  *
- * Date: Wed, 13 Jan 2016 16:36:35 GMT
+ * Date: Mon, 01 Feb 2016 09:54:32 GMT
  */
 
 (function (global, factory) {
@@ -14,14 +14,16 @@
 	(factory((global.Escaper = {})));
 }(this, function (exports) { 'use strict';
 
-	var babelHelpers_typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) {
+	var babelHelpers = {};
+	babelHelpers.typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) {
 	  return typeof obj;
 	} : function (obj) {
 	  return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj;
 	};
+	babelHelpers;
 
 		var Escaper = {
-		VERSION: [2, 4, 23],
+		VERSION: [2, 4, 24],
 		content: [],
 		cache: {},
 		snakeskinRgxp: null,
@@ -217,7 +219,7 @@
 		var cache = Escaper.cache;
 		var content = Escaper.content;
 
-		var isObj = Boolean(opt_withCommentsOrParams && objMap[typeof opt_withCommentsOrParams === 'undefined' ? 'undefined' : babelHelpers_typeof(opt_withCommentsOrParams)]);
+		var isObj = Boolean(opt_withCommentsOrParams && objMap[typeof opt_withCommentsOrParams === 'undefined' ? 'undefined' : babelHelpers.typeof(opt_withCommentsOrParams)]);
 
 		var p = isObj ? Object(opt_withCommentsOrParams) : {};
 
