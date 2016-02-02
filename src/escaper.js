@@ -9,7 +9,7 @@
  */
 
 const Escaper = {
-	VERSION: [2, 4, 24],
+	VERSION: [2, 4, 25],
 	content: [],
 	cache: {},
 	snakeskinRgxp: null,
@@ -33,7 +33,7 @@ const literals = {
 
 for (let key in stringLiterals) {
 	if (!stringLiterals.hasOwnProperty(key)) {
-		continue;
+		break;
 	}
 
 	literals[key] = true;
@@ -63,7 +63,7 @@ const
 
 for (let key in literals) {
 	if (!literals.hasOwnProperty(key)) {
-		continue;
+		break;
 	}
 
 	keyArr.push(key);
@@ -72,7 +72,7 @@ for (let key in literals) {
 
 for (let key in singleComments) {
 	if (!singleComments.hasOwnProperty(key)) {
-		continue;
+		break;
 	}
 
 	keyArr.push(key);
@@ -81,7 +81,7 @@ for (let key in singleComments) {
 
 for (let key in multComments) {
 	if (!multComments.hasOwnProperty(key)) {
-		continue;
+		break;
 	}
 
 	keyArr.push(key);
@@ -100,7 +100,7 @@ const
 
 for (let key in rgxpFlagsMap) {
 	if (!rgxpFlagsMap.hasOwnProperty(key)) {
-		continue;
+		break;
 	}
 
 	rgxpFlags.push(key);
@@ -146,7 +146,7 @@ const escapeEndWordMap = {
 function mix(obj, p, val) {
 	for (let key in obj) {
 		if (!obj.hasOwnProperty(key)) {
-			continue;
+			break;
 		}
 
 		if (key in p === false) {

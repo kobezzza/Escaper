@@ -1,11 +1,11 @@
 /*!
- * Escaper v2.4.24
+ * Escaper v2.4.25
  * https://github.com/kobezzza/Escaper
  *
  * Released under the MIT license
  * https://github.com/kobezzza/Escaper/blob/master/LICENSE
  *
- * Date: Mon, 01 Feb 2016 09:54:32 GMT
+ * Date: Tue, 02 Feb 2016 14:43:43 GMT
  */
 
 (function (global, factory) {
@@ -23,7 +23,7 @@
 	babelHelpers;
 
 		var Escaper = {
-		VERSION: [2, 4, 24],
+		VERSION: [2, 4, 25],
 		content: [],
 		cache: {},
 		snakeskinRgxp: null,
@@ -44,7 +44,7 @@
 
 	for (var key in stringLiterals) {
 		if (!stringLiterals.hasOwnProperty(key)) {
-			continue;
+			break;
 		}
 
 		literals[key] = true;
@@ -72,7 +72,7 @@
 	var finalMap = {};
 	for (var key in literals) {
 		if (!literals.hasOwnProperty(key)) {
-			continue;
+			break;
 		}
 
 		keyArr.push(key);
@@ -81,7 +81,7 @@
 
 	for (var key in singleComments) {
 		if (!singleComments.hasOwnProperty(key)) {
-			continue;
+			break;
 		}
 
 		keyArr.push(key);
@@ -90,7 +90,7 @@
 
 	for (var key in multComments) {
 		if (!multComments.hasOwnProperty(key)) {
-			continue;
+			break;
 		}
 
 		keyArr.push(key);
@@ -107,7 +107,7 @@
 	};
 	for (var key in rgxpFlagsMap) {
 		if (!rgxpFlagsMap.hasOwnProperty(key)) {
-			continue;
+			break;
 		}
 
 		rgxpFlags.push(key);
@@ -153,7 +153,7 @@
 	function mix(obj, p, val) {
 		for (var key in obj) {
 			if (!obj.hasOwnProperty(key)) {
-				continue;
+				break;
 			}
 
 			if (key in p === false) {
