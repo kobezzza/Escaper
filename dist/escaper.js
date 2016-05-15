@@ -1,17 +1,17 @@
 /*!
- * Escaper v2.4.25
+ * Escaper v2.4.26
  * https://github.com/kobezzza/Escaper
  *
  * Released under the MIT license
  * https://github.com/kobezzza/Escaper/blob/master/LICENSE
  *
- * Date: Tue, 02 Feb 2016 14:43:43 GMT
+ * Date: Sun, 15 May 2016 11:07:41 GMT
  */
 
 (function (global, factory) {
 	typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports) :
 	typeof define === 'function' && define.amd ? define('Escaper', ['exports'], factory) :
-	(factory((global.Escaper = {})));
+	(factory((global.Escaper = global.Escaper || {})));
 }(this, function (exports) { 'use strict';
 
 	var babelHelpers = {};
@@ -23,7 +23,7 @@
 	babelHelpers;
 
 		var Escaper = {
-		VERSION: [2, 4, 25],
+		VERSION: [2, 4, 26],
 		content: [],
 		cache: {},
 		snakeskinRgxp: null,
@@ -162,8 +162,8 @@
 		}
 	}
 
-	var symbols = undefined;
-	var snakeskinRgxp = undefined;
+	var symbols = void 0;
+	var snakeskinRgxp = void 0;
 	var uSRgxp = /[^\s\/]/;
 	var wRgxp = /[a-z]/;
 	var sRgxp = /\s/;
@@ -218,6 +218,7 @@
 
 		var cache = Escaper.cache;
 		var content = Escaper.content;
+
 
 		var isObj = Boolean(opt_withCommentsOrParams && objMap[typeof opt_withCommentsOrParams === 'undefined' ? 'undefined' : babelHelpers.typeof(opt_withCommentsOrParams)]);
 
@@ -289,8 +290,8 @@
 		var templateVar = 0,
 		    filterStart = false;
 
-		var cut = undefined,
-		    label = undefined;
+		var cut = void 0,
+		    label = void 0;
 
 		var part = '',
 		    rPart = '';
