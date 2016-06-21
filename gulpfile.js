@@ -107,6 +107,7 @@ gulp.task('build', (cb) => {
 	gulp.src('./src/escaper.js')
 		.pipe(cached('build'))
 		.pipe(rollup({
+			entry: './src/escaper.js',
 			format: 'umd',
 			moduleId: 'Escaper',
 			moduleName: 'Escaper',
