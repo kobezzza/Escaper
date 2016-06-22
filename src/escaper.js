@@ -31,7 +31,7 @@ const literals = {
 	'/': true
 };
 
-for (let key in stringLiterals) {
+for (const key in stringLiterals) {
 	if (!stringLiterals.hasOwnProperty(key)) {
 		break;
 	}
@@ -61,7 +61,7 @@ const
 	keyArr = [],
 	finalMap = {};
 
-for (let key in literals) {
+for (const key in literals) {
 	if (!literals.hasOwnProperty(key)) {
 		break;
 	}
@@ -70,7 +70,7 @@ for (let key in literals) {
 	finalMap[key] = true;
 }
 
-for (let key in singleComments) {
+for (const key in singleComments) {
 	if (!singleComments.hasOwnProperty(key)) {
 		break;
 	}
@@ -79,7 +79,7 @@ for (let key in singleComments) {
 	finalMap[key] = true;
 }
 
-for (let key in multComments) {
+for (const key in multComments) {
 	if (!multComments.hasOwnProperty(key)) {
 		break;
 	}
@@ -98,7 +98,7 @@ const
 		'u': true
 	};
 
-for (let key in rgxpFlagsMap) {
+for (const key in rgxpFlagsMap) {
 	if (!rgxpFlagsMap.hasOwnProperty(key)) {
 		break;
 	}
@@ -144,7 +144,7 @@ const escapeEndWordMap = {
  * @param {(boolean|number)} val
  */
 function mix(obj, p, val) {
-	for (let key in obj) {
+	for (const key in obj) {
 		if (!obj.hasOwnProperty(key)) {
 			break;
 		}
