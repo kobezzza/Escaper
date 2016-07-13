@@ -3,7 +3,7 @@
   "description": "Small JavaScript library for replacing string literals, regular expressions and comments in JavaScript syntax.",
   "homepage": "https://github.com/kobezzza/Escaper",
   "main": "dist/escaper.min.js",
-  "version": "2.4.28",
+  "version": "2.4.29",
   "license": "MIT",
   "authors": [
     {
@@ -19,11 +19,14 @@
   "ignore": [
     "/src",
     "/predefs",
+    "/CODE_OF_CONDUCT.md",
     "/package.json",
     "/gulpfile.js",
-    "/externs.js",
+    "/gcc.json",
+    "/.babelrc",
     "/.editorconfig",
-    "/.jscsrc",
+    "/.eslintrc",
+    "/.eslintignore",
     "/.yaspellerrc",
     "/.travis.yml",
     "/.gitignore",

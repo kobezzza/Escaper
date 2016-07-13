@@ -54,13 +54,14 @@ node_modules
 # NPM ignore list
 /src
 /predefs
+/CODE_OF_CONDUCT.md
 /bower.json
 /gulpfile.js
-/externs.js
+/gcc.json
+/.babelrc
 /.editorconfig
 /.eslintrc
 /.eslintignore
-/.babelrc
 /.yaspellerrc
 /.travis.yml
 /.gitignore
