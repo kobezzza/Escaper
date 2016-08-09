@@ -1,5 +1,7 @@
 'use strict';
 
+/* eslint-disable eqeqeq, prefer-template */
+
 /*!
  * Escaper
  * https://github.com/kobezzza/Escaper
@@ -38,14 +40,14 @@ function getVersion() {
 }
 
 function getHead(opt_version) {
-	// jscs:disable
-	return '' +
+	return (
 		'/*!\n' +
 		` * Escaper${opt_version ? ` v${getVersion()}` : ''}\n` +
 		' * https://github.com/kobezzza/Escaper\n' +
 		' *\n' +
 		' * Released under the MIT license\n' +
-		' * https://github.com/kobezzza/Escaper/blob/master/LICENSE\n';
+		' * https://github.com/kobezzza/Escaper/blob/master/LICENSE\n'
+	);
 }
 
 function error(cb) {
@@ -65,7 +67,7 @@ gulp.task('copyright', (cb) => {
 	gulp.src('./LICENSE')
 		.pipe(replace(/(Copyright \(c\) )(\d+)-?(\d*)/, (sstr, intro, from, to) => {
 			const year = new Date().getFullYear();
-			return intro + from + (to || from != year ? `-${year}` : '');
+			return intro + from + (to || from !== year ? `-${year}` : '');
 		}))
 
 		.pipe(gulp.dest('./'))
@@ -97,7 +99,6 @@ gulp.task('head', (cb) => {
 });
 
 gulp.task('build', (cb) => {
-	// jscs:disable
 	const fullHead =
 		getHead(true) +
 		' *\n' +
