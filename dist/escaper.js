@@ -1,18 +1,18 @@
 /*!
- * Escaper v2.4.29
+ * Escaper v2.4.30
  * https://github.com/kobezzza/Escaper
  *
  * Released under the MIT license
  * https://github.com/kobezzza/Escaper/blob/master/LICENSE
  *
- * Date: Wed, 13 Jul 2016 09:38:17 GMT
+ * Date: Mon, 15 Aug 2016 16:19:34 GMT
  */
 
 (function (global, factory) {
   typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports) :
   typeof define === 'function' && define.amd ? define('Escaper', ['exports'], factory) :
   (factory((global.Escaper = global.Escaper || {})));
-}(this, function (exports) { 'use strict';
+}(this, (function (exports) { 'use strict';
 
   var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) {
     return typeof obj;
@@ -21,7 +21,7 @@
   };
 
     var Escaper = {
-  	VERSION: [2, 4, 29],
+  	VERSION: [2, 4, 30],
   	content: [],
   	cache: {},
   	snakeskinRgxp: null,
@@ -68,31 +68,31 @@
 
   var keyArr = [];
   var finalMap = {};
-  for (var key in literals) {
-  	if (!literals.hasOwnProperty(key)) {
+  for (var _key in literals) {
+  	if (!literals.hasOwnProperty(_key)) {
   		break;
   	}
 
-  	keyArr.push(key);
-  	finalMap[key] = true;
+  	keyArr.push(_key);
+  	finalMap[_key] = true;
   }
 
-  for (var key in singleComments) {
-  	if (!singleComments.hasOwnProperty(key)) {
+  for (var _key2 in singleComments) {
+  	if (!singleComments.hasOwnProperty(_key2)) {
   		break;
   	}
 
-  	keyArr.push(key);
-  	finalMap[key] = true;
+  	keyArr.push(_key2);
+  	finalMap[_key2] = true;
   }
 
-  for (var key in multComments) {
-  	if (!multComments.hasOwnProperty(key)) {
+  for (var _key3 in multComments) {
+  	if (!multComments.hasOwnProperty(_key3)) {
   		break;
   	}
 
-  	keyArr.push(key);
-  	finalMap[key] = true;
+  	keyArr.push(_key3);
+  	finalMap[_key3] = true;
   }
 
   var rgxpFlags = [];
@@ -103,12 +103,12 @@
   	'y': true,
   	'u': true
   };
-  for (var key in rgxpFlagsMap) {
-  	if (!rgxpFlagsMap.hasOwnProperty(key)) {
+  for (var _key4 in rgxpFlagsMap) {
+  	if (!rgxpFlagsMap.hasOwnProperty(_key4)) {
   		break;
   	}
 
-  	rgxpFlags.push(key);
+  	rgxpFlags.push(_key4);
   }
 
   var escapeEndMap = {
@@ -149,13 +149,13 @@
    * @param {(boolean|number)} val
    */
   function mix(obj, p, val) {
-  	for (var key in obj) {
-  		if (!obj.hasOwnProperty(key)) {
+  	for (var _key5 in obj) {
+  		if (!obj.hasOwnProperty(_key5)) {
   			break;
   		}
 
-  		if (key in p === false) {
-  			p[key] = val;
+  		if (_key5 in p === false) {
+  			p[_key5] = val;
   		}
   	}
   }
@@ -294,16 +294,16 @@
   	var part = '',
   	    rPart = '';
 
-  	for (var i = -1; ++i < str.length;) {
-  		var el = str.charAt(i);
+  	for (var _i = -1; ++_i < str.length;) {
+  		var _el = str.charAt(_i);
 
-  		var next = str.charAt(i + 1),
-  		    word = str.substr(i, 2),
-  		    extWord = str.substr(i, 3);
+  		var next = str.charAt(_i + 1),
+  		    word = str.substr(_i, 2),
+  		    extWord = str.substr(_i, 3);
 
   		if (!comment) {
   			if (!begin) {
-  				if (el === '/') {
+  				if (_el === '/') {
   					if (singleComments[word] || multComments[word]) {
   						if (singleComments[extWord] || multComments[extWord]) {
   							comment = extWord;
@@ -313,20 +313,20 @@
   					}
 
   					if (comment) {
-  						selectionStart = i;
+  						selectionStart = _i;
   						continue;
   					}
   				}
 
-  				if (escapeEndMap[el] || escapeEndWordMap[rPart]) {
+  				if (escapeEndMap[_el] || escapeEndWordMap[rPart]) {
   					end = true;
   					rPart = '';
-  				} else if (uSRgxp.test(el)) {
+  				} else if (uSRgxp.test(_el)) {
   					end = false;
   				}
 
-  				if (wRgxp.test(el)) {
-  					part += el;
+  				if (wRgxp.test(_el)) {
+  					part += _el;
   				} else {
   					rPart = part;
   					part = '';
@@ -334,11 +334,11 @@
 
   				var skip = false;
   				if (opt_snakeskin) {
-  					if (el === '|' && snakeskinRgxp.test(next)) {
+  					if (_el === '|' && snakeskinRgxp.test(next)) {
   						filterStart = true;
   						end = false;
   						skip = true;
-  					} else if (filterStart && sRgxp.test(el)) {
+  					} else if (filterStart && sRgxp.test(_el)) {
   						filterStart = false;
   						end = true;
   						skip = true;
@@ -346,9 +346,9 @@
   				}
 
   				if (!skip) {
-  					if (escapeEndMap[el]) {
+  					if (escapeEndMap[_el]) {
   						end = true;
-  					} else if (uSRgxp.test(el)) {
+  					} else if (uSRgxp.test(_el)) {
   						end = false;
   					}
   				}
@@ -356,41 +356,41 @@
 
   			// [] inside RegExp
   			if (begin === '/' && !escape) {
-  				if (el === '[') {
+  				if (_el === '[') {
   					block = true;
-  				} else if (el === ']') {
+  				} else if (_el === ']') {
   					block = false;
   				}
   			}
 
   			if (!begin && templateVar) {
-  				if (el === '}') {
+  				if (_el === '}') {
   					templateVar--;
-  				} else if (el === '{') {
+  				} else if (_el === '{') {
   					templateVar++;
   				}
 
   				if (!templateVar) {
-  					el = '`';
+  					_el = '`';
   				}
   			}
 
   			if (begin === '`' && !escape && word === '${') {
-  				el = '`';
-  				i++;
+  				_el = '`';
+  				_i++;
   				templateVar++;
   			}
 
-  			if (finalMap[el] && (el !== '/' || end) && !begin) {
-  				begin = el;
-  				selectionStart = i;
-  			} else if (begin && (el === '\\' || escape)) {
+  			if (finalMap[_el] && (_el !== '/' || end) && !begin) {
+  				begin = _el;
+  				selectionStart = _i;
+  			} else if (begin && (_el === '\\' || escape)) {
   				escape = !escape;
-  			} else if (finalMap[el] && begin === el && !escape && (begin !== '/' || !block)) {
-  				if (el === '/') {
+  			} else if (finalMap[_el] && begin === _el && !escape && (begin !== '/' || !block)) {
+  				if (_el === '/') {
   					for (var j = -1; ++j < rgxpFlags.length;) {
-  						if (rgxpFlagsMap[str.charAt(i + 1)]) {
-  							i++;
+  						if (rgxpFlagsMap[str.charAt(_i + 1)]) {
+  							_i++;
   						}
   					}
   				}
@@ -398,23 +398,23 @@
   				begin = false;
   				end = false;
 
-  				if (p[el]) {
-  					cut = str.substring(selectionStart, i + 1);
+  				if (p[_el]) {
+  					cut = str.substring(selectionStart, _i + 1);
 
-  					if (p[el] === -1) {
+  					if (p[_el] === -1) {
   						label = '';
   					} else {
   						label = mark(stack.length);
   						stack.push(cut);
   					}
 
-  					str = str.substring(0, selectionStart) + label + str.substring(i + 1);
-  					i += label.length - cut.length;
+  					str = str.substring(0, selectionStart) + label + str.substring(_i + 1);
+  					_i += label.length - cut.length;
   				}
   			}
-  		} else if (nRgxp.test(next) && singleComments[comment] || multComments[el + str.charAt(i - 1)] && i - selectionStart > 2 && multComments[comment]) {
+  		} else if (nRgxp.test(next) && singleComments[comment] || multComments[_el + str.charAt(_i - 1)] && _i - selectionStart > 2 && multComments[comment]) {
   			if (p[comment]) {
-  				cut = str.substring(selectionStart, i + 1);
+  				cut = str.substring(selectionStart, _i + 1);
 
   				if (p[comment] === -1) {
   					label = '';
@@ -423,8 +423,8 @@
   					stack.push(cut);
   				}
 
-  				str = str.substring(0, selectionStart) + label + str.substring(i + 1);
-  				i += label.length - cut.length;
+  				str = str.substring(0, selectionStart) + label + str.substring(_i + 1);
+  				_i += label.length - cut.length;
   			}
 
   			comment = false;
@@ -462,4 +462,4 @@
 
   Object.defineProperty(exports, '__esModule', { value: true });
 
-}));
+})));
