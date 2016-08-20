@@ -1,11 +1,11 @@
 /*!
- * Escaper v2.4.30
+ * Escaper v2.4.31
  * https://github.com/kobezzza/Escaper
  *
  * Released under the MIT license
  * https://github.com/kobezzza/Escaper/blob/master/LICENSE
  *
- * Date: Mon, 15 Aug 2016 16:19:34 GMT
+ * Date: Sat, 20 Aug 2016 12:57:59 GMT
  */
 
 (function (global, factory) {
@@ -21,7 +21,7 @@
   };
 
     var Escaper = {
-  	VERSION: [2, 4, 30],
+  	VERSION: [2, 4, 31],
   	content: [],
   	cache: {},
   	snakeskinRgxp: null,
@@ -134,6 +134,9 @@
   };
 
   var escapeEndWordMap = {
+  	'return': true,
+  	'yield': true,
+  	'await': true,
   	'typeof': true,
   	'void': true,
   	'instanceof': true,

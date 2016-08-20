@@ -9,7 +9,7 @@
  */
 
 const Escaper = {
-	VERSION: [2, 4, 30],
+	VERSION: [2, 4, 31],
 	content: [],
 	cache: {},
 	snakeskinRgxp: null,
@@ -129,6 +129,9 @@ const escapeEndMap = {
 };
 
 const escapeEndWordMap = {
+	'return': true,
+	'yield': true,
+	'await': true,
 	'typeof': true,
 	'void': true,
 	'instanceof': true,
