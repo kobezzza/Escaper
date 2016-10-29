@@ -1,11 +1,11 @@
 /*!
- * Escaper v2.4.31
+ * Escaper v2.4.32
  * https://github.com/kobezzza/Escaper
  *
  * Released under the MIT license
  * https://github.com/kobezzza/Escaper/blob/master/LICENSE
  *
- * Date: Sat, 20 Aug 2016 12:57:59 GMT
+ * Date: Sat, 29 Oct 2016 17:41:01 GMT
  */
 
 (function (global, factory) {
@@ -14,455 +14,653 @@
   (factory((global.Escaper = global.Escaper || {})));
 }(this, (function (exports) { 'use strict';
 
-  var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) {
-    return typeof obj;
-  } : function (obj) {
-    return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj;
-  };
+var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) {
+  return typeof obj;
+} : function (obj) {
+  return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;
+};
 
-    var Escaper = {
-  	VERSION: [2, 4, 31],
-  	content: [],
-  	cache: {},
-  	snakeskinRgxp: null,
-  	symbols: null,
-  	replace: replace,
-  	paste: paste
-  };
 
-  var stringLiterals = {
-  	'"': true,
-  	'\'': true,
-  	'`': true
-  };
 
-  var literals = {
-  	'/': true
-  };
 
-  for (var key in stringLiterals) {
-  	if (!stringLiterals.hasOwnProperty(key)) {
-  		break;
-  	}
 
-  	literals[key] = true;
+var asyncGenerator = function () {
+  function AwaitValue(value) {
+    this.value = value;
   }
 
-  var singleComments = {
-  	'//': true,
-  	'//*': true,
-  	'//!': true,
-  	'//#': true,
-  	'//@': true,
-  	'//$': true
+  function AsyncGenerator(gen) {
+    var front, back;
+
+    function send(key, arg) {
+      return new Promise(function (resolve, reject) {
+        var request = {
+          key: key,
+          arg: arg,
+          resolve: resolve,
+          reject: reject,
+          next: null
+        };
+
+        if (back) {
+          back = back.next = request;
+        } else {
+          front = back = request;
+          resume(key, arg);
+        }
+      });
+    }
+
+    function resume(key, arg) {
+      try {
+        var result = gen[key](arg);
+        var value = result.value;
+
+        if (value instanceof AwaitValue) {
+          Promise.resolve(value.value).then(function (arg) {
+            resume("next", arg);
+          }, function (arg) {
+            resume("throw", arg);
+          });
+        } else {
+          settle(result.done ? "return" : "normal", result.value);
+        }
+      } catch (err) {
+        settle("throw", err);
+      }
+    }
+
+    function settle(type, value) {
+      switch (type) {
+        case "return":
+          front.resolve({
+            value: value,
+            done: true
+          });
+          break;
+
+        case "throw":
+          front.reject(value);
+          break;
+
+        default:
+          front.resolve({
+            value: value,
+            done: false
+          });
+          break;
+      }
+
+      front = front.next;
+
+      if (front) {
+        resume(front.key, front.arg);
+      } else {
+        back = null;
+      }
+    }
+
+    this._invoke = send;
+
+    if (typeof gen.return !== "function") {
+      this.return = undefined;
+    }
+  }
+
+  if (typeof Symbol === "function" && Symbol.asyncIterator) {
+    AsyncGenerator.prototype[Symbol.asyncIterator] = function () {
+      return this;
+    };
+  }
+
+  AsyncGenerator.prototype.next = function (arg) {
+    return this._invoke("next", arg);
   };
 
-  var multComments = {
-  	'/*': true,
-  	'/**': true,
-  	'/*!': true,
-  	'/*#': true,
-  	'/*@': true,
-  	'/*$': true
+  AsyncGenerator.prototype.throw = function (arg) {
+    return this._invoke("throw", arg);
   };
 
-  var keyArr = [];
-  var finalMap = {};
-  for (var _key in literals) {
-  	if (!literals.hasOwnProperty(_key)) {
-  		break;
-  	}
-
-  	keyArr.push(_key);
-  	finalMap[_key] = true;
-  }
-
-  for (var _key2 in singleComments) {
-  	if (!singleComments.hasOwnProperty(_key2)) {
-  		break;
-  	}
-
-  	keyArr.push(_key2);
-  	finalMap[_key2] = true;
-  }
-
-  for (var _key3 in multComments) {
-  	if (!multComments.hasOwnProperty(_key3)) {
-  		break;
-  	}
-
-  	keyArr.push(_key3);
-  	finalMap[_key3] = true;
-  }
-
-  var rgxpFlags = [];
-  var rgxpFlagsMap = {
-  	'g': true,
-  	'm': true,
-  	'i': true,
-  	'y': true,
-  	'u': true
-  };
-  for (var _key4 in rgxpFlagsMap) {
-  	if (!rgxpFlagsMap.hasOwnProperty(_key4)) {
-  		break;
-  	}
-
-  	rgxpFlags.push(_key4);
-  }
-
-  var escapeEndMap = {
-  	'-': true,
-  	'+': true,
-  	'*': true,
-  	'%': true,
-  	'~': true,
-  	'>': true,
-  	'<': true,
-  	'^': true,
-  	',': true,
-  	';': true,
-  	'=': true,
-  	'|': true,
-  	'&': true,
-  	'!': true,
-  	'?': true,
-  	':': true,
-  	'(': true,
-  	'{': true,
-  	'[': true
+  AsyncGenerator.prototype.return = function (arg) {
+    return this._invoke("return", arg);
   };
 
-  var escapeEndWordMap = {
-  	'return': true,
-  	'yield': true,
-  	'await': true,
-  	'typeof': true,
-  	'void': true,
-  	'instanceof': true,
-  	'delete': true,
-  	'in': true,
-  	'new': true,
-  	'of': true
+  return {
+    wrap: function (fn) {
+      return function () {
+        return new AsyncGenerator(fn.apply(this, arguments));
+      };
+    },
+    await: function (value) {
+      return new AwaitValue(value);
+    }
   };
+}();
 
-  /**
-   * @param {!Object} obj
-   * @param {!Object} p
-   * @param {(boolean|number)} val
-   */
-  function mix(obj, p, val) {
-  	for (var _key5 in obj) {
-  		if (!obj.hasOwnProperty(_key5)) {
-  			break;
-  		}
 
-  		if (_key5 in p === false) {
-  			p[_key5] = val;
-  		}
-  	}
+
+
+
+
+
+
+
+
+
+
+
+
+
+var get = function get(object, property, receiver) {
+  if (object === null) object = Function.prototype;
+  var desc = Object.getOwnPropertyDescriptor(object, property);
+
+  if (desc === undefined) {
+    var parent = Object.getPrototypeOf(object);
+
+    if (parent === null) {
+      return undefined;
+    } else {
+      return get(parent, property, receiver);
+    }
+  } else if ("value" in desc) {
+    return desc.value;
+  } else {
+    var getter = desc.get;
+
+    if (getter === undefined) {
+      return undefined;
+    }
+
+    return getter.call(receiver);
+  }
+};
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+var set = function set(object, property, value, receiver) {
+  var desc = Object.getOwnPropertyDescriptor(object, property);
+
+  if (desc === undefined) {
+    var parent = Object.getPrototypeOf(object);
+
+    if (parent !== null) {
+      set(parent, property, value, receiver);
+    }
+  } else if ("value" in desc && desc.writable) {
+    desc.value = value;
+  } else {
+    var setter = desc.set;
+
+    if (setter !== undefined) {
+      setter.call(receiver, value);
+    }
   }
 
-  var symbols = void 0;
-  var snakeskinRgxp = void 0;
-  var uSRgxp = /[^\s\/]/;
-  var wRgxp = /[a-z]/;
-  var sRgxp = /\s/;
-  var nRgxp = /\r|\n/;
-  var posRgxp = /\$\{pos}/g;
-  var objMap = {
-  	'object': true,
-  	'function': true
-  };
+  return value;
+};
 
-  /**
-   * Replaces all found blocks ' ... ', " ... ", ` ... `, / ... /, // ..., /* ... *\/ to
-   * __ESCAPER_QUOT__number_ in a string and returns a new string
-   *
-   * @param {string} str - source string
-   * @param {(Object<string, boolean>|boolean)=} [opt_withCommentsOrParams=false] - parameters:
-   *
-   *     (if a parameter value is set to -1, then all found matches will be removed from the final string,
-   *          or if the value will be set to true/false they will be included/excluded)
-   *
-   *     *) @label    - template for replacement, e.g. __ESCAPER_QUOT__${pos}_
-   *     *) @all      - replaces all found matches
-   *     *) @comments - replaces all kinds of comments
-   *     *) @strings  - replaces all kinds of string literals
-   *     *) @literals - replaces all kinds of string literals and regular expressions
-   *     *) `
-   *     *) '
-   *     *) "
-   *     *) /
-   *     *) //
-   *     *) //*
-   *     *) //!
-   *     *) //#
-   *     *) //@
-   *     *) //$
-   *     *) /*
-   *     *) /**
-   *     *) /*!
-   *     *) /*#
-   *     *) /*@
-   *     *) /*$
-   *
-   *     OR if the value is boolean, then will be replaced all found comments (true) / literals (false)
-   *
-   * @param {Array=} [opt_content=Escaper.content] - array for matches
-   * @param {?boolean=} [opt_snakeskin] - private parameter for using with Snakeskin
-   * @return {string}
-   */
-  function replace(str, opt_withCommentsOrParams, opt_content, opt_snakeskin) {
-  	symbols = symbols || Escaper.symbols || 'a-z';
-  	snakeskinRgxp = snakeskinRgxp || Escaper.snakeskinRgxp || new RegExp('[!$' + symbols + '_]', 'i');
+var Escaper = {
+	VERSION: [2, 4, 32],
+	content: [],
+	cache: {},
+	snakeskinRgxp: null,
+	symbols: null,
+	replace: replace,
+	paste: paste
+};
 
-  	var cache = Escaper.cache;
-  	var content = Escaper.content;
+var stringLiterals = {
+	'"': true,
+	'\'': true,
+	'`': true
+};
+
+var literals = {
+	'/': true
+};
+
+for (var key in stringLiterals) {
+	if (!stringLiterals.hasOwnProperty(key)) {
+		break;
+	}
+
+	literals[key] = true;
+}
+
+var singleComments = {
+	'//': true,
+	'//*': true,
+	'//!': true,
+	'//#': true,
+	'//@': true,
+	'//$': true
+};
+
+var multComments = {
+	'/*': true,
+	'/**': true,
+	'/*!': true,
+	'/*#': true,
+	'/*@': true,
+	'/*$': true
+};
+
+var keyArr = [];
+var finalMap = {};
+
+for (var _key in literals) {
+	if (!literals.hasOwnProperty(_key)) {
+		break;
+	}
+
+	keyArr.push(_key);
+	finalMap[_key] = true;
+}
+
+for (var _key2 in singleComments) {
+	if (!singleComments.hasOwnProperty(_key2)) {
+		break;
+	}
+
+	keyArr.push(_key2);
+	finalMap[_key2] = true;
+}
+
+for (var _key3 in multComments) {
+	if (!multComments.hasOwnProperty(_key3)) {
+		break;
+	}
+
+	keyArr.push(_key3);
+	finalMap[_key3] = true;
+}
+
+var rgxpFlags = [];
+var rgxpFlagsMap = {
+	'g': true,
+	'm': true,
+	'i': true,
+	'y': true,
+	'u': true
+};
+
+for (var _key4 in rgxpFlagsMap) {
+	if (!rgxpFlagsMap.hasOwnProperty(_key4)) {
+		break;
+	}
+
+	rgxpFlags.push(_key4);
+}
+
+var escapeEndMap = {
+	'-': true,
+	'+': true,
+	'*': true,
+	'%': true,
+	'~': true,
+	'>': true,
+	'<': true,
+	'^': true,
+	',': true,
+	';': true,
+	'=': true,
+	'|': true,
+	'&': true,
+	'!': true,
+	'?': true,
+	':': true,
+	'(': true,
+	'{': true,
+	'[': true
+};
+
+var escapeEndWordMap = {
+	'return': true,
+	'yield': true,
+	'await': true,
+	'typeof': true,
+	'void': true,
+	'instanceof': true,
+	'delete': true,
+	'in': true,
+	'new': true,
+	'of': true
+};
+
+/**
+ * @param {!Object} obj
+ * @param {!Object} p
+ * @param {(boolean|number)} val
+ */
+function mix(obj, p, val) {
+	for (var _key5 in obj) {
+		if (!obj.hasOwnProperty(_key5)) {
+			break;
+		}
+
+		if (_key5 in p === false) {
+			p[_key5] = val;
+		}
+	}
+}
+
+var symbols = void 0;
+var snakeskinRgxp = void 0;
+
+var uSRgxp = /[^\s\/]/;
+var wRgxp = /[a-z]/;
+var sRgxp = /\s/;
+var nRgxp = /\r|\n/;
+var posRgxp = /\$\{pos}/g;
+
+var objMap = {
+	'object': true,
+	'function': true
+};
+
+/**
+ * Replaces all found blocks ' ... ', " ... ", ` ... `, / ... /, // ..., /* ... *\/ to
+ * __ESCAPER_QUOT__number_ in a string and returns a new string
+ *
+ * @param {string} str - source string
+ * @param {(Object<string, boolean>|boolean)=} [opt_withCommentsOrParams=false] - parameters:
+ *
+ *     (if a parameter value is set to -1, then all found matches will be removed from the final string,
+ *          or if the value will be set to true/false they will be included/excluded)
+ *
+ *     *) @label    - template for replacement, e.g. __ESCAPER_QUOT__${pos}_
+ *     *) @all      - replaces all found matches
+ *     *) @comments - replaces all kinds of comments
+ *     *) @strings  - replaces all kinds of string literals
+ *     *) @literals - replaces all kinds of string literals and regular expressions
+ *     *) `
+ *     *) '
+ *     *) "
+ *     *) /
+ *     *) //
+ *     *) //*
+ *     *) //!
+ *     *) //#
+ *     *) //@
+ *     *) //$
+ *     *) /*
+ *     *) /**
+ *     *) /*!
+ *     *) /*#
+ *     *) /*@
+ *     *) /*$
+ *
+ *     OR if the value is boolean, then will be replaced all found comments (true) / literals (false)
+ *
+ * @param {Array=} [opt_content=Escaper.content] - array for matches
+ * @param {?boolean=} [opt_snakeskin] - private parameter for using with Snakeskin
+ * @return {string}
+ */
+function replace(str, opt_withCommentsOrParams, opt_content, opt_snakeskin) {
+	symbols = symbols || Escaper.symbols || 'a-z';
+	snakeskinRgxp = snakeskinRgxp || Escaper.snakeskinRgxp || new RegExp('[!$' + symbols + '_]', 'i');
+
+	var cache = Escaper.cache,
+	    content = Escaper.content;
 
 
-  	var isObj = Boolean(opt_withCommentsOrParams && objMap[typeof opt_withCommentsOrParams === 'undefined' ? 'undefined' : _typeof(opt_withCommentsOrParams)]);
+	var isObj = Boolean(opt_withCommentsOrParams && objMap[typeof opt_withCommentsOrParams === 'undefined' ? 'undefined' : _typeof(opt_withCommentsOrParams)]);
 
-  	var p = isObj ? Object(opt_withCommentsOrParams) : {};
+	var p = isObj ? Object(opt_withCommentsOrParams) : {};
 
-  	function mark(pos) {
-  		if (p['@label']) {
-  			return p['@label'].replace(posRgxp, pos);
-  		}
+	function mark(pos) {
+		if (p['@label']) {
+			return p['@label'].replace(posRgxp, pos);
+		}
 
-  		return '__ESCAPER_QUOT__' + pos + '_';
-  	}
+		return '__ESCAPER_QUOT__' + pos + '_';
+	}
 
-  	var withComments = false;
-  	if (typeof opt_withCommentsOrParams === 'boolean') {
-  		withComments = Boolean(opt_withCommentsOrParams);
-  	}
+	var withComments = false;
+	if (typeof opt_withCommentsOrParams === 'boolean') {
+		withComments = Boolean(opt_withCommentsOrParams);
+	}
 
-  	if ('@comments' in p) {
-  		mix(multComments, p, p['@comments']);
-  		mix(singleComments, p, p['@comments']);
-  		delete p['@comments'];
-  	}
+	if ('@comments' in p) {
+		mix(multComments, p, p['@comments']);
+		mix(singleComments, p, p['@comments']);
+		delete p['@comments'];
+	}
 
-  	if ('@strings' in p) {
-  		mix(stringLiterals, p, p['@strings']);
-  		delete p['@strings'];
-  	}
+	if ('@strings' in p) {
+		mix(stringLiterals, p, p['@strings']);
+		delete p['@strings'];
+	}
 
-  	if ('@literals' in p) {
-  		mix(literals, p, p['@literals']);
-  		delete p['@literals'];
-  	}
+	if ('@literals' in p) {
+		mix(literals, p, p['@literals']);
+		delete p['@literals'];
+	}
 
-  	if ('@all' in p) {
-  		mix(finalMap, p, p['@all']);
-  		delete p['@all'];
-  	}
+	if ('@all' in p) {
+		mix(finalMap, p, p['@all']);
+		delete p['@all'];
+	}
 
-  	var cacheKey = '';
-  	for (var i = -1; ++i < keyArr.length;) {
-  		var el = keyArr[i];
+	var cacheKey = '';
+	for (var i = -1; ++i < keyArr.length;) {
+		var el = keyArr[i];
 
-  		if (multComments[el] || singleComments[el]) {
-  			p[el] = withComments || p[el];
-  		} else {
-  			p[el] = p[el] || !isObj;
-  		}
+		if (multComments[el] || singleComments[el]) {
+			p[el] = withComments || p[el];
+		} else {
+			p[el] = p[el] || !isObj;
+		}
 
-  		cacheKey += p[el] + ',';
-  	}
+		cacheKey += p[el] + ',';
+	}
 
-  	var initStr = str,
-  	    stack = opt_content || content;
+	var initStr = str,
+	    stack = opt_content || content;
 
-  	if (stack === content && cache[cacheKey] && cache[cacheKey][initStr]) {
-  		return cache[cacheKey][initStr];
-  	}
+	if (stack === content && cache[cacheKey] && cache[cacheKey][initStr]) {
+		return cache[cacheKey][initStr];
+	}
 
-  	var begin = false,
-  	    end = true;
+	var begin = false,
+	    end = true;
 
-  	var escape = false,
-  	    comment = false;
+	var escape = false,
+	    comment = false;
 
-  	var selectionStart = 0,
-  	    block = false;
+	var selectionStart = 0,
+	    block = false;
 
-  	var templateVar = 0,
-  	    filterStart = false;
+	var templateVar = 0,
+	    filterStart = false;
 
-  	var cut = void 0,
-  	    label = void 0;
+	var cut = void 0,
+	    label = void 0;
 
-  	var part = '',
-  	    rPart = '';
+	var part = '',
+	    rPart = '';
 
-  	for (var _i = -1; ++_i < str.length;) {
-  		var _el = str.charAt(_i);
+	for (var _i = -1; ++_i < str.length;) {
+		var _el = str.charAt(_i);
 
-  		var next = str.charAt(_i + 1),
-  		    word = str.substr(_i, 2),
-  		    extWord = str.substr(_i, 3);
+		var next = str.charAt(_i + 1),
+		    word = str.substr(_i, 2),
+		    extWord = str.substr(_i, 3);
 
-  		if (!comment) {
-  			if (!begin) {
-  				if (_el === '/') {
-  					if (singleComments[word] || multComments[word]) {
-  						if (singleComments[extWord] || multComments[extWord]) {
-  							comment = extWord;
-  						} else {
-  							comment = word;
-  						}
-  					}
+		if (!comment) {
+			if (!begin) {
+				if (_el === '/') {
+					if (singleComments[word] || multComments[word]) {
+						if (singleComments[extWord] || multComments[extWord]) {
+							comment = extWord;
+						} else {
+							comment = word;
+						}
+					}
 
-  					if (comment) {
-  						selectionStart = _i;
-  						continue;
-  					}
-  				}
+					if (comment) {
+						selectionStart = _i;
+						continue;
+					}
+				}
 
-  				if (escapeEndMap[_el] || escapeEndWordMap[rPart]) {
-  					end = true;
-  					rPart = '';
-  				} else if (uSRgxp.test(_el)) {
-  					end = false;
-  				}
+				if (escapeEndMap[_el] || escapeEndWordMap[rPart]) {
+					end = true;
+					rPart = '';
+				} else if (uSRgxp.test(_el)) {
+					end = false;
+				}
 
-  				if (wRgxp.test(_el)) {
-  					part += _el;
-  				} else {
-  					rPart = part;
-  					part = '';
-  				}
+				if (wRgxp.test(_el)) {
+					part += _el;
+				} else {
+					rPart = part;
+					part = '';
+				}
 
-  				var skip = false;
-  				if (opt_snakeskin) {
-  					if (_el === '|' && snakeskinRgxp.test(next)) {
-  						filterStart = true;
-  						end = false;
-  						skip = true;
-  					} else if (filterStart && sRgxp.test(_el)) {
-  						filterStart = false;
-  						end = true;
-  						skip = true;
-  					}
-  				}
+				var skip = false;
+				if (opt_snakeskin) {
+					if (_el === '|' && snakeskinRgxp.test(next)) {
+						filterStart = true;
+						end = false;
+						skip = true;
+					} else if (filterStart && sRgxp.test(_el)) {
+						filterStart = false;
+						end = true;
+						skip = true;
+					}
+				}
 
-  				if (!skip) {
-  					if (escapeEndMap[_el]) {
-  						end = true;
-  					} else if (uSRgxp.test(_el)) {
-  						end = false;
-  					}
-  				}
-  			}
+				if (!skip) {
+					if (escapeEndMap[_el]) {
+						end = true;
+					} else if (uSRgxp.test(_el)) {
+						end = false;
+					}
+				}
+			}
 
-  			// [] inside RegExp
-  			if (begin === '/' && !escape) {
-  				if (_el === '[') {
-  					block = true;
-  				} else if (_el === ']') {
-  					block = false;
-  				}
-  			}
+			// [] inside RegExp
+			if (begin === '/' && !escape) {
+				if (_el === '[') {
+					block = true;
+				} else if (_el === ']') {
+					block = false;
+				}
+			}
 
-  			if (!begin && templateVar) {
-  				if (_el === '}') {
-  					templateVar--;
-  				} else if (_el === '{') {
-  					templateVar++;
-  				}
+			if (!begin && templateVar) {
+				if (_el === '}') {
+					templateVar--;
+				} else if (_el === '{') {
+					templateVar++;
+				}
 
-  				if (!templateVar) {
-  					_el = '`';
-  				}
-  			}
+				if (!templateVar) {
+					_el = '`';
+				}
+			}
 
-  			if (begin === '`' && !escape && word === '${') {
-  				_el = '`';
-  				_i++;
-  				templateVar++;
-  			}
+			if (begin === '`' && !escape && word === '${') {
+				_el = '`';
+				_i++;
+				templateVar++;
+			}
 
-  			if (finalMap[_el] && (_el !== '/' || end) && !begin) {
-  				begin = _el;
-  				selectionStart = _i;
-  			} else if (begin && (_el === '\\' || escape)) {
-  				escape = !escape;
-  			} else if (finalMap[_el] && begin === _el && !escape && (begin !== '/' || !block)) {
-  				if (_el === '/') {
-  					for (var j = -1; ++j < rgxpFlags.length;) {
-  						if (rgxpFlagsMap[str.charAt(_i + 1)]) {
-  							_i++;
-  						}
-  					}
-  				}
+			if (finalMap[_el] && (_el !== '/' || end) && !begin) {
+				begin = _el;
+				selectionStart = _i;
+			} else if (begin && (_el === '\\' || escape)) {
+				escape = !escape;
+			} else if (finalMap[_el] && begin === _el && !escape && (begin !== '/' || !block)) {
+				if (_el === '/') {
+					for (var j = -1; ++j < rgxpFlags.length;) {
+						if (rgxpFlagsMap[str.charAt(_i + 1)]) {
+							_i++;
+						}
+					}
+				}
 
-  				begin = false;
-  				end = false;
+				begin = false;
+				end = false;
 
-  				if (p[_el]) {
-  					cut = str.substring(selectionStart, _i + 1);
+				if (p[_el]) {
+					cut = str.substring(selectionStart, _i + 1);
 
-  					if (p[_el] === -1) {
-  						label = '';
-  					} else {
-  						label = mark(stack.length);
-  						stack.push(cut);
-  					}
+					if (p[_el] === -1) {
+						label = '';
+					} else {
+						label = mark(stack.length);
+						stack.push(cut);
+					}
 
-  					str = str.substring(0, selectionStart) + label + str.substring(_i + 1);
-  					_i += label.length - cut.length;
-  				}
-  			}
-  		} else if (nRgxp.test(next) && singleComments[comment] || multComments[_el + str.charAt(_i - 1)] && _i - selectionStart > 2 && multComments[comment]) {
-  			if (p[comment]) {
-  				cut = str.substring(selectionStart, _i + 1);
+					str = str.substring(0, selectionStart) + label + str.substring(_i + 1);
+					_i += label.length - cut.length;
+				}
+			}
+		} else if (nRgxp.test(next) && singleComments[comment] || multComments[_el + str.charAt(_i - 1)] && _i - selectionStart > 2 && multComments[comment]) {
+			if (p[comment]) {
+				cut = str.substring(selectionStart, _i + 1);
 
-  				if (p[comment] === -1) {
-  					label = '';
-  				} else {
-  					label = mark(stack.length);
-  					stack.push(cut);
-  				}
+				if (p[comment] === -1) {
+					label = '';
+				} else {
+					label = mark(stack.length);
+					stack.push(cut);
+				}
 
-  				str = str.substring(0, selectionStart) + label + str.substring(_i + 1);
-  				_i += label.length - cut.length;
-  			}
+				str = str.substring(0, selectionStart) + label + str.substring(_i + 1);
+				_i += label.length - cut.length;
+			}
 
-  			comment = false;
-  		}
-  	}
+			comment = false;
+		}
+	}
 
-  	if (stack === content) {
-  		cache[cacheKey] = cache[cacheKey] || {};
-  		cache[cacheKey][initStr] = str;
-  	}
+	if (stack === content) {
+		cache[cacheKey] = cache[cacheKey] || {};
+		cache[cacheKey][initStr] = str;
+	}
 
-  	return str;
-  }
+	return str;
+}
 
-  var pasteRgxp = /__ESCAPER_QUOT__(\d+)_/g;
+var pasteRgxp = /__ESCAPER_QUOT__(\d+)_/g;
 
-  /**
-   * Replaces all found blocks __ESCAPER_QUOT__number_ to real content in a string
-   * and returns a new string
-   *
-   * @param {string} str - source string
-   * @param {Array=} [opt_content=Escaper.content] - array of matches
-   * @param {RegExp=} [opt_rgxp] - RegExp for searching, e.g. /__ESCAPER_QUOT__(\d+)_/g
-   * @return {string}
-   */
-  function paste(str, opt_content, opt_rgxp) {
-  	return str.replace(opt_rgxp || pasteRgxp, function (sstr, pos) {
-  		return (opt_content || Escaper.content)[pos];
-  	});
-  }
+/**
+ * Replaces all found blocks __ESCAPER_QUOT__number_ to real content in a string
+ * and returns a new string
+ *
+ * @param {string} str - source string
+ * @param {Array=} [opt_content=Escaper.content] - array of matches
+ * @param {RegExp=} [opt_rgxp] - RegExp for searching, e.g. /__ESCAPER_QUOT__(\d+)_/g
+ * @return {string}
+ */
+function paste(str, opt_content, opt_rgxp) {
+	return str.replace(opt_rgxp || pasteRgxp, function (sstr, pos) {
+		return (opt_content || Escaper.content)[pos];
+	});
+}
 
-  exports['default'] = Escaper;
-  exports.replace = replace;
-  exports.paste = paste;
+exports['default'] = Escaper;
+exports.replace = replace;
+exports.paste = paste;
 
-  Object.defineProperty(exports, '__esModule', { value: true });
+Object.defineProperty(exports, '__esModule', { value: true });
 
 })));
