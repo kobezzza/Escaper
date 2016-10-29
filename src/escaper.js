@@ -163,7 +163,7 @@ let
 	snakeskinRgxp;
 
 const
-	uSRgxp = /[^\s\/]/,
+	uSRgxp = /[^\s/]/,
 	wRgxp = /[a-z]/,
 	sRgxp = /\s/,
 	nRgxp = /\r|\n/,
