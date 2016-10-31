@@ -20,9 +20,8 @@
 
   "dictionary": [
     "regExp",
-    "/maintainers?/",
     "sexualized",
-    "maintainers",
+    "maintainers?",
     "escaper",
     "str",
     "withComment",
