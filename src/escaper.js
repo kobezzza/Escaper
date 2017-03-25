@@ -9,7 +9,7 @@
  */
 
 const Escaper = {
-	VERSION: [2, 4, 32],
+	VERSION: [2, 4, 33],
 	content: [],
 	cache: {},
 	snakeskinRgxp: null,
@@ -166,8 +166,8 @@ const
 	uSRgxp = /[^\s/]/,
 	wRgxp = /[a-z]/,
 	sRgxp = /\s/,
-	nRgxp = /\r|\n/,
-	posRgxp = /\$\{pos}/g;
+	nRgxp = /[\r\n]/,
+	posRgxp = /\${pos}/g;
 
 const objMap = {
 	'object': true,
@@ -483,5 +483,5 @@ const
  * @return {string}
  */
 export function paste(str, opt_content, opt_rgxp) {
-	return str.replace(opt_rgxp || pasteRgxp, (sstr, pos) => (opt_content || Escaper.content)[pos]);
+	return str.replace(opt_rgxp || pasteRgxp, (str, pos) => (opt_content || Escaper.content)[pos]);
 }
