@@ -13,22 +13,12 @@
 const
 	gulp = require('gulp'),
 	fs = require('fs'),
-	async = require('async'),
-	through = require('through2');
+	async = require('async');
 
 const
-	babel = require('rollup-plugin-babel'),
-	monic = require('gulp-monic'),
-	rollup = require('gulp-rollup'),
-	bump = require('gulp-bump'),
-	gcc = require('gulp-closure-compiler'),
 	header = require('gulp-header'),
-	wrap = require('gulp-wrap'),
 	replace = require('gulp-replace'),
 	cached = require('gulp-cached'),
-	download = require('gulp-download'),
-	istanbul = require('gulp-istanbul'),
-	jasmine = require('gulp-jasmine'),
 	eol = require('gulp-eol'),
 	run = require('gulp-run');
 
@@ -78,6 +68,7 @@ gulp.task('head', (cb) => {
 	readyToWatcher = false;
 
 	const
+		through = require('through2'),
 		fullHead = `${getHead()} */\n\n`;
 
 	gulp.src(['./@(src|spec)/*.js', './@(externs|gulpfile).js', './predefs/src/index.js'], {base: './'})
@@ -99,6 +90,10 @@ gulp.task('head', (cb) => {
 });
 
 gulp.task('build', (cb) => {
+	const
+		rollup = require('gulp-rollup'),
+		babel = require('rollup-plugin-babel');
+
 	const fullHead =
 		getHead(true) +
 		' *\n' +
@@ -124,6 +119,9 @@ gulp.task('build', (cb) => {
 });
 
 gulp.task('bump', (cb) => {
+	const
+		bump = require('gulp-bump');
+
 	gulp.src('./@(package|bower).json')
 		.pipe(bump({version: getVersion()}))
 		.pipe(gulp.dest('./'))
@@ -138,6 +136,10 @@ gulp.task('npmignore', (cb) => {
 });
 
 gulp.task('predefs', (cb) => {
+	const
+		download = require('gulp-download'),
+		monic = require('gulp-monic');
+
 	async.parallel([
 		(cb) => {
 			download([
@@ -166,6 +168,10 @@ gulp.task('predefs', (cb) => {
 });
 
 function compile(cb) {
+	const
+		wrap = require('gulp-wrap'),
+		gcc = require('gulp-closure-compiler');
+
 	gulp.src('./dist/escaper.js')
 		.pipe(cached('compile'))
 		.pipe(gcc(require('./gcc.json')))
@@ -182,6 +188,10 @@ gulp.task('fast-compile', ['build'], compile);
 gulp.task('full-build', ['compile'], test);
 
 function test(cb) {
+	const
+		jasmine = require('gulp-jasmine'),
+		istanbul = require('gulp-istanbul');
+
 	gulp.src('./dist/escaper.min.js')
 		.pipe(istanbul())
 		.pipe(istanbul.hookRequire())
