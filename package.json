@@ -46,7 +46,7 @@
     "gulp-wrap": "^0.13.0",
     "jasmine": "^2.2.1",
     "monic": "^2.3.8",
-    "rollup": "^0.41.6",
+    "rollup": "^0.42.0",
     "rollup-plugin-babel": "^2.2.0",
     "through2": "^2.0.0",
     "yaspeller": "^3.0.0"
