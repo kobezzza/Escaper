@@ -173,6 +173,7 @@ function compile(cb) {
 		.pipe(plumber())
 		.pipe(cached('compile'))
 		.pipe(gcc(Object.assign(config, {compilerPath: glob.sync(config.compilerPath)})))
+		.pipe(replace(/^\/\*[\s\S]*?\*\//, ''))
 		.pipe(wrap('(function(){\'use strict\';<%= contents %>}).call(this);'))
 		.pipe(header(`/*! Escaper v${getVersion()} | https://github.com/kobezzza/Escaper/blob/master/LICENSE */\n`))
 		.pipe(eol('\n'))
