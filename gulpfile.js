@@ -55,7 +55,7 @@ let
 
 gulp.task('copyright', (cb) => {
 	gulp.src('./LICENSE')
-		.pipe(replace(/(Copyright \(c\) )(\d+)-?(\d*)/, (sstr, intro, from, to) => {
+		.pipe(replace(/(Copyright \(c\) )(\d+)-?(\d*)/, (str, intro, from, to) => {
 			const year = new Date().getFullYear();
 			return intro + from + (to || from !== year ? `-${year}` : '');
 		}))

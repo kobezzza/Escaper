@@ -8,7 +8,8 @@
  * https://github.com/kobezzza/Escaper/blob/master/LICENSE
  */
 
-const Escaper = {
+let Escaper;
+export default Escaper = {
 	VERSION: [2, 4, 33],
 	content: [],
 	cache: {},
@@ -17,9 +18,6 @@ const Escaper = {
 	replace,
 	paste
 };
-
-export default
-	Escaper;
 
 const stringLiterals = {
 	'"': true,
