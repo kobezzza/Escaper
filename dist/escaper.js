@@ -1,11 +1,11 @@
 /*!
- * Escaper v2.4.33
+ * Escaper v2.4.34
  * https://github.com/kobezzza/Escaper
  *
  * Released under the MIT license
  * https://github.com/kobezzza/Escaper/blob/master/LICENSE
  *
- * Date: Sat, 25 Mar 2017 15:21:07 GMT
+ * Date: Sat, 17 Jun 2017 09:59:37 GMT
  */
 
 (function (global, factory) {
@@ -20,8 +20,9 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
   return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;
 };
 
-var Escaper = {
-	VERSION: [2, 4, 33],
+var Escaper = void 0;
+var escaper = Escaper = {
+	VERSION: [2, 4, 34],
 	content: [],
 	cache: {},
 	snakeskinRgxp: null,
@@ -221,8 +222,9 @@ function replace(str, opt_withCommentsOrParams, opt_content, opt_snakeskin) {
 	symbols = symbols || Escaper.symbols || 'a-z';
 	snakeskinRgxp = snakeskinRgxp || Escaper.snakeskinRgxp || new RegExp('[!$' + symbols + '_]', 'i');
 
-	var cache = Escaper.cache,
-	    content = Escaper.content;
+	var _Escaper = Escaper,
+	    cache = _Escaper.cache,
+	    content = _Escaper.content;
 
 
 	var isObj = Boolean(opt_withCommentsOrParams && objMap[typeof opt_withCommentsOrParams === 'undefined' ? 'undefined' : _typeof(opt_withCommentsOrParams)]);
@@ -463,7 +465,7 @@ function paste(str, opt_content, opt_rgxp) {
 	});
 }
 
-exports['default'] = Escaper;
+exports['default'] = escaper;
 exports.replace = replace;
 exports.paste = paste;
 
