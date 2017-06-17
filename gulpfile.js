@@ -182,8 +182,8 @@ function compile(cb) {
 }
 
 gulp.task('compile', ['predefs', 'build'], compile);
-gulp.task('fast-compile', ['build'], compile);
-gulp.task('full-build', ['compile'], test);
+gulp.task('fastCompile', ['build'], compile);
+gulp.task('fullBuild', ['compile'], test);
 
 function test(cb) {
 	const
@@ -204,7 +204,7 @@ function test(cb) {
 	}
 }
 
-gulp.task('test-dev', ['fast-compile'], test);
+gulp.task('testDev', ['fastCompile'], test);
 gulp.task('test', test);
 gulp.task('yaspeller', (cb) => {
 	run('yaspeller ./').exec()
@@ -221,7 +221,7 @@ gulp.task('watch', ['default'], () => {
 			setTimeout(cb, 500),
 
 		() => {
-			gulp.watch('./src/escaper.js', ['test-dev', 'bump']).on('change', unbind('build'));
+			gulp.watch('./src/escaper.js', ['testDev', 'bump']).on('change', unbind('build'));
 			gulp.watch('./spec/*.js', ['test']);
 			gulp.watch('./*.md', ['yaspeller']);
 			gulp.watch('./.gitignore', ['npmignore']);
@@ -237,4 +237,4 @@ gulp.task('watch', ['default'], () => {
 	}
 });
 
-gulp.task('default', ['copyright', 'head', 'full-build', 'bump', 'yaspeller', 'npmignore']);
+gulp.task('default', ['copyright', 'head', 'fullBuild', 'bump', 'yaspeller', 'npmignore']);
