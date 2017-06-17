@@ -13,6 +13,5 @@
 //#include ../../node_modules/closurecompiler-externs/core.js
 //#include ../../externs.js
 
-/** @abstract */
 function define(moduleName, dependencies, fn) {}
 define.amd = null;

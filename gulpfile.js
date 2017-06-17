@@ -16,6 +16,7 @@ const
 	async = require('async');
 
 const
+	plumber = require('gulp-plumber'),
 	header = require('gulp-header'),
 	replace = require('gulp-replace'),
 	cached = require('gulp-cached'),
@@ -38,13 +39,6 @@ function getHead(opt_version) {
 		' * Released under the MIT license\n' +
 		' * https://github.com/kobezzza/Escaper/blob/master/LICENSE\n'
 	);
-}
-
-function error(cb) {
-	return (err) => {
-		console.error(err.message);
-		cb();
-	};
 }
 
 const
@@ -101,16 +95,17 @@ gulp.task('build', (cb) => {
 		' */\n\n';
 
 	gulp.src('./src/escaper.js')
+		.pipe(plumber())
 		.pipe(cached('build'))
 		.pipe(rollup({
 			entry: './src/escaper.js',
 			format: 'umd',
-			moduleId: 'Escaper',
+			amd: {id: 'Escaper'},
 			moduleName: 'Escaper',
+			exports: 'named',
 			plugins: [babel()]
 		}))
 
-		.on('error', error(cb))
 		.pipe(replace(headRgxp, ''))
 		.pipe(header(fullHead))
 		.pipe(eol('\n'))
@@ -145,14 +140,14 @@ gulp.task('predefs', (cb) => {
 			download([
 				'https://raw.githubusercontent.com/google/closure-compiler/master/contrib/externs/jasmine.js'
 			])
-				.on('error', error(cb))
+				.pipe(plumber())
 				.pipe(gulp.dest('./predefs/src/ws'))
 				.on('end', buildPredefs);
 
 			function buildPredefs() {
 				gulp.src('./predefs/src/index.js')
+					.pipe(plumber())
 					.pipe(monic())
-					.on('error', error(cb))
 					.pipe(gulp.dest('./predefs/build'))
 					.on('end', cb);
 			}
@@ -160,7 +155,7 @@ gulp.task('predefs', (cb) => {
 
 		(cb) => {
 			run('bower install').exec()
-				.on('error', error(cb))
+				.pipe(plumber())
 				.on('finish', cb);
 		}
 
@@ -169,13 +164,15 @@ gulp.task('predefs', (cb) => {
 
 function compile(cb) {
 	const
+		glob = require('glob'),
 		wrap = require('gulp-wrap'),
-		gcc = require('gulp-closure-compiler');
+		gcc = require('gulp-closure-compiler'),
+		config = require('./gcc.json');
 
 	gulp.src('./dist/escaper.js')
+		.pipe(plumber())
 		.pipe(cached('compile'))
-		.pipe(gcc(require('./gcc.json')))
-		.on('error', error(cb))
+		.pipe(gcc(Object.assign(config, {compilerPath: glob.sync(config.compilerPath)})))
 		.pipe(wrap('(function(){\'use strict\';<%= contents %>}).call(this);'))
 		.pipe(header(`/*! Escaper v${getVersion()} | https://github.com/kobezzza/Escaper/blob/master/LICENSE */\n`))
 		.pipe(eol('\n'))
@@ -199,8 +196,8 @@ function test(cb) {
 
 	function runTests() {
 		gulp.src('./spec/index_spec.js')
+			.pipe(plumber())
 			.pipe(jasmine())
-			.on('error', error(cb))
 			.pipe(istanbul.writeReports())
 			.on('end', cb);
 	}
@@ -210,7 +207,7 @@ gulp.task('test-dev', ['fast-compile'], test);
 gulp.task('test', test);
 gulp.task('yaspeller', (cb) => {
 	run('yaspeller ./').exec()
-		.on('error', error(cb))
+		.pipe(plumber())
 		.on('finish', cb);
 });
 
