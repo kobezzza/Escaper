@@ -98,10 +98,10 @@ gulp.task('build', (cb) => {
 		.pipe(plumber())
 		.pipe(cached('build'))
 		.pipe(rollup({
-			entry: './src/escaper.js',
+			input: './src/escaper.js',
 			format: 'umd',
 			amd: {id: 'Escaper'},
-			moduleName: 'Escaper',
+			name: 'Escaper',
 			exports: 'named',
 			plugins: [babel()]
 		}))
