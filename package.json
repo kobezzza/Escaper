@@ -4,7 +4,8 @@
   "homepage": "https://github.com/kobezzza/Escaper",
   "main": "dist/escaper.js",
   "jsnext:main": "src/escaper.js",
-  "version": "2.4.34",
+  "typings": "escaper.d.ts",
+  "version": "2.5.0",
   "license": "MIT",
   "author": {
     "name": "kobezzza",
@@ -30,7 +31,7 @@
     "bower": "^1.8.2",
     "closurecompiler-externs": "^1.0.4",
     "coveralls": "^2.11.2",
-    "eslint": "^4.6.1",
+    "eslint": "^4.7.0",
     "glob": "^7.1.2",
     "gulp": "^3.8.9",
     "gulp-bump": "^2.0.0",

@@ -65,7 +65,7 @@ gulp.task('head', (cb) => {
 		through = require('through2'),
 		fullHead = `${getHead()} */\n\n`;
 
-	gulp.src(['./@(src|spec)/*.js', './@(externs|gulpfile).js', './predefs/src/index.js'], {base: './'})
+	gulp.src(['./@(src|spec)/*.js', './@(externs|gulpfile).js', './escaper.d.ts', './predefs/src/index.js'], {base: './'})
 		.pipe(through.obj(function (file, enc, cb) {
 			if (!headRgxp.exec(file.contents.toString()) || RegExp.$1 !== fullHead) {
 				this.push(file);

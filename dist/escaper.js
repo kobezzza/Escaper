@@ -1,11 +1,11 @@
 /*!
- * Escaper v2.4.34
+ * Escaper v2.5.0
  * https://github.com/kobezzza/Escaper
  *
  * Released under the MIT license
  * https://github.com/kobezzza/Escaper/blob/master/LICENSE
  *
- * Date: Wed, 13 Sep 2017 17:22:24 GMT
+ * Date: Sat, 16 Sep 2017 07:19:18 GMT
  */
 
 (function (global, factory) {
@@ -139,7 +139,7 @@ var asyncGenerator = function () {
 
 var Escaper = void 0;
 var escaper = Escaper = {
-	VERSION: [2, 4, 34],
+	VERSION: [2, 5, 0],
 	content: [],
 	cache: {},
 	snakeskinRgxp: null,

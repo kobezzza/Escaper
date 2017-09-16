@@ -10,7 +10,7 @@
 
 let Escaper;
 export default Escaper = {
-	VERSION: [2, 4, 34],
+	VERSION: [2, 5, 0],
 	content: [],
 	cache: {},
 	snakeskinRgxp: null,
