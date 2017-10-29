@@ -25,7 +25,7 @@ const
 
 function getVersion() {
 	const file = fs.readFileSync('./src/escaper.js');
-	return /VERSION\s*(?::|=)\s*\[(\d+,\s*\d+,\s*\d+)]/.exec(file)[1]
+	return /VERSION\s*[:=]\s*\[(\d+,\s*\d+,\s*\d+)]/.exec(file)[1]
 		.split(/\s*,\s*/)
 		.join('.');
 }
