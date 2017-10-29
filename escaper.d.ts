@@ -8,7 +8,7 @@
 
 declare const Escaper: {
 	VERSION: any[];
-	cache: {[key: string]: string};
+	cache: Record<string, string>;
 	content: string[];
 	snakeskinRgxp: RegExp | null;
 	symbols: string | null;
