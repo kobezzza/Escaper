@@ -34,7 +34,7 @@
     "curly": ["error"],
     "dot-location": ["error", "property"],
     "eqeqeq": ["error", "allow-null"],
-    "guard-for-in": ["warn"],
+    // "guard-for-in": ["warn"],
     "no-else-return": ["error"],
     "no-empty-pattern": ["error"],
     "no-extra-bind": ["warn"],
