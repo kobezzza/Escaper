@@ -50,8 +50,14 @@ const all = [
 const
 	singleCommentsMap = createMap(singleComments),
 	multCommentsMap = createMap(multComments),
-	allMap = createMap(all),
-	defMap = {true: true, null: true, undefined: true, '-1': true};
+	allMap = createMap(all);
+
+const defMap = {
+	'true': true,
+	'null': true,
+	'undefined': true,
+	'-1': true
+};
 
 const
 	rgxpFlagsMap = Object.assign(Object.create(null), {'g': true, 'm': true, 'i': true, 'y': true, 'u': true}),
