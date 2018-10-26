@@ -1,11 +1,11 @@
 /*!
- * Escaper v2.5.3
+ * Escaper v3.0.0
  * https://github.com/kobezzza/Escaper
  *
  * Released under the MIT license
  * https://github.com/kobezzza/Escaper/blob/master/LICENSE
  *
- * Date: Tue, 23 Jan 2018 15:58:45 GMT
+ * Date: Fri, 26 Oct 2018 18:06:20 GMT
  */
 
 (function (global, factory) {
@@ -22,99 +22,38 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 
 var Escaper = void 0;
 var escaper = Escaper = {
-	VERSION: [2, 5, 3],
+	VERSION: [3, 0, 0],
 	content: [],
-	cache: {},
-	snakeskinRgxp: null,
-	symbols: null,
+	cache: Object.create(null),
+	symbols: /[!$a-z_]/i,
 	replace: replace,
 	paste: paste
 };
 
-var stringLiterals = {
-	'"': true,
-	'\'': true,
-	'`': true
+var singleComments = ['//', '//*', '//!', '//#', '//@', '//$'];
+
+var multComments = ['/*', '/**', '/*!', '/*#', '/*@', '/*$'];
+
+var strings = ['"', '\'', '`'];
+var literals = ['/'];
+
+var all = [].concat(singleComments, multComments, strings, literals);
+
+var singleCommentsMap = createMap(singleComments);
+var multCommentsMap = createMap(multComments);
+var allMap = createMap(all);
+
+var defMap = {
+	'true': true,
+	'null': true,
+	'undefined': true,
+	'-1': true
 };
 
-var literals = {
-	'/': true
-};
+var rgxpFlagsMap = Object.assign(Object.create(null), { 'g': true, 'm': true, 'i': true, 'y': true, 'u': true });
+var rgxpFlags = Object.keys(rgxpFlagsMap);
 
-for (var key in stringLiterals) {
-	if (!stringLiterals.hasOwnProperty(key)) {
-		break;
-	}
-
-	literals[key] = true;
-}
-
-var singleComments = {
-	'//': true,
-	'//*': true,
-	'//!': true,
-	'//#': true,
-	'//@': true,
-	'//$': true
-};
-
-var multComments = {
-	'/*': true,
-	'/**': true,
-	'/*!': true,
-	'/*#': true,
-	'/*@': true,
-	'/*$': true
-};
-
-var keyArr = [];
-var finalMap = {};
-
-for (var _key in literals) {
-	if (!literals.hasOwnProperty(_key)) {
-		break;
-	}
-
-	keyArr.push(_key);
-	finalMap[_key] = true;
-}
-
-for (var _key2 in singleComments) {
-	if (!singleComments.hasOwnProperty(_key2)) {
-		break;
-	}
-
-	keyArr.push(_key2);
-	finalMap[_key2] = true;
-}
-
-for (var _key3 in multComments) {
-	if (!multComments.hasOwnProperty(_key3)) {
-		break;
-	}
-
-	keyArr.push(_key3);
-	finalMap[_key3] = true;
-}
-
-var rgxpFlags = [];
-var rgxpFlagsMap = {
-	'g': true,
-	'm': true,
-	'i': true,
-	'y': true,
-	'u': true
-};
-
-for (var _key4 in rgxpFlagsMap) {
-	if (!rgxpFlagsMap.hasOwnProperty(_key4)) {
-		break;
-	}
-
-	rgxpFlags.push(_key4);
-}
-
-var escapeEndMap = {
+var endSymbols = Object.assign(Object.create(null), {
 	'-': true,
 	'+': true,
 	'*': true,
@@ -134,9 +73,9 @@ var escapeEndMap = {
 	'(': true,
 	'{': true,
 	'[': true
-};
+});
 
-var escapeEndWordMap = {
+var endWords = Object.assign(Object.create(null), {
 	'return': true,
 	'yield': true,
 	'await': true,
@@ -147,55 +86,121 @@ var escapeEndWordMap = {
 	'in': true,
 	'new': true,
 	'of': true
-};
+});
 
-/**
- * @param {!Object} obj
- * @param {!Object} p
- * @param {(boolean|number)} val
- */
-function mix(obj, p, val) {
-	for (var _key5 in obj) {
-		if (!obj.hasOwnProperty(_key5)) {
-			break;
-		}
-
-		if (_key5 in p === false) {
-			p[_key5] = val;
-		}
-	}
-}
-
-var symbols = void 0;
-var snakeskinRgxp = void 0;
-
-var uSRgxp = /[^\s/]/;
-var wRgxp = /[a-z]/;
-var sRgxp = /\s/;
-var nRgxp = /[\r\n]/;
+var notSpaceRgxp = /[^\s/]/;
+var wordRgxp = /[a-z]/;
+var spaceRgxp = /\s/;
+var nextLineRgxp = /[\r\n]/;
 var posRgxp = /\${pos}/g;
 
-var objMap = {
-	'object': true,
-	'function': true
-};
+/**
+ * @param {!Array} arr
+ * @return {!Object}
+ */
+function createMap(arr) {
+	var map = Object.create(null);
+
+	for (var i = 0; i < arr.length; i++) {
+		map[arr[i]] = true;
+	}
+
+	return map;
+}
+
+/** @return {{get: !Function, set: !Function}} */
+function createCache() {
+	if (typeof Map === 'function') {
+		return new Map();
+	}
+
+	var cache = Object.create(null);
+
+	return {
+		get: function get$$1(key) {
+			return cache[key];
+		},
+		set: function set$$1(key, value) {
+			cache[key] = value;
+			return this;
+		}
+	};
+}
+
+var restrictedKeys = Object.assign(Object.create(null), {
+	'label': true,
+	'filters': true,
+	'singleComments': true,
+	'multComment': true,
+	'comments': true,
+	'strings': true,
+	'literals': true
+});
+
+/**
+ * @param {(!Object|!Array)} from
+ * @param {!Object} to
+ * @param {?=} [value]
+ * @return {boolean}
+ */
+function mix(from, to, value) {
+	if (!from || (typeof from === 'undefined' ? 'undefined' : _typeof(from)) !== 'object') {
+		return false;
+	}
+
+	var isArr = Array.isArray(from),
+	    customValue = arguments.length > 2,
+	    keys = isArr ? from : Object.keys(from);
+
+	for (var i = 0; i < keys.length; i++) {
+		var key = keys[i];
+
+		if (restrictedKeys[key]) {
+			continue;
+		}
+
+		if (key in to === false) {
+			var v = customValue ? value : isArr ? true : from[key];
+			to[key] = v != null ? v : true;
+		}
+	}
+
+	return true;
+}
+
+/**
+ * @param {!Object} params
+ * @param {number} pos
+ * @return {string}
+ */
+function mark(params, pos) {
+	var label = params['label'];
+
+	if (label) {
+		return label.replace(posRgxp, pos);
+	}
+
+	return '__ESCAPER_QUOT__' + pos + '_';
+}
 
 /**
  * Replaces all found blocks ' ... ', " ... ", ` ... `, / ... /, // ..., /* ... *\/ to
- * __ESCAPER_QUOT__number_ in a string and returns a new string
+ * an escape block in a string and returns a new string
  *
  * @param {string} str - source string
- * @param {(Object<string, boolean>|boolean)=} [opt_withCommentsOrParams=false] - parameters:
+ * @param {(Object<string, (Array|Object|boolean|number)>|Array|number)=} [how=true] - parameters:
  *
  *     (if a parameter value is set to -1, then all found matches will be removed from the final string,
  *          or if the value will be set to true/false they will be included/excluded)
  *
- *     *) @label    - template for replacement, e.g. __ESCAPER_QUOT__${pos}_
- *     *) @all      - replaces all found matches
- *     *) @comments - replaces all kinds of comments
- *     *) @strings  - replaces all kinds of string literals
- *     *) @literals - replaces all kinds of string literals and regular expressions
- *     *) `
+ *     *) label          - template for replacement, e.g. __ESCAPER_QUOT__${pos}_
+ *     *) singleComments - replaces all kinds of single comments
+ *     *) multComments   - replaces all kinds of multiline comments
+ *     *) comments       - replaces all kinds of comments
+ *     *) strings        - replaces all kinds of string literals
+ *     *) literals       - replaces all kinds of literals (except string literals)
+ *
+ *     *)`
  *     *) '
  *     *) "
  *     *) /
@@ -212,80 +217,102 @@ var objMap = {
  *     *) /*@
  *     *) /*$
  *
- *     OR if the value is boolean, then will be replaced all found comments (true) / literals (false)
- *
- * @param {Array=} [opt_content=Escaper.content] - array for matches
- * @param {?boolean=} [opt_snakeskin] - private parameter for using with Snakeskin
+ * @param {Array=} [content=Escaper.content] - array for matches
  * @return {string}
  */
-function replace(str, opt_withCommentsOrParams, opt_content, opt_snakeskin) {
-	symbols = symbols || Escaper.symbols || 'a-z';
-	snakeskinRgxp = snakeskinRgxp || Escaper.snakeskinRgxp || new RegExp('[!$' + symbols + '_]', 'i');
-
-	var _Escaper = Escaper,
+function replace(str, how, content) {
+	var p = Object.create(null),
+	    _Escaper = Escaper,
 	    cache = _Escaper.cache,
-	    content = _Escaper.content;
+	    staticContent = _Escaper.content;
 
 
-	var isObj = Boolean(opt_withCommentsOrParams && objMap[typeof opt_withCommentsOrParams === 'undefined' ? 'undefined' : _typeof(opt_withCommentsOrParams)]);
-
-	var p = isObj ? Object(opt_withCommentsOrParams) : {};
-
-	function mark(pos) {
-		if (p['@label']) {
-			return p['@label'].replace(posRgxp, pos);
-		}
-
-		return '__ESCAPER_QUOT__' + pos + '_';
-	}
-
-	var withComments = false;
-	if (typeof opt_withCommentsOrParams === 'boolean') {
-		withComments = Boolean(opt_withCommentsOrParams);
-	}
-
-	if ('@comments' in p) {
-		mix(multComments, p, p['@comments']);
-		mix(singleComments, p, p['@comments']);
-		delete p['@comments'];
-	}
-
-	if ('@strings' in p) {
-		mix(stringLiterals, p, p['@strings']);
-		delete p['@strings'];
-	}
-
-	if ('@literals' in p) {
-		mix(literals, p, p['@literals']);
-		delete p['@literals'];
-	}
-
-	if ('@all' in p) {
-		mix(finalMap, p, p['@all']);
-		delete p['@all'];
-	}
-
-	var cacheKey = '';
-	for (var i = -1; ++i < keyArr.length;) {
-		var el = keyArr[i];
-
-		if (multComments[el] || singleComments[el]) {
-			p[el] = withComments || p[el];
+	if (Array.isArray(how)) {
+		if (how.length || Array.isArray(content)) {
+			mix(how, p);
 		} else {
-			p[el] = p[el] || !isObj;
+			content = content || how;
+			mix(all, p, true);
+		}
+	} else if (how && (typeof how === 'undefined' ? 'undefined' : _typeof(how)) === 'object') {
+		mix(how, p);
+
+		if (how['filters']) {
+			p.filters = true;
 		}
 
-		cacheKey += p[el] + ',';
+		p.label = how['label'];
+
+		var singleCommentsOpt = how['singleComments'],
+		    multCommentsOpt = how['multComments'],
+		    commentsOpt = how['comments'];
+
+		var skipComments = false;
+
+		if (singleCommentsOpt !== false) {
+			if (defMap[singleCommentsOpt]) {
+				mix(singleComments, p, singleCommentsOpt);
+				skipComments = singleCommentsOpt != null;
+			} else if (mix(singleCommentsOpt, p)) {
+				skipComments = true;
+			}
+		}
+
+		if (multCommentsOpt !== false) {
+			if (defMap[multCommentsOpt]) {
+				mix(singleComments, p, multCommentsOpt);
+				skipComments = skipComments || multCommentsOpt != null;
+			} else if (mix(multCommentsOpt, p)) {
+				skipComments = true;
+			}
+		}
+
+		if (!skipComments && commentsOpt !== false) {
+			if (defMap[commentsOpt]) {
+				mix(multComments, p, commentsOpt);
+				mix(singleComments, p, commentsOpt);
+			} else {
+				mix(commentsOpt, p);
+			}
+		}
+
+		var stringsOpt = how['strings'],
+		    literalsOpt = how['literals'];
+
+		if (stringsOpt !== false) {
+			if (defMap[stringsOpt]) {
+				mix(strings, p, stringsOpt);
+			} else {
+				mix(stringsOpt, p);
+			}
+		}
+
+		if (literalsOpt !== false) {
+			if (defMap[literalsOpt]) {
+				mix(literals, p, literalsOpt);
+			} else {
+				mix(literalsOpt, p);
+			}
+		}
+	} else {
+		mix(all, p, how === -1 ? -1 : true);
 	}
 
-	var initStr = str,
-	    stack = opt_content || content;
+	content = content || staticContent;
 
-	if (stack === content && cache[cacheKey] && cache[cacheKey][initStr]) {
-		return cache[cacheKey][initStr];
+	var cacheStr = str,
+	    canCache = content === staticContent,
+	    cacheKey = canCache && Object.keys(p).join(),
+	    cacheVal = canCache && cacheKey in cache && cache[cacheKey].get(cacheStr);
+
+	if (cacheVal) {
+		return cacheVal;
 	}
 
-	var begin = false,
+	var symbols = Escaper.symbols;
+
+	var
+	/** @type {(boolean|string)} */begin = false,
 	    end = true;
 
 	var escape = false,
@@ -303,18 +330,18 @@ function replace(str, opt_withCommentsOrParams, opt_content, opt_snakeskin) {
 	var part = '',
 	    rPart = '';
 
-	for (var _i = -1; ++_i < str.length;) {
-		var _el = str.charAt(_i);
+	for (var i = -1; ++i < str.length;) {
+		var el = str.charAt(i);
 
-		var next = str.charAt(_i + 1),
-		    word = str.substr(_i, 2),
-		    extWord = str.substr(_i, 3);
+		var next = str.charAt(i + 1),
+		    word = str.substr(i, 2),
+		    extWord = str.substr(i, 3);
 
 		if (!comment) {
 			if (!begin) {
-				if (_el === '/') {
-					if (singleComments[word] || multComments[word]) {
-						if (singleComments[extWord] || multComments[extWord]) {
+				if (el === '/') {
+					if (singleCommentsMap[word] || multCommentsMap[word]) {
+						if (singleCommentsMap[extWord] || multCommentsMap[extWord]) {
 							comment = extWord;
 						} else {
 							comment = word;
@@ -322,32 +349,33 @@ function replace(str, opt_withCommentsOrParams, opt_content, opt_snakeskin) {
 					}
 
 					if (comment) {
-						selectionStart = _i;
+						selectionStart = i;
 						continue;
 					}
 				}
 
-				if (escapeEndMap[_el] || escapeEndWordMap[rPart]) {
+				if (endSymbols[el] || endWords[rPart]) {
 					end = true;
 					rPart = '';
-				} else if (uSRgxp.test(_el)) {
+				} else if (notSpaceRgxp.test(el)) {
 					end = false;
 				}
 
-				if (wRgxp.test(_el)) {
-					part += _el;
+				if (wordRgxp.test(el)) {
+					part += el;
 				} else {
 					rPart = part;
 					part = '';
 				}
 
 				var skip = false;
-				if (opt_snakeskin) {
-					if (_el === '|' && snakeskinRgxp.test(next)) {
+
+				if (p.filters) {
+					if (el === '|' && symbols.test(next)) {
 						filterStart = true;
 						end = false;
 						skip = true;
-					} else if (filterStart && sRgxp.test(_el)) {
+					} else if (filterStart && spaceRgxp.test(el)) {
 						filterStart = false;
 						end = true;
 						skip = true;
@@ -355,9 +383,9 @@ function replace(str, opt_withCommentsOrParams, opt_content, opt_snakeskin) {
 				}
 
 				if (!skip) {
-					if (escapeEndMap[_el]) {
+					if (endSymbols[el]) {
 						end = true;
-					} else if (uSRgxp.test(_el)) {
+					} else if (notSpaceRgxp.test(el)) {
 						end = false;
 					}
 				}
@@ -365,41 +393,41 @@ function replace(str, opt_withCommentsOrParams, opt_content, opt_snakeskin) {
 
 			// [] inside RegExp
 			if (begin === '/' && !escape) {
-				if (_el === '[') {
+				if (el === '[') {
 					block = true;
-				} else if (_el === ']') {
+				} else if (el === ']') {
 					block = false;
 				}
 			}
 
 			if (!begin && templateVar) {
-				if (_el === '}') {
+				if (el === '}') {
 					templateVar--;
-				} else if (_el === '{') {
+				} else if (el === '{') {
 					templateVar++;
 				}
 
 				if (!templateVar) {
-					_el = '`';
+					el = '`';
 				}
 			}
 
 			if (begin === '`' && !escape && word === '${') {
-				_el = '`';
-				_i++;
+				el = '`';
+				i++;
 				templateVar++;
 			}
 
-			if (finalMap[_el] && (_el !== '/' || end) && !begin) {
-				begin = _el;
-				selectionStart = _i;
-			} else if (begin && (_el === '\\' || escape)) {
+			if (allMap[el] && (el !== '/' || end) && !begin) {
+				begin = el;
+				selectionStart = i;
+			} else if (begin && (el === '\\' || escape)) {
 				escape = !escape;
-			} else if (finalMap[_el] && begin === _el && !escape && (begin !== '/' || !block)) {
-				if (_el === '/') {
+			} else if (allMap[el] && begin === el && !escape && (begin !== '/' || !block)) {
+				if (el === '/') {
 					for (var j = -1; ++j < rgxpFlags.length;) {
-						if (rgxpFlagsMap[str.charAt(_i + 1)]) {
-							_i++;
+						if (rgxpFlagsMap[str.charAt(i + 1)]) {
+							i++;
 						}
 					}
 				}
@@ -407,42 +435,42 @@ function replace(str, opt_withCommentsOrParams, opt_content, opt_snakeskin) {
 				begin = false;
 				end = false;
 
-				if (p[_el]) {
-					cut = str.substring(selectionStart, _i + 1);
+				if (p[el]) {
+					cut = str.substring(selectionStart, i + 1);
 
-					if (p[_el] === -1) {
+					if (p[el] === -1) {
 						label = '';
 					} else {
-						label = mark(stack.length);
-						stack.push(cut);
+						label = mark(p, content.length);
+						content.push(cut);
 					}
 
-					str = str.substring(0, selectionStart) + label + str.substring(_i + 1);
-					_i += label.length - cut.length;
+					str = str.substring(0, selectionStart) + label + str.substring(i + 1);
+					i += label.length - cut.length;
 				}
 			}
-		} else if (nRgxp.test(next) && singleComments[comment] || multComments[_el + str.charAt(_i - 1)] && _i - selectionStart > 2 && multComments[comment]) {
+		} else if ((i === str.length - 1 || nextLineRgxp.test(next)) && singleCommentsMap[comment] || multCommentsMap[el + str.charAt(i - 1)] && i - selectionStart > 2 && multCommentsMap[comment]) {
 			if (p[comment]) {
-				cut = str.substring(selectionStart, _i + 1);
+				cut = str.substring(selectionStart, i + 1);
 
 				if (p[comment] === -1) {
 					label = '';
 				} else {
-					label = mark(stack.length);
-					stack.push(cut);
+					label = mark(p, content.length);
+					content.push(cut);
 				}
 
-				str = str.substring(0, selectionStart) + label + str.substring(_i + 1);
-				_i += label.length - cut.length;
+				str = str.substring(0, selectionStart) + label + str.substring(i + 1);
+				i += label.length - cut.length;
 			}
 
 			comment = false;
 		}
 	}
 
-	if (stack === content) {
-		cache[cacheKey] = cache[cacheKey] || {};
-		cache[cacheKey][initStr] = str;
+	if (canCache) {
+		var c = cache[cacheKey] = cache[cacheKey] || createCache();
+		c.set(cacheStr, str);
 	}
 
 	return str;
@@ -451,17 +479,17 @@ function replace(str, opt_withCommentsOrParams, opt_content, opt_snakeskin) {
 var pasteRgxp = /__ESCAPER_QUOT__(\d+)_/g;
 
 /**
- * Replaces all found blocks __ESCAPER_QUOT__number_ to real content in a string
+ * Replaces all found escape blocks to a real content in a string
  * and returns a new string
  *
  * @param {string} str - source string
- * @param {Array=} [opt_content=Escaper.content] - array of matches
- * @param {RegExp=} [opt_rgxp] - RegExp for searching, e.g. /__ESCAPER_QUOT__(\d+)_/g
+ * @param {Array=} [content=Escaper.content] - array of matches
+ * @param {RegExp=} [rgxp] - RegExp for searching, e.g. /__ESCAPER_QUOT__(\d+)_/g
  * @return {string}
  */
-function paste(str, opt_content, opt_rgxp) {
-	return str.replace(opt_rgxp || pasteRgxp, function (str, pos) {
-		return (opt_content || Escaper.content)[pos];
+function paste(str, content, rgxp) {
+	return str.replace(rgxp || pasteRgxp, function (str, pos) {
+		return (content || Escaper.content)[pos];
 	});
 }
 
