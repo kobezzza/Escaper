@@ -6,5 +6,5 @@
  * https://github.com/kobezzza/Escaper/blob/master/LICENSE
  */
 
-global.Escaper = require('../dist/escaper.min');
+global.Escaper = require('../dist/escaper');
 require('./tests');

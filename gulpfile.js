@@ -106,22 +106,30 @@ gulp.task('build:compile', gulp.series([gulp.parallel(['predefs', 'build:js']), 
 gulp.task('build:compile:fast', gulp.series(['build:js', compile]));
 gulp.task('build', gulp.series(['build:compile', test]));
 
-function test() {
-	return gulp.src('./dist/escaper.min.js')
-		.pipe($.istanbul())
-		.pipe($.istanbul.hookRequire())
-		.on('finish', runTests);
+function test(dev) {
+	function exec() {
+		return gulp.src(`./dist/escaper${!dev ? '.min' : ''}.js`)
+			.pipe($.istanbul())
+			.pipe($.istanbul.hookRequire())
+			.on('finish', runTests);
 
-	function runTests() {
-		return gulp.src('./spec/index_spec.js')
-			.pipe($.plumber())
-			.pipe($.jasmine())
-			.pipe($.istanbul.writeReports());
+		function runTests() {
+			return gulp.src(`./spec/${dev ? 'dev' : ' index'}_spec.js`)
+				.pipe($.plumber())
+				.pipe($.jasmine())
+				.pipe($.istanbul.writeReports());
+		}
 	}
+
+	if (dev) {
+		return exec;
+	}
+
+	exec();
 }
 
 gulp.task('test', test);
-gulp.task('test:dev', gulp.series(['build:compile:fast', test]));
+gulp.task('test:dev', gulp.series(['build:js', test(true)]));
 gulp.task('yaspeller', () => $.run('yaspeller ./').exec().on('error', console.error));
 
 gulp.task('copyright', () =>
@@ -181,7 +189,7 @@ gulp.task('default', gulp.parallel([
 	'npmignore'
 ]));
 
-gulp.task('watch', gulp.series(['default', () => {
+gulp.task('watch', gulp.series(['build:js', 'bump', 'yaspeller', 'npmignore', () => {
 	gulp.watch('./src/escaper.js', gulp.parallel(['test:dev', 'bump']));
 	gulp.watch('./spec/*.js', gulp.series('test'));
 	gulp.watch('./*.md', gulp.series('yaspeller'));
