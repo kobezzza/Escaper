@@ -6,244 +6,236 @@
  * https://github.com/kobezzza/Escaper/blob/master/LICENSE
  */
 
-describe('Escaper', function () {
-	it('should work with " ... "', function () {
-		var str = Escaper.replace('Hello "friend\\\""!');
+describe('Escaper', () => {
+	function genLiteralTest(literal, group) {
+		const
+			src = ['hello + /* ', ' bla ', ' */ ', 'world\\' + literal, '! // baz'].join(literal);
 
-		expect(str)
-			.toBe('Hello __ESCAPER_QUOT__0_!');
+		{
+			const
+				expected = 'hello + __ESCAPER_QUOT__0_ __ESCAPER_QUOT__1_! __ESCAPER_QUOT__2_';
 
-		expect(Escaper.paste(str))
-			.toBe('Hello "friend\\\""!');
+			it(`replace <${literal}>`, () => {
+				const
+					content = [],
+					res = Escaper.replace(src, content);
 
-		var str2 = Escaper.replace('Hello "friend\\\""!');
+				expect(res).toBe(expected);
+				expect(Escaper.paste(res, content)).toBe(src);
+			});
 
-		expect(str2)
-			.toBe('Hello __ESCAPER_QUOT__0_!');
+			it(`replace <${literal}> with {[literal]: true}`, () => {
+				const
+					content = [],
+					res = Escaper.replace(src, {[literal]: true}, content);
 
-		expect(Escaper.paste(str2))
-			.toBe('Hello "friend\\\""!');
+				expect(res).toBe(expected);
+				expect(Escaper.paste(res, content)).toBe(src);
+			});
 
-		var stack = [];
-		var str3 = Escaper.replace('Hello "friend\\\""!', false, stack);
+			if (group) {
+				it(`replace <${literal}> with {[group]: true}`, () => {
+					const
+						content = [],
+						res = Escaper.replace(src, {[group]: true}, content);
 
-		expect(str3)
-			.toBe('Hello __ESCAPER_QUOT__0_!');
+					expect(res).toBe(expected);
+					expect(Escaper.paste(res, content)).toBe(src);
+				});
 
-		expect(Escaper.paste(str3, stack))
-			.toBe('Hello "friend\\\""!');
+				it(`replace <${literal}> with {[group]: [literal]}`, () => {
+					const
+						content = [],
+						res = Escaper.replace(src, {[group]: [literal]}, content);
 
-		stack = [];
-		var str4 = Escaper.replace('Hello "friend\\\""!', {'"': -1}, stack);
+					expect(res).toBe(expected);
+					expect(Escaper.paste(res, content)).toBe(src);
+				});
 
-		expect(str4)
-			.toBe('Hello !');
+				it(`replace <${literal}> with {[group]: {[literal]: true}}`, () => {
+					const
+						content = [],
+						res = Escaper.replace(src, {[group]: {[literal]: true}}, content);
 
-		expect(Escaper.paste(str4, stack))
-			.toBe('Hello !');
+					expect(res).toBe(expected);
+					expect(Escaper.paste(res, content)).toBe(src);
+				});
+			}
+		}
+
+		{
+			const
+				expectedReplace = 'hello + __ESCAPER_QUOT__0_ ! __ESCAPER_QUOT__1_',
+				expectedPaste = ['hello + /* ', ' bla ', ' */ ! // baz'].join(literal);
+
+			it(`cut <${literal}>`, () => {
+				const
+					expected = 'hello +  ! ',
+					content = [],
+					res = Escaper.replace(src, -1, content);
+
+				expect(res).toBe(expected);
+				expect(content.length).toBe(0);
+				expect(Escaper.paste(res, content)).toBe(expected);
+			});
+
+			it(`cut <${literal}> with {[literal]: -1}`, () => {
+				const
+					content = [],
+					res = Escaper.replace(src, {[literal]: -1}, content);
+
+				expect(res).toBe(expectedReplace);
+				expect(content.length).toBe(2);
+				expect(Escaper.paste(res, content)).toBe(expectedPaste);
+			});
+
+			if (group) {
+				it(`cut <${literal}> with {[group]: -1}`, () => {
+					const
+						content = [],
+						res = Escaper.replace(src, {[group]: -1}, content);
+
+					expect(res).toBe(expectedReplace);
+					expect(content.length).toBe(2);
+					expect(Escaper.paste(res, content)).toBe(expectedPaste);
+				});
+
+				it(`cut <${literal}> with {[group]: {[literal]: -1}}`, () => {
+					const
+						content = [],
+						res = Escaper.replace(src, {[group]: {[literal]: -1}}, content);
+
+					expect(res).toBe(expectedReplace);
+					expect(content.length).toBe(2);
+					expect(Escaper.paste(res, content)).toBe(expectedPaste);
+				});
+			}
+		}
+	}
+
+	[["'", 'strings'], ['"', 'strings'], ['`', 'strings'], ['/', 'literals']].forEach(([literal, group]) => {
+		genLiteralTest(literal, group);
 	});
 
-	it("should work with ' ... '", function () {
-		var str = Escaper.replace("Hello 'friend\\\''!");
+	it('replace a template string', () => {
+		const
+			content = [],
+			src = 'Hello `world${1 + {foo: {/* comment */}} + `foo` + /1/}`!',
+			res = Escaper.replace(src, content);
 
-		expect(str)
-			.toBe('Hello __ESCAPER_QUOT__1_!');
-
-		expect(Escaper.paste(str))
-			.toBe("Hello 'friend\\\''!");
-
-		var stack = [];
-		var str2 = Escaper.replace("Hello 'friend\\\''!", false, stack);
-
-		expect(str2)
-			.toBe('Hello __ESCAPER_QUOT__0_!');
-
-		expect(Escaper.paste(str2, stack))
-			.toBe("Hello 'friend\\\''!");
+		expect(res).toBe('Hello __ESCAPER_QUOT__0_1 + {foo: {__ESCAPER_QUOT__1_}} + __ESCAPER_QUOT__2_ + __ESCAPER_QUOT__3___ESCAPER_QUOT__4_!');
+		expect(Escaper.paste(res, content)).toBe(src);
 	});
 
-	it('should work with ` ... `', function () {
-		var stack = [];
-		var str = Escaper.replace('Hello `friend`!', false, stack);
+	it('cut a template string', () => {
+		const
+			content = [],
+			src = 'Hello `world${1 + {foo: {/* comment */}} + `foo` + /1/}`!',
+			res = Escaper.replace(src, {strings: -1}, content);
 
-		expect(str)
-			.toBe('Hello __ESCAPER_QUOT__0_!');
-
-		expect(Escaper.paste(str, stack))
-			.toBe("Hello `friend`!");
-
-		var str2 = Escaper.replace('Hello `friend${1 + {foo: {}} + `foo` + /1/}`!', false, stack);
-
-		expect(str2)
-			.toBe('Hello __ESCAPER_QUOT__1_1 + {foo: {}} + __ESCAPER_QUOT__2_ + __ESCAPER_QUOT__3___ESCAPER_QUOT__4_!');
-
-		expect(Escaper.paste(str2, stack))
-			.toBe("Hello `friend${1 + {foo: {}} + `foo` + /1/}`!");
-
-		var str3 = Escaper.replace('Hello `friend\\${foo}`!', false, stack);
-
-		expect(str3)
-			.toBe('Hello __ESCAPER_QUOT__5_!');
-
-		expect(Escaper.paste(str3, stack))
-			.toBe('Hello `friend\\${foo}`!');
-
-		var str4 = Escaper.replace('Hello `friend${foo/* fooo */}`!', true, stack);
-
-		expect(str4)
-			.toBe('Hello __ESCAPER_QUOT__6_foo__ESCAPER_QUOT__7___ESCAPER_QUOT__8_!');
-
-		expect(Escaper.paste(str4, stack))
-			.toBe('Hello `friend${foo/* fooo */}`!');
+		expect(res).toBe('Hello 1 + {foo: {__ESCAPER_QUOT__0_}} +  + __ESCAPER_QUOT__1_!');
+		expect(content.length).toBe(2);
+		expect(Escaper.paste(res, content)).toBe('Hello 1 + {foo: {/* comment */}} +  + /1/!');
 	});
 
-	it("should work with / ... /", function () {
-		var stack = [];
-		var str = Escaper.replace("Hello + /friend\\//gmi!", false, stack);
+	it('replace an escaped template string', () => {
+		const
+			content = [],
+			src = 'Hello `world\\${foo}`!',
+			res = Escaper.replace(src, content);
 
-		expect(str)
-			.toBe('Hello + __ESCAPER_QUOT__0_!');
-
-		expect(Escaper.paste(str, stack))
-			.toBe('Hello + /friend\\//gmi!');
-
-		var str2 = Escaper.replace("Hello, /friend\\/[//.]/gmi!", false, stack);
-
-		expect(str2)
-			.toBe('Hello, __ESCAPER_QUOT__1_!');
-
-		expect(Escaper.paste(str2, stack))
-			.toBe('Hello, /friend\\/[//.]/gmi!');
-
-		var str3 = Escaper.replace('/friend\\/[//.]/gmi!, /friend\\/[//.]/gmi', false, stack);
-
-		expect(str3)
-			.toBe('__ESCAPER_QUOT__2_!, __ESCAPER_QUOT__3_');
-
-		expect(Escaper.paste(str3, stack))
-			.toBe('/friend\\/[//.]/gmi!, /friend\\/[//.]/gmi');
+		expect(res).toBe('Hello __ESCAPER_QUOT__0_!');
+		expect(Escaper.paste(res, content)).toBe(src);
 	});
 
-	it("should work with / ... / (advanced test)", function () {
-		var stack = [];
-		var str = Escaper.replace('2 >> /foo/ < /bar/ ^ /car/ [/bar/] foo typeof /mu/ /mu/', true, stack);
+	it('replace a regular expression', () => {
+		const
+			content = [],
+			src = 'Hello, /world\\/[//.]/gmi!',
+			res = Escaper.replace(src, content);
 
-		expect(str)
-			.toBe('2 >> __ESCAPER_QUOT__0_ < __ESCAPER_QUOT__1_ ^ __ESCAPER_QUOT__2_ [__ESCAPER_QUOT__3_] foo typeof __ESCAPER_QUOT__4_ /mu/');
-
-		expect(Escaper.paste(str, stack))
-			.toBe('2 >> /foo/ < /bar/ ^ /car/ [/bar/] foo typeof /mu/ /mu/');
+		expect(res).toBe('Hello, __ESCAPER_QUOT__0_!');
+		expect(Escaper.paste(res, content)).toBe(src);
 	});
 
-	it("should work with single-line comments", function () {
-		var stack = [];
-		var str = Escaper.replace(
-			("Hello // the comment\
-\n			Friend!"), true, stack);
+	it('replace a multiple regular expression', () => {
+		const
+			content = [],
+			src = '/bla\\/[//.]/gmi!, /bla\\/[//.]/gmi!',
+			res = Escaper.replace(src, content);
 
-		expect(str)
-			.toBe('Hello __ESCAPER_QUOT__0_\n\t\t\tFriend!');
-
-		expect(Escaper.paste(str, stack))
-			.toBe('Hello // the comment\n\t\t\tFriend!');
+		expect(res).toBe('__ESCAPER_QUOT__0_!, __ESCAPER_QUOT__1_!');
+		expect(Escaper.paste(res, content)).toBe(src);
 	});
 
-	it("should work with //!", function () {
-		var stack = [];
-		var str = Escaper.replace(
-			("Hello // the comment //! fffuuu\
-\n//! fffuuuu\
-\n			Friend!"), {'//!': true}, stack);
+	it('replace an advanced regular expression', () => {
+		const
+			content = [],
+			src = '2 >> /foo/ < /bar/ ^ /car/ [/bar/] foo typeof /mu/ /mu/',
+			res = Escaper.replace(src, content);
 
-		expect(str)
-			.toBe('Hello // the comment //! fffuuu\n__ESCAPER_QUOT__0_\n\t\t\tFriend!');
-
-		expect(Escaper.paste(str, stack))
-			.toBe('Hello // the comment //! fffuuu\n//! fffuuuu\n\t\t\tFriend!');
+		expect(res).toBe('2 >> __ESCAPER_QUOT__0_ < __ESCAPER_QUOT__1_ ^ __ESCAPER_QUOT__2_ [__ESCAPER_QUOT__3_] foo typeof __ESCAPER_QUOT__4_ /mu/');
+		expect(Escaper.paste(res, content)).toBe(src);
 	});
 
-	it("should work with multiline comments", function () {
-		var stack = [];
-		var str = Escaper.replace('Hello /*/ the comment */ Friend!', true, stack);
+	it('cut an advanced regular expression', () => {
+		const
+			content = [],
+			src = '2 >> /foo/ < /bar/ ^ /car/ [/bar/] foo typeof /mu/ /mu/',
+			res = Escaper.replace(src, -1, content),
+			expected = '2 >>  <  ^  [] foo typeof  /mu/';
 
-		expect(str)
-			.toBe('Hello __ESCAPER_QUOT__0_ Friend!');
-
-		expect(Escaper.paste(str, stack))
-			.toBe('Hello /*/ the comment */ Friend!');
+		expect(res).toBe(expected);
+		expect(Escaper.paste(res, content)).toBe(expected);
 	});
 
-	it("should work with Snakeskin", function () {
-		var stack = [];
-		var str = Escaper.replace('foo|replace /hello/g|join "world"', true, stack, true);
+	it('replace a single-line comment', () => {
+		const
+			content = [],
+			src = 'Hello // foo\nworld!',
+			res = Escaper.replace(src, content);
 
-		expect(str)
-			.toBe('foo|replace __ESCAPER_QUOT__0_|join __ESCAPER_QUOT__1_');
-
-		expect(Escaper.paste(str, stack))
-			.toBe('foo|replace /hello/g|join "world"');
+		expect(res).toBe('Hello __ESCAPER_QUOT__0_\nworld!');
+		expect(Escaper.paste(res, content)).toBe(src);
 	});
 
-	it("should work with custom parameters", function () {
-		var stack = [];
-		var str = Escaper.replace('"Hello" /* the comment */ + /Friend/gim /** foo */!', {
-			'"': true,
-			'/': true,
-			'/*': true
-		}, stack);
+	it('replace a custom single-line comment', () => {
+		const
+			content = [],
+			src = 'Hello // foo //! baz\n//! bar\nworld!',
+			res = Escaper.replace(src, ['//!'], content);
 
-		expect(str)
-			.toBe('__ESCAPER_QUOT__0_ __ESCAPER_QUOT__1_ + __ESCAPER_QUOT__2_ /** foo */!');
-
-		expect(Escaper.paste(str, stack))
-			.toBe('"Hello" /* the comment */ + /Friend/gim /** foo */!');
+		expect(res).toBe('Hello // foo //! baz\n__ESCAPER_QUOT__0_\nworld!');
+		expect(Escaper.paste(res, content)).toBe(src);
 	});
 
-	it("should work with deep literals", function () {
-		var stack = [];
-		var str = Escaper.replace('"Hello" /** "foo" */', {'"': true}, stack);
+	it('replace a multiline comment', () => {
+		const
+			content = [],
+			src = 'Hello /*/ the comment *\\/*/ world!',
+			res = Escaper.replace(src, content);
 
-		expect(str)
-			.toBe('__ESCAPER_QUOT__0_ /** "foo" */');
-
-		expect(Escaper.paste(str, stack))
-			.toBe('"Hello" /** "foo" */');
+		expect(res).toBe('Hello __ESCAPER_QUOT__0_ world!');
+		expect(Escaper.paste(res, content)).toBe(src);
 	});
 
-	it("should work with @all", function () {
-		var stack = [];
-		var str = Escaper.replace('"Hello" /* the comment */ + /Friend/gim /** foo */!', {'@all': true, '/*': -1}, stack);
+	it('replace a filter', () => {
+		const
+			content = [],
+			src = 'foo|replace /hello/g|join "world"',
+			res = Escaper.replace(src, {filters: true}, content);
 
-		expect(str)
-			.toBe('__ESCAPER_QUOT__0_  + __ESCAPER_QUOT__1_ __ESCAPER_QUOT__2_!');
-
-		expect(Escaper.paste(str, stack))
-			.toBe('"Hello"  + /Friend/gim /** foo */!');
+		expect(res).toBe('foo|replace __ESCAPER_QUOT__0_|join __ESCAPER_QUOT__1_');
+		expect(Escaper.paste(res, content)).toBe(src);
 	});
 
-	it("should work with @comments", function () {
-		var stack = [];
-		var str = Escaper.replace('"Hello" /* the comment */ + /Friend/gim /** foo */!', {'@comments': -1}, stack);
+	it('replace with a custom parameters', () => {
+		const
+			content = [],
+			src = 'Hello \'funny\' and /*! amazing */ "world"/*bar*//***/',
+			res = Escaper.replace(src, {"'": -1, strings: true, comments: ['/*'], '/**': false}, content);
 
-		expect(str)
-			.toBe('"Hello"  + /Friend/gim !');
-
-		expect(Escaper.paste(str, stack))
-			.toBe('"Hello"  + /Friend/gim !');
-	});
-
-	it("should work with @comments, @literals and @all", function () {
-		var stack = [];
-		var str = Escaper.replace('"Hello" /* the comment */ + /Friend/gim /** foo */!', {
-			'@all': -1,
-			'@comments': false,
-			'@literals': true
-		}, stack);
-
-		expect(str)
-			.toBe('__ESCAPER_QUOT__0_ /* the comment */ + __ESCAPER_QUOT__1_ /** foo */!');
-
-		expect(Escaper.paste(str, stack))
-			.toBe('"Hello" /* the comment */ + /Friend/gim /** foo */!');
+		expect(res).toBe('Hello  and /*! amazing */ __ESCAPER_QUOT__0___ESCAPER_QUOT__1_/***/');
+		expect(Escaper.paste(res, content)).toBe('Hello  and /*! amazing */ "world"/*bar*//***/');
 	});
 });
