@@ -12,30 +12,27 @@ var Escaper = {
 	VERSION: [],
 
 	/** @type {!Object} */
-	cache: [],
+	cache: {},
 
 	/** @type {!Array} */
 	content: [],
 
-	/** @type {?string} */
-	symbols: null,
-
-	/** @type {RegExp} */
-	snakeskinRgxp: null,
+	/** @type {!RegExp} */
+	symbols: /symbols/,
 
 	/**
 	 * @param {string} str
-	 * @param {(Object<string, boolean>|boolean)=} [opt_withCommentsOrParams]
-	 * @param {Array=} [opt_content]
-	 * @param {?boolean=} [opt_snakeskin]
+	 * @param {(Object<string, (Array|Object|boolean|number)>|Array|number)=} [how]
+	 * @param {Array=} [content]
 	 * @return {string}
 	 */
-	replace: function (str, opt_withCommentsOrParams, opt_content, opt_snakeskin) {},
+	replace: function (str, how, content) {},
 
 	/**
 	 * @param {string} str
-	 * @param {Array=} [opt_content]
+	 * @param {Array=} [content]
+	 * @param {RegExp=} [rgxp]
 	 * @return {string}
 	 */
-	paste: function (str, opt_content) {}
+	paste: function (str, content, rgxp) {}
 };
