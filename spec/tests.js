@@ -238,4 +238,32 @@ describe('Escaper', () => {
 		expect(res).toBe('Hello  and /*! amazing */ __ESCAPER_QUOT__0___ESCAPER_QUOT__1_/***/');
 		expect(Escaper.paste(res, content)).toBe('Hello  and /*! amazing */ "world"/*bar*//***/');
 	});
+
+	it('replace with a custom label', () => {
+		const
+			content = [],
+			src = 'Hello "world" and "friends"',
+			res = Escaper.replace(src, {label: '__LABEL__${pos}_'}, content);
+
+		expect(res).toBe('Hello __LABEL__0_ and __LABEL__1_');
+		expect(Escaper.paste(res, content, /__LABEL__(\d+)_/g)).toBe(src);
+	});
+
+	it('replace with a static cache', () => {
+		const
+			src = 'Hello "world" and "friends"',
+			res = Escaper.replace(src);
+
+		expect(res).toBe('Hello __ESCAPER_QUOT__0_ and __ESCAPER_QUOT__1_');
+		expect(Escaper.paste(res)).toBe(src);
+	});
+
+	it('replace with a static cache with parameters', () => {
+		const
+			src = 'Hello "world" + /friends/',
+			res = Escaper.replace(src, ['"', '/']);
+
+		expect(res).toBe('Hello __ESCAPER_QUOT__2_ + __ESCAPER_QUOT__3_');
+		expect(Escaper.paste(res)).toBe(src);
+	});
 });
