@@ -19,7 +19,7 @@
   ],
 
   "dictionary": [
-    "regExp",
+    "regExp|rgxp",
     "sexualized",
     "maintainers?",
     "escaper",
