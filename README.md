@@ -44,82 +44,112 @@ git clone https://github.com/kobezzza/Escaper
 ## Usage
 
 ```js
-var str = '"foo" 1 + /foo/ + 2 /* 1 */ 3',
-    content = [];
+const
+  str = 'Hello "world" and \'friends\'',
+  content = [];
 
-// __ESCAPER_QUOT__0_ 1 + __ESCAPER_QUOT__1_ + 2 __ESCAPER_QUOT__2_ 3
-str = Escaper.replace(str, true, content);
+// Replaces all found matches
+// 'Hello __ESCAPER_QUOT__0_ and __ESCAPER_QUOT__1_'
+Escaper.replace(str, content)
 
-// "foo" 1 + /foo/ + 2 /* 1 */ 3
+// Replaces only single quotes
+// 'Hello "world" and __ESCAPER_QUOT__0_'
+Escaper.replace(str, ["'"])
+
+// Cuts all
+// 'Hello and '
+Escaper.replace(str, -1)
+
+// Replaces all and cuts single quotes
+// 'Hello __ESCAPER_QUOT__0_ and '
+Escaper.replace(str, {"'": -1})
+
+// Replaces all but strings
+// 'Hello __ESCAPER_QUOT__0_ and \'friends\''
+Escaper.replace(str, {strings: false})
+
+// Replaces all, but strings can be only single quotes
+// 'Hello "world" and __ESCAPER_QUOT__0_'
+Escaper.replace(str, {strings: ["'"]})
+
+// Replaces all, but strings can be only single quotes and it will be cut
+// 'Hello "world" and '
+Escaper.replace(str, {strings: {"'": -1}})
+
+// Replaces all found escape blocks to a real content
+// 'Hello "world" and \'friends\''
 Escaper.paste(str, content);
 ```
 
 ## API
-### Escaper.replace(str, opt_withComment, opt_content)
+### Escaper.replace(str, how?, content?): string
 
-The method replaces all found blocks `' ... '`, `" ... "`, `` ` ... ` ``, `/ ... /`, `// ...`, `/* ... */` to
-`__ESCAPER_QUOT__number_` in a string and returns a new string.
-
-**Arguments**
-
-* `string` `str` — source string;
-* `(Object|boolean)=` `opt_withCommentsOrParams = false` — parameters:
-
-```js
-{
-  // The template for replacement
-  '@label'   : '__ESCAPER_QUOT__${pos}_',
-
-  '@all'     : true, // Replaces all found matches
-  '@comments': true, // Replaces all kinds of comments
-  '@strings' : true, // Replaces all kinds of string literals
-  '@literals': true, // Replaces all kinds of string literals
-                     // and regular expressions
-
-  "'"        : true,
-  '"'        : true,
-  '`'        : true,
-  '/'        : true,
-  '//'       : true,
-  '//*'      : true,
-  '//!'      : true,
-  '//#'      : true,
-  '//@'      : true,
-  '//$'      : true,
-  '/*'       : true,
-  '/**'      : true,
-  '/*!'      : true,
-  '/*#'      : true,
-  '/*@'      : true,
-  '/*$'      : true
-}
-```
-
-If a parameter value is set to `-1`, then all found matches will be removed from the final string, or if the value will be set to
-`true`/`false` they will be included/excluded.
-
-If parameter `opt_withCommentsOrParams` is boolean:
-
-```js
-true  // Replaces all found matches
-false // Replaces all kinds of string literals and regular expressions
-```
-
-* `Array=` `opt_content = Escaper.content` — array for matches.
-
-`@return {string}`
-
-### Escaper.paste(str, opt_content)
-
-The method replaces all found blocks `__ESCAPER_QUOT__number_` to real content in a string and returns a new string.
+Replaces all found blocks ' ... ', " ... ", ` ... `, / ... /, // ..., /* ... *\/ to
+escape blocks in a string and returns a new string.
 
 **Arguments**
 
 * `string` `str` — source string;
-* `Array=` `opt_content = Escaper.content` — array of matches;
+* `string[] | Record<string, string[] | Record<string, boolean | -1> | false | -1> | false | -1` `how?` —  parameters:
+
+**Possible values**
+
+If a value is set to `-1`, then all found matches will be removed from the final string, or if the value will be set to
+`boolean` they will be included/excluded.
+
+```js
+// Template for replacement, by default __ESCAPER_QUOT__${pos}_
+'label'
+
+// Singleline comment
+'singleComments'
+
+// Multiline comments
+'multComments'
+
+// All kinds of comments
+'comments'
+
+// All kinds of strings
+'strings'
+
+// All kinds of literals (except strings and comments)
+'literals'
+
+// Literals
+"'"
+'"'
+'`'
+'/'
+'//'
+'//*'
+'//!'
+'//#'
+'//@'
+'//$'
+'/*'
+'/**'
+'/*!'
+'/*#'
+'/*@'
+'/*$'
+```
+
+Parameters can be specified as an array (escapes only explicitly specified sequences)
+or like an object (disables/excludes by a literal or a group). Also, if you set the parameter value as `-1`,
+then all found sequences will be removed from the string.
+
+* `string[]` `content = Escaper.content` — array for matches.
+
+### Escaper.paste(str, content?, rgxp?): string
+
+Replaces all found escape blocks to a real content in a string and returns a new string.
+
+**Arguments**
+
+* `string` `str` — source string;
+* `string[]` `content = Escaper.content` — array of matches;
 * `RegExp=` `opt_rgxp` — RegExp for searching, e.g. `/__ESCAPER_QUOT__(\d+)_/g`.
-
-`@return {string}`
 
 ## [License](https://github.com/kobezzza/Escaper/blob/master/LICENSE)
 
