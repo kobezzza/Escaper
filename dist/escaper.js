@@ -5,7 +5,7 @@
  * Released under the MIT license
  * https://github.com/kobezzza/Escaper/blob/master/LICENSE
  *
- * Date: Sun, 28 Oct 2018 16:06:29 GMT
+ * Date: Sun, 28 Oct 2018 16:19:40 GMT
  */
 
 (function (global, factory) {
@@ -50,43 +50,12 @@ var defMap = {
 	'-1': true
 };
 
-var rgxpFlagsMap = Object.assign(Object.create(null), { 'g': true, 'm': true, 'i': true, 'y': true, 'u': true });
-var rgxpFlags = Object.keys(rgxpFlagsMap);
+var rgxpFlags = ['g', 'm', 'i', 'y', 'u'];
+var rgxpFlagsMap = createMap(rgxpFlags);
 
-var endSymbols = Object.assign(Object.create(null), {
-	'-': true,
-	'+': true,
-	'*': true,
-	'%': true,
-	'~': true,
-	'>': true,
-	'<': true,
-	'^': true,
-	',': true,
-	';': true,
-	'=': true,
-	'|': true,
-	'&': true,
-	'!': true,
-	'?': true,
-	':': true,
-	'(': true,
-	'{': true,
-	'[': true
-});
+var endSymbols = createMap(['-', '+', '*', '%', '~', '>', '<', '^', ',', ';', '=', '|', '&', '!', '?', ':', '(', '{', '[']);
 
-var endWords = Object.assign(Object.create(null), {
-	'return': true,
-	'yield': true,
-	'await': true,
-	'typeof': true,
-	'void': true,
-	'instanceof': true,
-	'delete': true,
-	'in': true,
-	'new': true,
-	'of': true
-});
+var endWords = createMap(['return', 'yield', 'await', 'typeof', 'void', 'instanceof', 'delete', 'in', 'new', 'of']);
 
 var notSpaceRgxp = /[^\s/]/;
 var wordRgxp = /[a-z]/;
@@ -127,15 +96,7 @@ function createCache() {
 	};
 }
 
-var restrictedKeys = Object.assign(Object.create(null), {
-	'label': true,
-	'filters': true,
-	'singleComments': true,
-	'multComment': true,
-	'comments': true,
-	'strings': true,
-	'literals': true
-});
+var restrictedKeys = createMap(['label', 'filters', 'singleComments', 'multComment', 'comments', 'strings', 'literals']);
 
 /**
  * @param {(!Object|!Array)} from

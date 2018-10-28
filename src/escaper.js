@@ -60,43 +60,43 @@ const defMap = {
 };
 
 const
-	rgxpFlagsMap = Object.assign(Object.create(null), {'g': true, 'm': true, 'i': true, 'y': true, 'u': true}),
-	rgxpFlags = Object.keys(rgxpFlagsMap);
+	rgxpFlags = ['g', 'm', 'i', 'y', 'u'],
+	rgxpFlagsMap = createMap(rgxpFlags);
 
-const endSymbols = Object.assign(Object.create(null), {
-	'-': true,
-	'+': true,
-	'*': true,
-	'%': true,
-	'~': true,
-	'>': true,
-	'<': true,
-	'^': true,
-	',': true,
-	';': true,
-	'=': true,
-	'|': true,
-	'&': true,
-	'!': true,
-	'?': true,
-	':': true,
-	'(': true,
-	'{': true,
-	'[': true
-});
+const endSymbols = createMap([
+	'-',
+	'+',
+	'*',
+	'%',
+	'~',
+	'>',
+	'<',
+	'^',
+	',',
+	';',
+	'=',
+	'|',
+	'&',
+	'!',
+	'?',
+	':',
+	'(',
+	'{',
+	'['
+]);
 
-const endWords = Object.assign(Object.create(null), {
-	'return': true,
-	'yield': true,
-	'await': true,
-	'typeof': true,
-	'void': true,
-	'instanceof': true,
-	'delete': true,
-	'in': true,
-	'new': true,
-	'of': true
-});
+const endWords = createMap([
+	'return',
+	'yield',
+	'await',
+	'typeof',
+	'void',
+	'instanceof',
+	'delete',
+	'in',
+	'new',
+	'of'
+]);
 
 const
 	notSpaceRgxp = /[^\s/]/,
@@ -141,15 +141,15 @@ function createCache() {
 	};
 }
 
-const restrictedKeys = Object.assign(Object.create(null), {
-	'label': true,
-	'filters': true,
-	'singleComments': true,
-	'multComment': true,
-	'comments': true,
-	'strings': true,
-	'literals': true
-});
+const restrictedKeys = createMap([
+	'label',
+	'filters',
+	'singleComments',
+	'multComment',
+	'comments',
+	'strings',
+	'literals'
+]);
 
 /**
  * @param {(!Object|!Array)} from
