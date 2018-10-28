@@ -5,7 +5,7 @@
  * Released under the MIT license
  * https://github.com/kobezzza/Escaper/blob/master/LICENSE
  *
- * Date: Fri, 26 Oct 2018 18:06:20 GMT
+ * Date: Sun, 28 Oct 2018 16:06:29 GMT
  */
 
 (function (global, factory) {
@@ -185,13 +185,13 @@ function mark(params, pos) {
 
 /**
  * Replaces all found blocks ' ... ', " ... ", ` ... `, / ... /, // ..., /* ... *\/ to
- * an escape block in a string and returns a new string
+ * escape blocks in a string and returns a new string
  *
  * @param {string} str - source string
  * @param {(Object<string, (Array|Object|boolean|number)>|Array|number)=} [how=true] - parameters:
  *
  *     (if a parameter value is set to -1, then all found matches will be removed from the final string,
- *          or if the value will be set to true/false they will be included/excluded)
+ *      or if the value will be set to false they will be excluded)
  *
  *     *) label          - template for replacement, e.g. __ESCAPER_QUOT__${pos}_
  *     *) singleComments - replaces all kinds of single comments
@@ -219,6 +219,35 @@ function mark(params, pos) {
  *
  * @param {Array=} [content=Escaper.content] - array for matches
  * @return {string}
+ *
+ * @example
+ * // Replaces all found matches
+ * // 'Hello __ESCAPER_QUOT__0_ and __ESCAPER_QUOT__1_'
+ * Escaper.replace('Hello "world" and \'friends\'')
+ *
+ * // Replaces only single quotes
+ * // 'Hello "world" and __ESCAPER_QUOT__0_'
+ * Escaper.replace('Hello "world" and \'friends\'', ["'"])
+ *
+ * // Cuts all
+ * // 'Hello and '
+ * Escaper.replace('Hello "world" and \'friends\'', -1)
+ *
+ * // Replaces all and cuts single quotes
+ * // 'Hello __ESCAPER_QUOT__0_ and '
+ * Escaper.replace('Hello "world" and \'friends\'', {"'": -1})
+ *
+ * // Replaces all but strings
+ * // 'Hello __ESCAPER_QUOT__0_ and \'friends\''
+ * Escaper.replace('Hello "world" and \'friends\'', {strings: false})
+ *
+ * // Replaces all, but strings can be only single quotes
+ * // 'Hello "world" and __ESCAPER_QUOT__0_'
+ * Escaper.replace('Hello "world" and \'friends\'', {strings: ["'"]})
+ *
+ * // Replaces all, but strings can be only single quotes and it will be cut
+ * // 'Hello "world" and '
+ * Escaper.replace('Hello "world" and \'friends\'', {strings: {"'": -1}})
  */
 function replace(str, how, content) {
 	var p = Object.create(null),
