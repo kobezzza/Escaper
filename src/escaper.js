@@ -239,24 +239,31 @@ function mark(params, pos) {
  *
  * @example
  * // Replaces all found matches
+ * // 'Hello __ESCAPER_QUOT__0_ and __ESCAPER_QUOT__1_'
  * Escaper.replace('Hello "world" and \'friends\'')
  *
  * // Replaces only single quotes
+ * // 'Hello "world" and __ESCAPER_QUOT__0_'
  * Escaper.replace('Hello "world" and \'friends\'', ["'"])
  *
  * // Cuts all
+ * // 'Hello and '
  * Escaper.replace('Hello "world" and \'friends\'', -1)
  *
  * // Replaces all and cuts single quotes
+ * // 'Hello __ESCAPER_QUOT__0_ and '
  * Escaper.replace('Hello "world" and \'friends\'', {"'": -1})
  *
  * // Replaces all but strings
+ * // 'Hello __ESCAPER_QUOT__0_ and \'friends\''
  * Escaper.replace('Hello "world" and \'friends\'', {strings: false})
  *
  * // Replaces all, but strings can be only single quotes
+ * // 'Hello "world" and __ESCAPER_QUOT__0_'
  * Escaper.replace('Hello "world" and \'friends\'', {strings: ["'"]})
  *
  * // Replaces all, but strings can be only single quotes and it will be cut
+ * // 'Hello "world" and '
  * Escaper.replace('Hello "world" and \'friends\'', {strings: {"'": -1}})
  */
 export function replace(str, how, content) {
