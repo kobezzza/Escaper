@@ -56,7 +56,7 @@ Escaper.replace(str, content)
 // 'Hello "world" and __ESCAPER_QUOT__0_'
 Escaper.replace(str, ["'"])
 
-// Cuts all
+// Cuts all found matches
 // 'Hello and '
 Escaper.replace(str, -1)
 

@@ -246,7 +246,7 @@ function mark(params, pos) {
  * // 'Hello "world" and __ESCAPER_QUOT__0_'
  * Escaper.replace('Hello "world" and \'friends\'', ["'"])
  *
- * // Cuts all
+ * // Cuts all found matches
  * // 'Hello and '
  * Escaper.replace('Hello "world" and \'friends\'', -1)
  *
