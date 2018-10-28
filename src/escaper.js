@@ -239,7 +239,7 @@ function mark(params, pos) {
  *
  * @example
  * // Replaces all found matches
- * Escaper.replace('Hello "world" and "friends"')
+ * Escaper.replace('Hello "world" and \'friends\'')
  *
  * // Replaces only single quotes
  * Escaper.replace('Hello "world" and \'friends\'', ["'"])
