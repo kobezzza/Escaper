@@ -49,7 +49,7 @@ interface EscaperCache {
 }
 
 declare const Escaper: {
-	VERSION: any[];
+	VERSION: (number | string)[];
 	cache: Record<string, EscaperCache | Map<string, string>>;
 	content: string[];
 	symbols: RegExp;
