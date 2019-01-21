@@ -1,11 +1,11 @@
 /*!
- * Escaper v3.0.0
+ * Escaper v3.0.1
  * https://github.com/kobezzza/Escaper
  *
  * Released under the MIT license
  * https://github.com/kobezzza/Escaper/blob/master/LICENSE
  *
- * Date: Mon, 21 Jan 2019 13:13:47 GMT
+ * Date: Mon, 21 Jan 2019 13:55:01 GMT
  */
 
 (function (global, factory) {
@@ -14,136 +14,134 @@
 	(factory((global.Escaper = {})));
 }(this, (function (exports) { 'use strict';
 
-var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) {
-  return typeof obj;
-} : function (obj) {
-  return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;
-};
+function _typeof(obj) {
+  if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") {
+    _typeof = function (obj) {
+      return typeof obj;
+    };
+  } else {
+    _typeof = function (obj) {
+      return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;
+    };
+  }
 
-var Escaper = void 0;
+  return _typeof(obj);
+}
+
+var Escaper;
 var escaper = Escaper = {
-	VERSION: [3, 0, 0],
-	content: [],
-	cache: Object.create(null),
-	symbols: /[!$a-z_]/i,
-	replace: replace,
-	paste: paste
+  VERSION: [3, 0, 1],
+  content: [],
+  cache: Object.create(null),
+  symbols: /[!$a-z_]/i,
+  replace: replace,
+  paste: paste
 };
-
 var singleComments = ['//', '//*', '//!', '//#', '//@', '//$'];
-
 var multComments = ['/*', '/**', '/*!', '/*#', '/*@', '/*$'];
-
 var strings = ['"', '\'', '`'];
 var literals = ['/'];
-
 var all = [].concat(singleComments, multComments, strings, literals);
-
 var singleCommentsMap = createMap(singleComments);
 var multCommentsMap = createMap(multComments);
 var allMap = createMap(all);
-
 var defMap = {
-	'true': true,
-	'null': true,
-	'undefined': true,
-	'-1': true
+  'true': true,
+  'null': true,
+  'undefined': true,
+  '-1': true
 };
-
 var rgxpFlags = ['g', 'm', 'i', 'y', 'u'];
 var rgxpFlagsMap = createMap(rgxpFlags);
-
 var endSymbols = createMap(['-', '+', '*', '%', '~', '>', '<', '^', ',', ';', '=', '|', '&', '!', '?', ':', '(', '{', '[']);
-
 var endWords = createMap(['return', 'yield', 'await', 'typeof', 'void', 'instanceof', 'delete', 'in', 'new', 'of']);
-
 var notSpaceRgxp = /[^\s/]/;
 var wordRgxp = /[a-z]/;
 var spaceRgxp = /\s/;
 var nextLineRgxp = /[\r\n]/;
 var posRgxp = /\${pos}/g;
-
 /**
  * @param {!Array} arr
  * @return {!Object}
  */
+
 function createMap(arr) {
-	var map = Object.create(null);
+  var map = Object.create(null);
 
-	for (var i = 0; i < arr.length; i++) {
-		map[arr[i]] = true;
-	}
+  for (var i = 0; i < arr.length; i++) {
+    map[arr[i]] = true;
+  }
 
-	return map;
+  return map;
 }
-
 /** @return {{get: !Function, set: !Function}} */
+
+
 function createCache() {
-	if (typeof Map === 'function') {
-		return new Map();
-	}
+  if (typeof Map === 'function') {
+    return new Map();
+  }
 
-	var cache = Object.create(null);
-
-	return {
-		get: function get$$1(key) {
-			return cache[key];
-		},
-		set: function set$$1(key, value) {
-			cache[key] = value;
-			return this;
-		}
-	};
+  var cache = Object.create(null);
+  return {
+    get: function get(key) {
+      return cache[key];
+    },
+    set: function set(key, value) {
+      cache[key] = value;
+      return this;
+    }
+  };
 }
 
 var restrictedKeys = createMap(['label', 'filters', 'singleComments', 'multComment', 'comments', 'strings', 'literals']);
-
 /**
  * @param {(!Object|!Array)} from
  * @param {!Object} to
  * @param {?=} [value]
  * @return {boolean}
  */
+
 function mix(from, to, value) {
-	if (!from || (typeof from === 'undefined' ? 'undefined' : _typeof(from)) !== 'object') {
-		return false;
-	}
+  if (!from || _typeof(from) !== 'object') {
+    return false;
+  }
 
-	var isArr = Array.isArray(from),
-	    customValue = arguments.length > 2,
-	    keys = isArr ? from : Object.keys(from);
+  var isArr = Array.isArray(from),
+      customValue = arguments.length > 2,
+      keys = isArr ? from : Object.keys(from);
 
-	for (var i = 0; i < keys.length; i++) {
-		var key = keys[i];
+  for (var i = 0; i < keys.length; i++) {
+    var key = keys[i];
 
-		if (restrictedKeys[key]) {
-			continue;
-		}
+    if (restrictedKeys[key]) {
+      continue;
+    }
 
-		if (key in to === false) {
-			var v = customValue ? value : isArr ? true : from[key];
-			to[key] = v != null ? v : true;
-		}
-	}
+    if (key in to === false) {
+      var v = customValue ? value : isArr ? true : from[key];
+      to[key] = v != null ? v : true;
+    }
+  }
 
-	return true;
+  return true;
 }
-
 /**
  * @param {!Object} params
  * @param {number} pos
  * @return {string}
  */
+
+
 function mark(params, pos) {
-	var label = params['label'];
+  var label = params['label'];
 
-	if (label) {
-		return label.replace(posRgxp, pos);
-	}
+  if (label) {
+    return label.replace(posRgxp, pos);
+  }
 
-	return '__ESCAPER_QUOT__' + pos + '_';
+  return "__ESCAPER_QUOT__".concat(pos, "_");
 }
-
 /**
  * Replaces all found blocks ' ... ', " ... ", ` ... `, / ... /, // ..., /* ... *\/ to
  * escape blocks in a string and returns a new string
@@ -210,264 +208,253 @@ function mark(params, pos) {
  * // 'Hello "world" and '
  * Escaper.replace('Hello "world" and \'friends\'', {strings: {"'": -1}})
  */
+
+
 function replace(str, how, content) {
-	var p = Object.create(null),
-	    _Escaper = Escaper,
-	    cache = _Escaper.cache,
-	    staticContent = _Escaper.content;
+  var p = Object.create(null),
+      _Escaper = Escaper,
+      cache = _Escaper.cache,
+      staticContent = _Escaper.content;
+
+  if (Array.isArray(how)) {
+    if (how.length || Array.isArray(content)) {
+      mix(how, p);
+    } else {
+      content = content || how;
+      mix(all, p, true);
+    }
+  } else if (how && _typeof(how) === 'object') {
+    mix(how, p);
+
+    if (how['filters']) {
+      p.filters = true;
+    }
+
+    p.label = how['label'];
+    var singleCommentsOpt = how['singleComments'],
+        multCommentsOpt = how['multComments'],
+        commentsOpt = how['comments'];
+    var skipComments = false;
+
+    if (singleCommentsOpt !== false) {
+      if (defMap[singleCommentsOpt]) {
+        mix(singleComments, p, singleCommentsOpt);
+        skipComments = singleCommentsOpt != null;
+      } else if (mix(singleCommentsOpt, p)) {
+        skipComments = true;
+      }
+    }
+
+    if (multCommentsOpt !== false) {
+      if (defMap[multCommentsOpt]) {
+        mix(singleComments, p, multCommentsOpt);
+        skipComments = skipComments || multCommentsOpt != null;
+      } else if (mix(multCommentsOpt, p)) {
+        skipComments = true;
+      }
+    }
+
+    if (!skipComments && commentsOpt !== false) {
+      if (defMap[commentsOpt]) {
+        mix(multComments, p, commentsOpt);
+        mix(singleComments, p, commentsOpt);
+      } else {
+        mix(commentsOpt, p);
+      }
+    }
+
+    var stringsOpt = how['strings'],
+        literalsOpt = how['literals'];
+
+    if (stringsOpt !== false) {
+      if (defMap[stringsOpt]) {
+        mix(strings, p, stringsOpt);
+      } else {
+        mix(stringsOpt, p);
+      }
+    }
+
+    if (literalsOpt !== false) {
+      if (defMap[literalsOpt]) {
+        mix(literals, p, literalsOpt);
+      } else {
+        mix(literalsOpt, p);
+      }
+    }
+  } else {
+    mix(all, p, how === -1 ? -1 : true);
+  }
+
+  content = content || staticContent;
+  var cacheStr = str,
+      canCache = content === staticContent,
+      cacheKey = canCache && Object.keys(p).join(),
+      cacheVal = canCache && cacheKey in cache && cache[cacheKey].get(cacheStr);
+
+  if (cacheVal) {
+    return cacheVal;
+  }
+
+  var symbols = Escaper.symbols;
+  var
+  /** @type {(boolean|string)} */
+  begin = false,
+      end = true;
+  var escape = false,
+      comment = false;
+  var selectionStart = 0,
+      block = false;
+  var templateVar = 0,
+      filterStart = false;
+  var cut, label;
+  var part = '',
+      rPart = '';
+
+  for (var i = -1; ++i < str.length;) {
+    var el = str.charAt(i);
+    var next = str.charAt(i + 1),
+        word = str.substr(i, 2),
+        extWord = str.substr(i, 3);
+
+    if (!comment) {
+      if (!begin) {
+        if (el === '/') {
+          if (singleCommentsMap[word] || multCommentsMap[word]) {
+            if (singleCommentsMap[extWord] || multCommentsMap[extWord]) {
+              comment = extWord;
+            } else {
+              comment = word;
+            }
+          }
+
+          if (comment) {
+            selectionStart = i;
+            continue;
+          }
+        }
+
+        if (endSymbols[el] || endWords[rPart]) {
+          end = true;
+          rPart = '';
+        } else if (notSpaceRgxp.test(el)) {
+          end = false;
+        }
+
+        if (wordRgxp.test(el)) {
+          part += el;
+        } else {
+          rPart = part;
+          part = '';
+        }
+
+        var skip = false;
+
+        if (p.filters) {
+          if (el === '|' && symbols.test(next)) {
+            filterStart = true;
+            end = false;
+            skip = true;
+          } else if (filterStart && spaceRgxp.test(el)) {
+            filterStart = false;
+            end = true;
+            skip = true;
+          }
+        }
+
+        if (!skip) {
+          if (endSymbols[el]) {
+            end = true;
+          } else if (notSpaceRgxp.test(el)) {
+            end = false;
+          }
+        }
+      } // [] inside RegExp
 
 
-	if (Array.isArray(how)) {
-		if (how.length || Array.isArray(content)) {
-			mix(how, p);
-		} else {
-			content = content || how;
-			mix(all, p, true);
-		}
-	} else if (how && (typeof how === 'undefined' ? 'undefined' : _typeof(how)) === 'object') {
-		mix(how, p);
+      if (begin === '/' && !escape) {
+        if (el === '[') {
+          block = true;
+        } else if (el === ']') {
+          block = false;
+        }
+      }
 
-		if (how['filters']) {
-			p.filters = true;
-		}
+      if (!begin && templateVar) {
+        if (el === '}') {
+          templateVar--;
+        } else if (el === '{') {
+          templateVar++;
+        }
 
-		p.label = how['label'];
+        if (!templateVar) {
+          el = '`';
+        }
+      }
 
-		var singleCommentsOpt = how['singleComments'],
-		    multCommentsOpt = how['multComments'],
-		    commentsOpt = how['comments'];
+      if (begin === '`' && !escape && word === '${') {
+        el = '`';
+        i++;
+        templateVar++;
+      }
 
-		var skipComments = false;
+      if (allMap[el] && (el !== '/' || end) && !begin) {
+        begin = el;
+        selectionStart = i;
+      } else if (begin && (el === '\\' || escape)) {
+        escape = !escape;
+      } else if (allMap[el] && begin === el && !escape && (begin !== '/' || !block)) {
+        if (el === '/') {
+          for (var j = -1; ++j < rgxpFlags.length;) {
+            if (rgxpFlagsMap[str.charAt(i + 1)]) {
+              i++;
+            }
+          }
+        }
 
-		if (singleCommentsOpt !== false) {
-			if (defMap[singleCommentsOpt]) {
-				mix(singleComments, p, singleCommentsOpt);
-				skipComments = singleCommentsOpt != null;
-			} else if (mix(singleCommentsOpt, p)) {
-				skipComments = true;
-			}
-		}
+        begin = false;
+        end = false;
 
-		if (multCommentsOpt !== false) {
-			if (defMap[multCommentsOpt]) {
-				mix(singleComments, p, multCommentsOpt);
-				skipComments = skipComments || multCommentsOpt != null;
-			} else if (mix(multCommentsOpt, p)) {
-				skipComments = true;
-			}
-		}
+        if (p[el]) {
+          cut = str.substring(selectionStart, i + 1);
 
-		if (!skipComments && commentsOpt !== false) {
-			if (defMap[commentsOpt]) {
-				mix(multComments, p, commentsOpt);
-				mix(singleComments, p, commentsOpt);
-			} else {
-				mix(commentsOpt, p);
-			}
-		}
+          if (p[el] === -1) {
+            label = '';
+          } else {
+            label = mark(p, content.length);
+            content.push(cut);
+          }
 
-		var stringsOpt = how['strings'],
-		    literalsOpt = how['literals'];
+          str = str.substring(0, selectionStart) + label + str.substring(i + 1);
+          i += label.length - cut.length;
+        }
+      }
+    } else if ((i === str.length - 1 || nextLineRgxp.test(next)) && singleCommentsMap[comment] || multCommentsMap[el + str.charAt(i - 1)] && i - selectionStart > 2 && multCommentsMap[comment]) {
+      if (p[comment]) {
+        cut = str.substring(selectionStart, i + 1);
 
-		if (stringsOpt !== false) {
-			if (defMap[stringsOpt]) {
-				mix(strings, p, stringsOpt);
-			} else {
-				mix(stringsOpt, p);
-			}
-		}
+        if (p[comment] === -1) {
+          label = '';
+        } else {
+          label = mark(p, content.length);
+          content.push(cut);
+        }
 
-		if (literalsOpt !== false) {
-			if (defMap[literalsOpt]) {
-				mix(literals, p, literalsOpt);
-			} else {
-				mix(literalsOpt, p);
-			}
-		}
-	} else {
-		mix(all, p, how === -1 ? -1 : true);
-	}
+        str = str.substring(0, selectionStart) + label + str.substring(i + 1);
+        i += label.length - cut.length;
+      }
 
-	content = content || staticContent;
+      comment = false;
+    }
+  }
 
-	var cacheStr = str,
-	    canCache = content === staticContent,
-	    cacheKey = canCache && Object.keys(p).join(),
-	    cacheVal = canCache && cacheKey in cache && cache[cacheKey].get(cacheStr);
+  if (canCache) {
+    var c = cache[cacheKey] = cache[cacheKey] || createCache();
+    c.set(cacheStr, str);
+  }
 
-	if (cacheVal) {
-		return cacheVal;
-	}
-
-	var symbols = Escaper.symbols;
-
-	var
-	/** @type {(boolean|string)} */begin = false,
-	    end = true;
-
-	var escape = false,
-	    comment = false;
-
-	var selectionStart = 0,
-	    block = false;
-
-	var templateVar = 0,
-	    filterStart = false;
-
-	var cut = void 0,
-	    label = void 0;
-
-	var part = '',
-	    rPart = '';
-
-	for (var i = -1; ++i < str.length;) {
-		var el = str.charAt(i);
-
-		var next = str.charAt(i + 1),
-		    word = str.substr(i, 2),
-		    extWord = str.substr(i, 3);
-
-		if (!comment) {
-			if (!begin) {
-				if (el === '/') {
-					if (singleCommentsMap[word] || multCommentsMap[word]) {
-						if (singleCommentsMap[extWord] || multCommentsMap[extWord]) {
-							comment = extWord;
-						} else {
-							comment = word;
-						}
-					}
-
-					if (comment) {
-						selectionStart = i;
-						continue;
-					}
-				}
-
-				if (endSymbols[el] || endWords[rPart]) {
-					end = true;
-					rPart = '';
-				} else if (notSpaceRgxp.test(el)) {
-					end = false;
-				}
-
-				if (wordRgxp.test(el)) {
-					part += el;
-				} else {
-					rPart = part;
-					part = '';
-				}
-
-				var skip = false;
-
-				if (p.filters) {
-					if (el === '|' && symbols.test(next)) {
-						filterStart = true;
-						end = false;
-						skip = true;
-					} else if (filterStart && spaceRgxp.test(el)) {
-						filterStart = false;
-						end = true;
-						skip = true;
-					}
-				}
-
-				if (!skip) {
-					if (endSymbols[el]) {
-						end = true;
-					} else if (notSpaceRgxp.test(el)) {
-						end = false;
-					}
-				}
-			}
-
-			// [] inside RegExp
-			if (begin === '/' && !escape) {
-				if (el === '[') {
-					block = true;
-				} else if (el === ']') {
-					block = false;
-				}
-			}
-
-			if (!begin && templateVar) {
-				if (el === '}') {
-					templateVar--;
-				} else if (el === '{') {
-					templateVar++;
-				}
-
-				if (!templateVar) {
-					el = '`';
-				}
-			}
-
-			if (begin === '`' && !escape && word === '${') {
-				el = '`';
-				i++;
-				templateVar++;
-			}
-
-			if (allMap[el] && (el !== '/' || end) && !begin) {
-				begin = el;
-				selectionStart = i;
-			} else if (begin && (el === '\\' || escape)) {
-				escape = !escape;
-			} else if (allMap[el] && begin === el && !escape && (begin !== '/' || !block)) {
-				if (el === '/') {
-					for (var j = -1; ++j < rgxpFlags.length;) {
-						if (rgxpFlagsMap[str.charAt(i + 1)]) {
-							i++;
-						}
-					}
-				}
-
-				begin = false;
-				end = false;
-
-				if (p[el]) {
-					cut = str.substring(selectionStart, i + 1);
-
-					if (p[el] === -1) {
-						label = '';
-					} else {
-						label = mark(p, content.length);
-						content.push(cut);
-					}
-
-					str = str.substring(0, selectionStart) + label + str.substring(i + 1);
-					i += label.length - cut.length;
-				}
-			}
-		} else if ((i === str.length - 1 || nextLineRgxp.test(next)) && singleCommentsMap[comment] || multCommentsMap[el + str.charAt(i - 1)] && i - selectionStart > 2 && multCommentsMap[comment]) {
-			if (p[comment]) {
-				cut = str.substring(selectionStart, i + 1);
-
-				if (p[comment] === -1) {
-					label = '';
-				} else {
-					label = mark(p, content.length);
-					content.push(cut);
-				}
-
-				str = str.substring(0, selectionStart) + label + str.substring(i + 1);
-				i += label.length - cut.length;
-			}
-
-			comment = false;
-		}
-	}
-
-	if (canCache) {
-		var c = cache[cacheKey] = cache[cacheKey] || createCache();
-		c.set(cacheStr, str);
-	}
-
-	return str;
+  return str;
 }
-
 var pasteRgxp = /__ESCAPER_QUOT__(\d+)_/g;
-
 /**
  * Replaces all found escape blocks to a real content in a string
  * and returns a new string
@@ -477,10 +464,11 @@ var pasteRgxp = /__ESCAPER_QUOT__(\d+)_/g;
  * @param {RegExp=} [rgxp] - RegExp for searching, e.g. /__ESCAPER_QUOT__(\d+)_/g
  * @return {string}
  */
+
 function paste(str, content, rgxp) {
-	return str.replace(rgxp || pasteRgxp, function (str, pos) {
-		return (content || Escaper.content)[pos];
-	});
+  return str.replace(rgxp || pasteRgxp, function (str, pos) {
+    return (content || Escaper.content)[pos];
+  });
 }
 
 exports['default'] = escaper;
