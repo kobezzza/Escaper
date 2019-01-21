@@ -1,8 +1,4 @@
 {
-  "presets": [["es2015", {"modules": false}]],
-  "plugins": [
-    "external-helpers",
-    "transform-remove-strict-mode"
-  ],
+  "presets": [["@babel/preset-env", {"modules": false}]],
   "compact": false
 }
