@@ -251,19 +251,17 @@ describe('Escaper', () => {
 
 	it('replace with a static cache', () => {
 		const
-			src = 'Hello "world" and "friends"',
-			res = Escaper.replace(src);
+			src1 = 'Hello "world" and "friends"',
+			res1 = Escaper.replace(src1);
 
-		expect(res).toBe('Hello __ESCAPER_QUOT__0_ and __ESCAPER_QUOT__1_');
-		expect(Escaper.paste(res)).toBe(src);
-	});
+		expect(res1).toBe('Hello __ESCAPER_QUOT__0_ and __ESCAPER_QUOT__1_');
+		expect(Escaper.paste(res1)).toBe(src1);
 
-	it('replace with a static cache with parameters', () => {
 		const
-			src = 'Hello "world" + /friends/',
-			res = Escaper.replace(src, ['"', '/']);
+			src2 = 'Hello "world" + /friends/',
+			res2 = Escaper.replace(src2, ['"', '/']);
 
-		expect(res).toBe('Hello __ESCAPER_QUOT__2_ + __ESCAPER_QUOT__3_');
-		expect(Escaper.paste(res)).toBe(src);
+		expect(res2).toBe('Hello __ESCAPER_QUOT__2_ + __ESCAPER_QUOT__3_');
+		expect(Escaper.paste(res2)).toBe(src2);
 	});
 });

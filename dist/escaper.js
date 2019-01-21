@@ -5,7 +5,7 @@
  * Released under the MIT license
  * https://github.com/kobezzza/Escaper/blob/master/LICENSE
  *
- * Date: Sun, 28 Oct 2018 16:19:40 GMT
+ * Date: Mon, 21 Jan 2019 13:13:47 GMT
  */
 
 (function (global, factory) {
@@ -190,7 +190,7 @@ function mark(params, pos) {
  * // 'Hello "world" and __ESCAPER_QUOT__0_'
  * Escaper.replace('Hello "world" and \'friends\'', ["'"])
  *
- * // Cuts all
+ * // Cuts all found matches
  * // 'Hello and '
  * Escaper.replace('Hello "world" and \'friends\'', -1)
  *

@@ -35,6 +35,6 @@
   ],
   "devDependencies": {
     "closure-compiler": "http://dl.google.com/closure-compiler/compiler-latest.zip",
-    "jasmine": "^2.3.4"
+    "jasmine": "^3.3.0"
   }
 }
