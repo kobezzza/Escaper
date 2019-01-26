@@ -99,9 +99,9 @@ const endWords = createMap([
 ]);
 
 const
+	spaceRgxp = /\s/,
 	notSpaceRgxp = /[^\s/]/,
 	wordRgxp = /[a-z]/,
-	spaceRgxp = /\s/,
 	nextLineRgxp = /[\r\n]/,
 	posRgxp = /\${pos}/g;
 
