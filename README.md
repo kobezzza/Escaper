@@ -149,7 +149,7 @@ Replaces all found escape blocks to a real content in a string and returns a new
 
 * `string` `str` — source string;
 * `string[]` `content = Escaper.content` — array of matches;
-* `RegExp=` `opt_rgxp` — RegExp for searching, e.g. `/__ESCAPER_QUOT__(\d+)_/g`.
+* `RegExp` `rgxp?` — RegExp for searching, e.g. `/__ESCAPER_QUOT__(\d+)_/g`.
 
 ## [License](https://github.com/kobezzza/Escaper/blob/master/LICENSE)
 
