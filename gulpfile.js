@@ -61,27 +61,35 @@ gulp.task('predefs', gulp.parallel([
 	'predefs:bower'
 ]));
 
-gulp.task('build:js', () => {
+gulp.task('build:js', async () => {
+	const
+		$C = require('collection.js'),
+		File = require('vinyl'),
+		rollup = require('rollup');
+
 	const fullHead =
 		getHead(true) +
 		' *\n' +
 		` * Date: ${new Date().toUTCString()}\n` +
 		' */\n\n';
 
-	return gulp.src('./src/escaper.js')
-		.pipe($.plumber())
-		.pipe($.rollup({
-			input: './src/escaper.js',
-			output: {
-				name: 'Escaper',
-				format: 'umd',
-				exports: 'named'
-			},
-			amd: {id: 'Escaper'},
-			plugins: [require('rollup-plugin-babel')()]
-		}))
+	const bundle = await rollup.rollup({
+		input: './src/escaper.js',
+		plugins: [require('rollup-plugin-babel')()]
+	});
 
-		.pipe($.replace(headRgxp, ''))
+	const {output} = await bundle.generate({
+		name: 'Escaper',
+		format: 'umd',
+		exports: 'named',
+		amd: {id: 'Escaper'}
+	});
+
+	return $C(output).toStream().map((el) => new File({
+		path: el.fileName,
+		contents: Buffer.from(el.code)
+	}))
+
 		.pipe($.header(fullHead))
 		.pipe($.eol('\n'))
 		.pipe(gulp.dest('./dist'));
