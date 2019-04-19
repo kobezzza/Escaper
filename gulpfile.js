@@ -1,6 +1,6 @@
 'use strict';
 
-/* eslint-disable eqeqeq, prefer-template */
+/* eslint-disable eqeqeq, prefer-template, no-loop-func */
 
 /*!
  * Escaper
@@ -12,8 +12,12 @@
 
 const
 	gulp = require('gulp'),
-	$ = require('gulp-load-plugins')(),
-	fs = require('fs');
+	$ = require('gulp-load-plugins')();
+
+const
+	fs = require('fs'),
+	through = require('through2'),
+	{Transform} = require('stream');
 
 const
 	headRgxp = /(\/\*![\s\S]*?\*\/\n{2})/;
@@ -61,9 +65,8 @@ gulp.task('predefs', gulp.parallel([
 	'predefs:bower'
 ]));
 
-gulp.task('build:js', async () => {
+gulp.task('build:js', () => {
 	const
-		$C = require('collection.js'),
 		File = require('vinyl'),
 		rollup = require('rollup');
 
@@ -73,22 +76,50 @@ gulp.task('build:js', async () => {
 		` * Date: ${new Date().toUTCString()}\n` +
 		' */\n\n';
 
-	const bundle = await rollup.rollup({
+	const stream = new Transform({
+		readableObjectMode: true
+	});
+
+	rollup.rollup({
 		input: './src/escaper.js',
 		plugins: [require('rollup-plugin-babel')()]
-	});
+	})
+		.then((bundle) => bundle.generate({
+			name: 'Escaper',
+			format: 'umd',
+			exports: 'named',
+			amd: {id: 'Escaper'}
+		}))
 
-	const {output} = await bundle.generate({
-		name: 'Escaper',
-		format: 'umd',
-		exports: 'named',
-		amd: {id: 'Escaper'}
-	});
+		.then(({output}) => {
+			for (let i = 0; i < output.length; i++) {
+				const
+					el = output[i];
 
-	return $C(output).toStream().map((el) => new File({
-		path: el.fileName,
-		contents: Buffer.from(el.code)
-	}))
+				stream.push(new File({
+					path: el.fileName,
+					contents: Buffer.from(el.code)
+				}));
+			}
+
+			stream.push(null);
+		})
+
+		.catch((err) => {
+			stream.push(err);
+			stream.push(null);
+		});
+
+	return stream
+		.pipe($.plumber())
+		.pipe(through.obj((data, enc, cb) => {
+			if (data instanceof File) {
+				cb(null, data);
+
+			} else {
+				cb(data);
+			}
+		}))
 
 		.pipe($.header(fullHead))
 		.pipe($.eol('\n'))
