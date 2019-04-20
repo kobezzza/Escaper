@@ -16,6 +16,7 @@ const
 
 const
 	fs = require('fs'),
+	path = require('path'),
 	{Transform} = require('stream');
 
 const
@@ -97,7 +98,8 @@ gulp.task('build:js', () => {
 					el = output[i];
 
 				stream.push(new File({
-					path: el.fileName,
+					path: el.facadeModuleId,
+					base: path.dirname(el.facadeModuleId),
 					contents: Buffer.from(el.code)
 				}));
 			}
