@@ -16,7 +16,6 @@ const
 
 const
 	fs = require('fs'),
-	through = require('through2'),
 	{Transform} = require('stream');
 
 const
@@ -68,6 +67,7 @@ gulp.task('predefs', gulp.parallel([
 gulp.task('build:js', () => {
 	const
 		File = require('vinyl'),
+		through = require('through2'),
 		rollup = require('rollup');
 
 	const fullHead =
