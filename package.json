@@ -19,6 +19,11 @@
   "bugs": {
     "url": "https://github.com/kobezzza/Escaper/issues"
   },
+  "scripts": {
+    "test": "bower install && jasmine",
+    "test-coverage": "bower install && gulp test",
+    "full-test": "npm run test-coverage && yaspeller ./"
+  },
   "keywords": [
     "javascript",
     "string"
@@ -57,10 +62,5 @@
     "through2": "^3.0.1",
     "vinyl": "^2.2.0",
     "yaspeller": "^5.0.1"
-  },
-  "scripts": {
-    "test": "bower install && jasmine",
-    "test-coverage": "bower install && gulp test",
-    "full-test": "npm run test-coverage && yaspeller ./"
   }
 }
