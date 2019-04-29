@@ -158,7 +158,7 @@ function test() {
 			.on('finish', runTests);
 
 		function runTests() {
-			return gulp.src(`./spec/${dev ? 'dev' : 'index'}_spec.js`)
+			return gulp.src(`./spec/${dev ? 'dev' : 'index'}-spec.js`)
 				.pipe($.plumber())
 				.pipe($.jasmine())
 				.pipe($.istanbul.writeReports());
