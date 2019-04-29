@@ -135,7 +135,7 @@ function compile() {
 
 	return gulp.src('./dist/escaper.js')
 		.pipe($.plumber())
-		.pipe($.closureCompiler(Object.assign(config, {compilerPath: glob.sync(config.compilerPath)})))
+		.pipe($.closureCompiler(Object.assign(config, {compilerPath: glob.sync(config.compilerPath)[0]})))
 		.pipe($.replace(/^\/\*[\s\S]*?\*\//, ''))
 		.pipe($.wrap('(function(){\'use strict\';<%= contents %>}).call(this);'))
 		.pipe($.header(`/*! Escaper v${getVersion()} | https://github.com/kobezzza/Escaper/blob/master/LICENSE */\n`))
@@ -234,7 +234,11 @@ gulp.task('default', gulp.parallel([
 ]));
 
 gulp.task('watch', gulp.series(['default', () => {
-	gulp.watch('./src/escaper.js', gulp.parallel(['test', 'bump']));
+	gulp.watch('./src/escaper.js', gulp.series([
+		gulp.parallel(['build:compile:fast', 'bump']),
+		'test'
+	]));
+
 	gulp.watch('./spec/*.js', gulp.series('test'));
 	gulp.watch('./*.md', gulp.series('yaspeller'));
 	gulp.watch('./.gitignore', gulp.series('npmignore'));
