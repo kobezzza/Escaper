@@ -149,14 +149,7 @@ gulp.task('build', gulp.series('build:compile', test()));
 
 function test(dev) {
 	return () => {
-		const
-			coverage = Boolean(dev);
-
-		if (!coverage) {
-			return runTests();
-		}
-
-		return gulp.src(`./dist/escaper.js`)
+		return gulp.src(`./dist/escaper${dev ? '' : '.min'}.js`)
 			.pipe($.istanbul())
 			.pipe($.istanbul.hookRequire())
 			.on('finish', runTests);
@@ -165,7 +158,7 @@ function test(dev) {
 			return gulp.src(`./spec/${dev ? 'dev' : 'index'}-spec.js`)
 				.pipe($.plumber())
 				.pipe($.jasmine())
-				.pipe($.if(coverage, $.istanbul.writeReports()));
+				.pipe($.istanbul.writeReports());
 		}
 	};
 }
