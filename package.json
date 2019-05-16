@@ -46,7 +46,6 @@
     "gulp-download": "0.0.1",
     "gulp-eol": "^0.2.0",
     "gulp-header": "^2.0.7",
-    "gulp-if": "^2.0.2",
     "gulp-ignore": "^2.0.2",
     "gulp-istanbul": "^1.1.3",
     "gulp-jasmine": "^4.0.0",
