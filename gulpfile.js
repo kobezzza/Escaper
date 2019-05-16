@@ -59,11 +59,11 @@ gulp.task('predefs:bower', () =>
 	$.run('bower install').exec()
 );
 
-gulp.task('predefs', gulp.parallel([
+gulp.task('predefs', gulp.parallel(
 	'predefs:build',
 	'predefs:externs',
 	'predefs:bower'
-]));
+));
 
 gulp.task('build:js', () => {
 	const
@@ -143,16 +143,20 @@ function compile() {
 		.pipe(gulp.dest('./dist'));
 }
 
-gulp.task('build:compile', gulp.series([gulp.parallel(['predefs', 'build:js']), compile]));
-gulp.task('build:compile:fast', gulp.series(['build:js', compile]));
-gulp.task('build', gulp.series(['build:compile', test]));
+gulp.task('build:compile', gulp.series(gulp.parallel('predefs', 'build:js'), compile));
+gulp.task('build:compile:fast', gulp.series('build:js', compile));
+gulp.task('build', gulp.series('build:compile', test()));
 
-function test() {
-	const
-		dev = arguments[0] === true;
+function test(dev) {
+	return () => {
+		const
+			coverage = Boolean(dev);
 
-	function exec() {
-		return gulp.src(`./dist/escaper${!dev ? '.min' : ''}.js`)
+		if (!coverage) {
+			return runTests();
+		}
+
+		return gulp.src(`./dist/escaper.js`)
 			.pipe($.istanbul())
 			.pipe($.istanbul.hookRequire())
 			.on('finish', runTests);
@@ -161,19 +165,13 @@ function test() {
 			return gulp.src(`./spec/${dev ? 'dev' : 'index'}-spec.js`)
 				.pipe($.plumber())
 				.pipe($.jasmine())
-				.pipe($.istanbul.writeReports());
+				.pipe($.if(coverage, $.istanbul.writeReports()));
 		}
-	}
-
-	if (dev) {
-		return exec;
-	}
-
-	return exec();
+	};
 }
 
-gulp.task('test', test);
-gulp.task('test:dev', gulp.series(['build:js', test(true)]));
+gulp.task('test', test());
+gulp.task('test:dev', gulp.series('build:js', test(true)));
 gulp.task('yaspeller', () => $.run('yaspeller ./').exec().on('error', console.error));
 
 gulp.task('copyright', () =>
@@ -224,43 +222,43 @@ gulp.task('head', () => {
 		.pipe(gulp.dest('./'));
 });
 
-gulp.task('default', gulp.parallel([
-	gulp.series([
-		gulp.parallel(['bump', 'head']),
+gulp.task('default', gulp.parallel(
+	gulp.series(
+		gulp.parallel('bump', 'head'),
 		'build'
-	]),
+	),
 
 	'copyright',
 	'yaspeller',
 	'npmignore'
-]));
+));
 
-gulp.task('dev', gulp.parallel([
-	gulp.series([
-		gulp.parallel(['bump', 'head']),
+gulp.task('dev', gulp.parallel(
+	gulp.series(
+		gulp.parallel('bump', 'head'),
 		'build:js'
-	]),
+	),
 
 	'copyright',
 	'yaspeller',
 	'npmignore'
-]));
+));
 
-gulp.task('watch', gulp.series(['default', () => {
-	gulp.watch('./src/escaper.js', gulp.series([
+gulp.task('watch', gulp.series('default', () => {
+	gulp.watch('./src/escaper.js', gulp.series(
 		'bump',
 		'build:compile:fast',
 		'test'
-	]));
+	));
 
 	gulp.watch('./spec/*.js', gulp.series('test'));
 	gulp.watch('./*.md', gulp.series('yaspeller'));
 	gulp.watch('./.gitignore', gulp.series('npmignore'));
-}]));
+}));
 
-gulp.task('watch:dev', gulp.series(['dev', () => {
-	gulp.watch('./src/escaper.js', gulp.series(['bump', 'test:dev']));
+gulp.task('watch:dev', gulp.series('dev', () => {
+	gulp.watch('./src/escaper.js', gulp.series('bump', 'test:dev'));
 	gulp.watch('./spec/*.js', gulp.series('test'));
 	gulp.watch('./*.md', gulp.series('yaspeller'));
 	gulp.watch('./.gitignore', gulp.series('npmignore'));
-}]));
+}));
