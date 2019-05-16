@@ -143,9 +143,8 @@ function compile() {
 		.pipe(gulp.dest('./dist'));
 }
 
-gulp.task('build:compile', gulp.series(gulp.parallel('predefs', 'build:js'), compile));
-gulp.task('build:compile:fast', gulp.series('build:js', compile));
-gulp.task('build', gulp.series('build:compile', test()));
+gulp.task('build', gulp.series(gulp.parallel('predefs', 'build:js'), compile));
+gulp.task('build:fast', gulp.series('build:js', compile));
 
 function test(dev) {
 	return () => {
@@ -164,7 +163,10 @@ function test(dev) {
 }
 
 gulp.task('test', test());
-gulp.task('test:dev', gulp.series('build:js', test(true)));
+gulp.task('build:test', gulp.series('build', test()));
+
+gulp.task('test:dev', test(true));
+gulp.task('build:test:dev', gulp.series('build:js', test(true)));
 gulp.task('yaspeller', () => $.run('yaspeller ./').exec().on('error', console.error));
 
 gulp.task('copyright', () =>
@@ -218,7 +220,7 @@ gulp.task('head', () => {
 gulp.task('default', gulp.parallel(
 	gulp.series(
 		gulp.parallel('bump', 'head'),
-		'build'
+		'build:test'
 	),
 
 	'copyright',
@@ -229,7 +231,7 @@ gulp.task('default', gulp.parallel(
 gulp.task('dev', gulp.parallel(
 	gulp.series(
 		gulp.parallel('bump', 'head'),
-		'build:js'
+		'build:test:dev'
 	),
 
 	'copyright',
@@ -238,19 +240,14 @@ gulp.task('dev', gulp.parallel(
 ));
 
 gulp.task('watch', gulp.series('default', () => {
-	gulp.watch('./src/escaper.js', gulp.series(
-		'bump',
-		'build:compile:fast',
-		'test'
-	));
-
+	gulp.watch('./src/escaper.js', gulp.series('bump', 'build:test'));
 	gulp.watch('./spec/*.js', gulp.series('test'));
 	gulp.watch('./*.md', gulp.series('yaspeller'));
 	gulp.watch('./.gitignore', gulp.series('npmignore'));
 }));
 
 gulp.task('watch:dev', gulp.series('dev', () => {
-	gulp.watch('./src/escaper.js', gulp.series('bump', 'test:dev'));
+	gulp.watch('./src/escaper.js', gulp.series('bump', 'build:test:dev'));
 	gulp.watch('./spec/*.js', gulp.series('test'));
 	gulp.watch('./*.md', gulp.series('yaspeller'));
 	gulp.watch('./.gitignore', gulp.series('npmignore'));
