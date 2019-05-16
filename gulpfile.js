@@ -240,14 +240,14 @@ gulp.task('dev', gulp.parallel(
 ));
 
 gulp.task('watch', gulp.series('default', () => {
-	gulp.watch('./src/escaper.js', gulp.series('bump', 'build:test'));
+	gulp.watch('./src/escaper.js', gulp.series('bump', 'build'));
 	gulp.watch('./spec/*.js', gulp.series('test'));
 	gulp.watch('./*.md', gulp.series('yaspeller'));
 	gulp.watch('./.gitignore', gulp.series('npmignore'));
 }));
 
 gulp.task('watch:dev', gulp.series('dev', () => {
-	gulp.watch('./src/escaper.js', gulp.series('bump', 'build:test:dev'));
+	gulp.watch('./src/escaper.js', gulp.series('bump', 'build:dev'));
 	gulp.watch('./spec/*.js', gulp.series('test'));
 	gulp.watch('./*.md', gulp.series('yaspeller'));
 	gulp.watch('./.gitignore', gulp.series('npmignore'));
