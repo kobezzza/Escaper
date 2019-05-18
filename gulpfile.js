@@ -147,8 +147,8 @@ gulp.task('build', gulp.series(gulp.parallel('predefs', 'build:js'), compile));
 gulp.task('build:fast', gulp.series('build:js', compile));
 
 function test(dev) {
-	return () => {
-		return gulp.src(`./dist/escaper${dev ? '' : '.min'}.js`)
+	return (cb) => {
+		gulp.src(`./dist/escaper${dev ? '' : '.min'}.js`)
 			.pipe($.istanbul())
 			.pipe($.istanbul.hookRequire())
 			.on('finish', runTests);
@@ -157,7 +157,8 @@ function test(dev) {
 			return gulp.src(`./spec/${dev ? 'dev' : 'index'}-spec.js`)
 				.pipe($.plumber())
 				.pipe($.jasmine())
-				.pipe($.istanbul.writeReports());
+				.pipe($.istanbul.writeReports())
+				.on('finish', cb);
 		}
 	};
 }
