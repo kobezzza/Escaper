@@ -1,11 +1,11 @@
 /*!
- * Escaper v3.0.2
+ * Escaper v3.0.3
  * https://github.com/kobezzza/Escaper
  *
  * Released under the MIT license
  * https://github.com/kobezzza/Escaper/blob/master/LICENSE
  *
- * Date: Tue, 14 May 2019 03:31:14 GMT
+ * Date: Thu, 25 Jul 2019 16:35:55 GMT
  */
 
 (function (global, factory) {
@@ -30,7 +30,7 @@
 
   var Escaper;
   var escaper = Escaper = {
-    VERSION: [3, 0, 2],
+    VERSION: [3, 0, 3],
     content: [],
     cache: Object.create(null),
     symbols: /[!$a-z_]/i,
@@ -41,10 +41,10 @@
   var multComments = ['/*', '/**', '/*!', '/*#', '/*@', '/*$'];
   var strings = ['"', '\'', '`'],
       literals = ['/'];
-  var all = [].concat(singleComments, multComments, strings, literals);
+  var allSymbols = [].concat(singleComments, multComments, strings, literals);
   var singleCommentsMap = createMap(singleComments),
       multCommentsMap = createMap(multComments),
-      allMap = createMap(all);
+      allSymbolsMap = createMap(allSymbols);
   var defMap = {
     'true': true,
     'null': true,
@@ -221,7 +221,7 @@
         mix(how, p);
       } else {
         content = content || how;
-        mix(all, p, true);
+        mix(allSymbols, p, true);
       }
     } else if (how && _typeof(how) === 'object') {
       mix(how, p);
@@ -282,7 +282,7 @@
         }
       }
     } else {
-      mix(all, p, how === -1 ? -1 : true);
+      mix(allSymbols, p, how === -1 ? -1 : true);
     }
 
     content = content || staticContent;
@@ -295,7 +295,8 @@
       return cacheVal;
     }
 
-    var symbols = Escaper.symbols;
+    var symbols = Escaper.symbols,
+        tplStack = [];
     var
     /** @type {(boolean|string)} */
     begin = false,
@@ -304,26 +305,25 @@
         comment = false;
     var selectionStart = 0,
         block = false;
-    var templateVar = 0,
-        filterStart = false;
+    var filterStart = false;
     var cut, label;
-    var part = '',
-        rPart = '';
+    var word = '',
+        fullWord = '';
 
     for (var i = -1; ++i < str.length;) {
       var el = str.charAt(i);
-      var next = str.charAt(i + 1),
-          word = str.substr(i, 2),
-          extWord = str.substr(i, 3);
+      var nextEl = str.charAt(i + 1),
+          str2 = str.substr(i, 2),
+          str3 = str.substr(i, 3);
 
       if (!comment) {
         if (!begin) {
           if (el === '/') {
-            if (singleCommentsMap[word] || multCommentsMap[word]) {
-              if (singleCommentsMap[extWord] || multCommentsMap[extWord]) {
-                comment = extWord;
+            if (singleCommentsMap[str2] || multCommentsMap[str2]) {
+              if (singleCommentsMap[str3] || multCommentsMap[str3]) {
+                comment = str3;
               } else {
-                comment = word;
+                comment = str2;
               }
             }
 
@@ -333,24 +333,24 @@
             }
           }
 
-          if (endSymbols[el] || endWords[rPart]) {
+          if (endSymbols[el] || endWords[fullWord]) {
             end = true;
-            rPart = '';
+            fullWord = '';
           } else if (notSpaceRgxp.test(el)) {
             end = false;
           }
 
           if (wordRgxp.test(el)) {
-            part += el;
+            word += el;
           } else {
-            rPart = part;
-            part = '';
+            fullWord = word;
+            word = '';
           }
 
           var skip = false;
 
           if (p.filters) {
-            if (el === '|' && symbols.test(next)) {
+            if (el === '|' && symbols.test(nextEl)) {
               filterStart = true;
               end = false;
               skip = true;
@@ -379,30 +379,32 @@
           }
         }
 
-        if (!begin && templateVar) {
+        if (!begin && tplStack.length) {
+          var last = void 0;
+
           if (el === '}') {
-            templateVar--;
+            last = tplStack.pop();
           } else if (el === '{') {
-            templateVar++;
+            tplStack.push('');
           }
 
-          if (!templateVar) {
+          if (last === '@') {
             el = '`';
           }
         }
 
-        if (begin === '`' && !escape && word === '${') {
-          el = '`';
+        if (!escape && begin === '`' && str2 === '${') {
           i++;
-          templateVar++;
+          tplStack.push('@');
+          el = '`';
         }
 
-        if (allMap[el] && (el !== '/' || end) && !begin) {
+        if (allSymbolsMap[el] && (el !== '/' || end) && !begin) {
           begin = el;
           selectionStart = i;
-        } else if (begin && (el === '\\' || escape)) {
+        } else if (begin && (escape || el === '\\')) {
           escape = !escape;
-        } else if (allMap[el] && begin === el && !escape && (begin !== '/' || !block)) {
+        } else if (!escape && allSymbolsMap[el] && begin === el && (begin !== '/' || !block)) {
           if (el === '/') {
             for (var j = -1; ++j < rgxpFlags.length;) {
               if (rgxpFlagsMap[str.charAt(i + 1)]) {
@@ -428,7 +430,7 @@
             i += label.length - cut.length;
           }
         }
-      } else if ((i === str.length - 1 || nextLineRgxp.test(next)) && singleCommentsMap[comment] || multCommentsMap[el + str.charAt(i - 1)] && i - selectionStart > 2 && multCommentsMap[comment]) {
+      } else if ((i === str.length - 1 || nextLineRgxp.test(nextEl)) && singleCommentsMap[comment] || multCommentsMap[el + str.charAt(i - 1)] && i - selectionStart > 2 && multCommentsMap[comment]) {
         if (p[comment]) {
           cut = str.substring(selectionStart, i + 1);
 
