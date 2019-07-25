@@ -148,6 +148,16 @@ describe('Escaper', () => {
 		expect(Escaper.paste(res, content)).toBe(src);
 	});
 
+	it('replace a deep template string interpolation', () => {
+		const
+			content = [],
+			src = '`${`${foo}`}`;};bar,() => `${bla}`',
+			res = Escaper.replace(src, content);
+
+		expect(res).toBe('__ESCAPER_QUOT__0___ESCAPER_QUOT__1_foo__ESCAPER_QUOT__2___ESCAPER_QUOT__3_;};bar,() => __ESCAPER_QUOT__4_bla__ESCAPER_QUOT__5_');
+		expect(Escaper.paste(res, content)).toBe(src);
+	});
+
 	it('replace a regular expression', () => {
 		const
 			content = [],

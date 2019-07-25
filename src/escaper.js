@@ -40,7 +40,7 @@ const
 	strings = ['"', '\'', '`'],
 	literals = ['/'];
 
-const all = [
+const allSymbols = [
 	...singleComments,
 	...multComments,
 	...strings,
@@ -50,7 +50,7 @@ const all = [
 const
 	singleCommentsMap = createMap(singleComments),
 	multCommentsMap = createMap(multComments),
-	allMap = createMap(all);
+	allSymbolsMap = createMap(allSymbols);
 
 const defMap = {
 	'true': true,
@@ -277,7 +277,7 @@ export function replace(str, how, content) {
 
 		} else {
 			content = content || how;
-			mix(all, p, true);
+			mix(allSymbols, p, true);
 		}
 
 	} else if (how && typeof how === 'object') {
@@ -350,7 +350,7 @@ export function replace(str, how, content) {
 		}
 
 	} else {
-		mix(all, p, how === -1 ? -1 : true);
+		mix(allSymbols, p, how === -1 ? -1 : true);
 	}
 
 	content = content || staticContent;
@@ -366,7 +366,8 @@ export function replace(str, how, content) {
 	}
 
 	const
-		symbols = Escaper.symbols;
+		symbols = Escaper.symbols,
+		tplStack = [];
 
 	let
 		/** @type {(boolean|string)} */ begin = false,
@@ -381,7 +382,6 @@ export function replace(str, how, content) {
 		block = false;
 
 	let
-		templateVar = 0,
 		filterStart = false;
 
 	let
@@ -389,27 +389,27 @@ export function replace(str, how, content) {
 		label;
 
 	let
-		part = '',
-		rPart = '';
+		word = '',
+		fullWord = '';
 
 	for (let i = -1; ++i < str.length;) {
 		let
 			el = str.charAt(i);
 
 		const
-			next = str.charAt(i + 1),
-			word = str.substr(i, 2),
-			extWord = str.substr(i, 3);
+			nextEl = str.charAt(i + 1),
+			str2 = str.substr(i, 2),
+			str3 = str.substr(i, 3);
 
 		if (!comment) {
 			if (!begin) {
 				if (el === '/') {
-					if (singleCommentsMap[word] || multCommentsMap[word]) {
-						if (singleCommentsMap[extWord] || multCommentsMap[extWord]) {
-							comment = extWord;
+					if (singleCommentsMap[str2] || multCommentsMap[str2]) {
+						if (singleCommentsMap[str3] || multCommentsMap[str3]) {
+							comment = str3;
 
 						} else {
-							comment = word;
+							comment = str2;
 						}
 					}
 
@@ -419,27 +419,27 @@ export function replace(str, how, content) {
 					}
 				}
 
-				if (endSymbols[el] || endWords[rPart]) {
+				if (endSymbols[el] || endWords[fullWord]) {
 					end = true;
-					rPart = '';
+					fullWord = '';
 
 				} else if (notSpaceRgxp.test(el)) {
 					end = false;
 				}
 
 				if (wordRgxp.test(el)) {
-					part += el;
+					word += el;
 
 				} else {
-					rPart = part;
-					part = '';
+					fullWord = word;
+					word = '';
 				}
 
 				let
 					skip = false;
 
 				if (p.filters) {
-					if (el === '|' && symbols.test(next)) {
+					if (el === '|' && symbols.test(nextEl)) {
 						filterStart = true;
 						end = false;
 						skip = true;
@@ -471,33 +471,36 @@ export function replace(str, how, content) {
 				}
 			}
 
-			if (!begin && templateVar) {
+			if (!begin && tplStack.length) {
+				let
+					last;
+
 				if (el === '}') {
-					templateVar--;
+					last = tplStack.pop();
 
 				} else if (el === '{') {
-					templateVar++;
+					tplStack.push('');
 				}
 
-				if (!templateVar) {
+				if (last === '@') {
 					el = '`';
 				}
 			}
 
-			if (begin === '`' && !escape && word === '${') {
-				el = '`';
+			if (!escape && begin === '`' && str2 === '${') {
 				i++;
-				templateVar++;
+				tplStack.push('@');
+				el = '`';
 			}
 
-			if (allMap[el] && (el !== '/' || end) && !begin) {
+			if (allSymbolsMap[el] && (el !== '/' || end) && !begin) {
 				begin = el;
 				selectionStart = i;
 
-			} else if (begin && (el === '\\' || escape)) {
+			} else if (begin && (escape || el === '\\')) {
 				escape = !escape;
 
-			} else if (allMap[el] && begin === el && !escape && (begin !== '/' || !block)) {
+			} else if (!escape && allSymbolsMap[el] && begin === el && (begin !== '/' || !block)) {
 				if (el === '/') {
 					for (let j = -1; ++j < rgxpFlags.length;) {
 						if (rgxpFlagsMap[str.charAt(i + 1)]) {
@@ -525,7 +528,7 @@ export function replace(str, how, content) {
 				}
 			}
 
-		} else if (((i === str.length - 1 || nextLineRgxp.test(next)) && singleCommentsMap[comment]) ||
+		} else if (((i === str.length - 1 || nextLineRgxp.test(nextEl)) && singleCommentsMap[comment]) ||
 			(multCommentsMap[el + str.charAt(i - 1)] && i - selectionStart > 2 && multCommentsMap[comment])
 
 		) {
