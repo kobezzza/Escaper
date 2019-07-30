@@ -479,17 +479,17 @@ export function replace(str, how, content) {
 					last = tplStack.pop();
 
 				} else if (el === '{') {
-					tplStack.push('');
+					tplStack.push(false);
 				}
 
-				if (last === '@') {
+				if (last) {
 					el = '`';
 				}
 			}
 
 			if (!escape && begin === '`' && str2 === '${') {
 				i++;
-				tplStack.push('@');
+				tplStack.push(true);
 				el = '`';
 			}
 
