@@ -1,7 +1,7 @@
 Escaper
 =======
 
-Escaper is a small JavaScript library for replacing string literals, regular expressions and comments in JavaScript syntax.
+Escaper is a small JavaScript library to replace string literals, regular expressions, and comments from JavaScript syntax.
 
 [Russian documentation](https://github.com/kobezzza/Escaper/blob/master/README.ru.md)
 
@@ -82,7 +82,7 @@ Escaper.paste(str, content);
 ```
 
 ## API
-### Escaper.replace(str, how?, content?): string
+### Escaper.replace(str, how?, store?): string
 
 Replaces all found blocks `' ... '`, `" ... "`, `` ` ... ` ``, `/ ... /`, `// ...`, `/* ... */` to
 escape blocks in a string and returns a new string.
@@ -94,11 +94,11 @@ escape blocks in a string and returns a new string.
 
 **Possible values**
 
-If a value is set to `-1`, then all found matches will be removed from the final string, or if the value will be set to
-`boolean` they will be included/excluded.
+If a value is set to `-1`, then all found matches will be removed from the final string.
+If the value is set to `boolean` it will be replaced/passed.
 
 ```js
-// Template for replacement, by default __ESCAPER_QUOT__${pos}_
+// Label of replacement, by default __ESCAPER_QUOT__${pos}_
 'label'
 
 // Singleline comment
@@ -139,16 +139,16 @@ Parameters can be specified as an array (escapes only explicitly specified seque
 or like an object (disables/excludes by a literal or a group). Also, if you set the parameter value as `-1`,
 then all found sequences will be removed from the string.
 
-* `string[]` `content = Escaper.content` — array for matches.
+* `string[]` `store = Escaper.content` — store for matches.
 
-### Escaper.paste(str, content?, rgxp?): string
+### Escaper.paste(str, store?, rgxp?): string
 
-Replaces all found escape blocks to a real content in a string and returns a new string.
+Replaces all found escape blocks to a real content from the specified string and returns a new string.
 
 **Arguments**
 
 * `string` `str` — source string;
-* `string[]` `content = Escaper.content` — array of matches;
+* `string[]` `store = Escaper.content` — store of matches;
 * `RegExp` `rgxp?` — RegExp for searching, e.g. `/__ESCAPER_QUOT__(\d+)_/g`.
 
 ## [License](https://github.com/kobezzza/Escaper/blob/master/LICENSE)

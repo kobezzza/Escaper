@@ -207,10 +207,10 @@ function mark(params, pos) {
  * @param {string} str - source string
  * @param {(Object<string, (Array|Object|boolean|number)>|Array|number)=} [how=true] - parameters:
  *
- *     (if a parameter value is set to -1, then all found matches will be removed from the final string,
- *      or if the value will be set to false they will be excluded)
+ *     (if a parameter value is set to -1, then all found matches will be removed from the final string;
+ *      if a parameter value is set to false, then all found matches will be passed to the final string)
  *
- *     *) label          - template for replacement, e.g. __ESCAPER_QUOT__${pos}_
+ *     *) label          - label of replacement, e.g. __ESCAPER_QUOT__${pos}_
  *     *) singleComments - replaces all kinds of single comments
  *     *) multComments   - replaces all kinds of multiline comments
  *     *) comments       - replaces all kinds of comments
@@ -234,7 +234,7 @@ function mark(params, pos) {
  *     *) /*@
  *     *) /*$
  *
- * @param {Array=} [content=Escaper.content] - array for matches
+ * @param {Array=} [store=Escaper.content] - store for matches
  * @return {string}
  *
  * @example
@@ -266,17 +266,17 @@ function mark(params, pos) {
  * // 'Hello "world" and '
  * Escaper.replace('Hello "world" and \'friends\'', {strings: {"'": -1}})
  */
-export function replace(str, how, content) {
+export function replace(str, how, store) {
 	const
 		p = Object.create(null),
 		{cache, content: staticContent} = Escaper;
 
 	if (Array.isArray(how)) {
-		if (how.length || Array.isArray(content)) {
+		if (how.length || Array.isArray(store)) {
 			mix(how, p);
 
 		} else {
-			content = content || how;
+			store = store || how;
 			mix(allSymbols, p, true);
 		}
 
@@ -353,11 +353,11 @@ export function replace(str, how, content) {
 		mix(allSymbols, p, how === -1 ? -1 : true);
 	}
 
-	content = content || staticContent;
+	store = store || staticContent;
 
 	const
 		cacheStr = str,
-		canCache = content === staticContent,
+		canCache = store === staticContent,
 		cacheKey = canCache && Object.keys(p).join(),
 		cacheVal = canCache && cacheKey in cache && cache[cacheKey].get(cacheStr);
 
@@ -519,8 +519,8 @@ export function replace(str, how, content) {
 						label = '';
 
 					} else {
-						label = mark(p, content.length);
-						content.push(cut);
+						label = mark(p, store.length);
+						store.push(cut);
 					}
 
 					str = str.substring(0, selectionStart) + label + str.substring(i + 1);
@@ -539,8 +539,8 @@ export function replace(str, how, content) {
 					label = '';
 
 				} else {
-					label = mark(p, content.length);
-					content.push(cut);
+					label = mark(p, store.length);
+					store.push(cut);
 				}
 
 				str = str.substring(0, selectionStart) + label + str.substring(i + 1);
@@ -563,14 +563,14 @@ const
 	pasteRgxp = /__ESCAPER_QUOT__(\d+)_/g;
 
 /**
- * Replaces all found escape blocks to a real content in a string
+ * Replaces all found escape blocks to a real content from the specified string
  * and returns a new string
  *
  * @param {string} str - source string
- * @param {Array=} [content=Escaper.content] - array of matches
+ * @param {Array=} [store=Escaper.content] - store of matches
  * @param {RegExp=} [rgxp] - RegExp for searching, e.g. /__ESCAPER_QUOT__(\d+)_/g
  * @return {string}
  */
-export function paste(str, content, rgxp) {
-	return str.replace(rgxp || pasteRgxp, (str, pos) => (content || Escaper.content)[pos]);
+export function paste(str, store, rgxp) {
+	return str.replace(rgxp || pasteRgxp, (str, pos) => (store || Escaper.content)[pos]);
 }
