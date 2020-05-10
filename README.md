@@ -85,7 +85,7 @@ Escaper.paste(str, content);
 ### Escaper.replace(str, how?, store?): string
 
 Replaces all found blocks `' ... '`, `" ... "`, `` ` ... ` ``, `/ ... /`, `// ...`, `/* ... */` to
-escape blocks in a string and returns a new string.
+escape blocks from the specified string and returns a new string.
 
 **Arguments**
 

@@ -202,7 +202,7 @@ function mark(params, pos) {
 
 /**
  * Replaces all found blocks ' ... ', " ... ", ` ... `, / ... /, // ..., /* ... *\/ to
- * escape blocks in a string and returns a new string
+ * escape blocks from the specified string and returns a new string
  *
  * @param {string} str - source string
  * @param {(Object<string, (Array|Object|boolean|number)>|Array|number)=} [how=true] - parameters:
