@@ -1,20 +1,22 @@
 /*!
- * Escaper v3.0.3
+ * Escaper v3.0.4
  * https://github.com/kobezzza/Escaper
  *
  * Released under the MIT license
  * https://github.com/kobezzza/Escaper/blob/master/LICENSE
  *
- * Date: Thu, 25 Jul 2019 16:35:55 GMT
+ * Date: Sun, 10 May 2020 15:54:21 GMT
  */
 
 (function (global, factory) {
   typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports) :
   typeof define === 'function' && define.amd ? define('Escaper', ['exports'], factory) :
   (global = global || self, factory(global.Escaper = {}));
-}(this, function (exports) { 'use strict';
+}(this, (function (exports) { 'use strict';
 
   function _typeof(obj) {
+    "@babel/helpers - typeof";
+
     if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") {
       _typeof = function (obj) {
         return typeof obj;
@@ -30,7 +32,7 @@
 
   var Escaper;
   var escaper = Escaper = {
-    VERSION: [3, 0, 3],
+    VERSION: [3, 0, 4],
     content: [],
     cache: Object.create(null),
     symbols: /[!$a-z_]/i,
@@ -144,15 +146,15 @@
   }
   /**
    * Replaces all found blocks ' ... ', " ... ", ` ... `, / ... /, // ..., /* ... *\/ to
-   * escape blocks in a string and returns a new string
+   * escape blocks from the specified string and returns a new string
    *
    * @param {string} str - source string
    * @param {(Object<string, (Array|Object|boolean|number)>|Array|number)=} [how=true] - parameters:
    *
-   *     (if a parameter value is set to -1, then all found matches will be removed from the final string,
-   *      or if the value will be set to false they will be excluded)
+   *     (if a parameter value is set to -1, then all found matches will be removed from the final string;
+   *      if a parameter value is set to false, then all found matches will be passed to the final string)
    *
-   *     *) label          - template for replacement, e.g. __ESCAPER_QUOT__${pos}_
+   *     *) label          - label of replacement, e.g. __ESCAPER_QUOT__${pos}_
    *     *) singleComments - replaces all kinds of single comments
    *     *) multComments   - replaces all kinds of multiline comments
    *     *) comments       - replaces all kinds of comments
@@ -176,7 +178,7 @@
    *     *) /*@
    *     *) /*$
    *
-   * @param {Array=} [content=Escaper.content] - array for matches
+   * @param {Array=} [store=Escaper.content] - store for matches
    * @return {string}
    *
    * @example
@@ -210,17 +212,17 @@
    */
 
 
-  function replace(str, how, content) {
+  function replace(str, how, store) {
     var p = Object.create(null),
         _Escaper = Escaper,
         cache = _Escaper.cache,
         staticContent = _Escaper.content;
 
     if (Array.isArray(how)) {
-      if (how.length || Array.isArray(content)) {
+      if (how.length || Array.isArray(store)) {
         mix(how, p);
       } else {
-        content = content || how;
+        store = store || how;
         mix(allSymbols, p, true);
       }
     } else if (how && _typeof(how) === 'object') {
@@ -285,9 +287,9 @@
       mix(allSymbols, p, how === -1 ? -1 : true);
     }
 
-    content = content || staticContent;
+    store = store || staticContent;
     var cacheStr = str,
-        canCache = content === staticContent,
+        canCache = store === staticContent,
         cacheKey = canCache && Object.keys(p).join(),
         cacheVal = canCache && cacheKey in cache && cache[cacheKey].get(cacheStr);
 
@@ -385,17 +387,17 @@
           if (el === '}') {
             last = tplStack.pop();
           } else if (el === '{') {
-            tplStack.push('');
+            tplStack.push(false);
           }
 
-          if (last === '@') {
+          if (last) {
             el = '`';
           }
         }
 
         if (!escape && begin === '`' && str2 === '${') {
           i++;
-          tplStack.push('@');
+          tplStack.push(true);
           el = '`';
         }
 
@@ -422,8 +424,8 @@
             if (p[el] === -1) {
               label = '';
             } else {
-              label = mark(p, content.length);
-              content.push(cut);
+              label = mark(p, store.length);
+              store.push(cut);
             }
 
             str = str.substring(0, selectionStart) + label + str.substring(i + 1);
@@ -437,8 +439,8 @@
           if (p[comment] === -1) {
             label = '';
           } else {
-            label = mark(p, content.length);
-            content.push(cut);
+            label = mark(p, store.length);
+            store.push(cut);
           }
 
           str = str.substring(0, selectionStart) + label + str.substring(i + 1);
@@ -458,18 +460,18 @@
   }
   var pasteRgxp = /__ESCAPER_QUOT__(\d+)_/g;
   /**
-   * Replaces all found escape blocks to a real content in a string
+   * Replaces all found escape blocks to a real content from the specified string
    * and returns a new string
    *
    * @param {string} str - source string
-   * @param {Array=} [content=Escaper.content] - array of matches
+   * @param {Array=} [store=Escaper.content] - store of matches
    * @param {RegExp=} [rgxp] - RegExp for searching, e.g. /__ESCAPER_QUOT__(\d+)_/g
    * @return {string}
    */
 
-  function paste(str, content, rgxp) {
+  function paste(str, store, rgxp) {
     return str.replace(rgxp || pasteRgxp, function (str, pos) {
-      return (content || Escaper.content)[pos];
+      return (store || Escaper.content)[pos];
     });
   }
 
@@ -479,4 +481,4 @@
 
   Object.defineProperty(exports, '__esModule', { value: true });
 
-}));
+})));
