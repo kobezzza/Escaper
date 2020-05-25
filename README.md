@@ -135,7 +135,7 @@ If a value is set to `-1`, then all found matches will be removed from the final
 '/*$'
 ```
 
-Parameters can be specified as an array (escapes only explicitly specified sequences)
+The parameters can be specified as an array (escapes only explicitly specified sequences)
 or like an object (disables/excludes by a literal or a group). Also, if you set the parameter value as `-1`,
 then all found sequences will be removed from the string.
 
