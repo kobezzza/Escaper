@@ -1,11 +1,11 @@
 /*!
- * Escaper v3.0.4
+ * Escaper v3.0.5
  * https://github.com/kobezzza/Escaper
  *
  * Released under the MIT license
  * https://github.com/kobezzza/Escaper/blob/master/LICENSE
  *
- * Date: Sun, 10 May 2020 15:54:21 GMT
+ * Date: Tue, 09 Jun 2020 05:35:44 GMT
  */
 
 (function (global, factory) {
@@ -32,7 +32,7 @@
 
   var Escaper;
   var escaper = Escaper = {
-    VERSION: [3, 0, 4],
+    VERSION: [3, 0, 5],
     content: [],
     cache: Object.create(null),
     symbols: /[!$a-z_]/i,
