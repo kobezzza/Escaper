@@ -52,7 +52,6 @@ node_modules
 /tmp
 
 # NPM ignore list
-/src
 /predefs
 /CODE_OF_CONDUCT.md
 /bower.json
