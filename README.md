@@ -136,7 +136,7 @@ If the value is set to `boolean` it will be replaced/passed.
 ```
 
 The parameters can be specified as an array (escapes only explicitly specified sequences)
-or like an object (disables/excludes by a literal or a group). Also, if you set the parameter value as `-1`,
+or like an object (disables/excludes by a literal or group). Also, if you set the parameter value as `-1`,
 then all found sequences will be removed from the string.
 
 * `string[]` `store = Escaper.content` — store for matches.
@@ -149,7 +149,7 @@ Replaces all found escape blocks to a real content from the specified string and
 
 * `string` `str` — source string;
 * `string[]` `store = Escaper.content` — store of matches;
-* `RegExp` `rgxp?` — RegExp for searching, e.g. `/__ESCAPER_QUOT__(\d+)_/g`.
+* `RegExp` `rgxp?` — RegExp to search, e.g. `/__ESCAPER_QUOT__(\d+)_/g`.
 
 ## [License](https://github.com/kobezzza/Escaper/blob/master/LICENSE)
 
