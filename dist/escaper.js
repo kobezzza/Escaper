@@ -5,13 +5,13 @@
  * Released under the MIT license
  * https://github.com/kobezzza/Escaper/blob/master/LICENSE
  *
- * Date: Tue, 09 Jun 2020 05:35:44 GMT
+ * Date: Wed, 29 Jul 2020 11:41:59 GMT
  */
 
 (function (global, factory) {
   typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports) :
   typeof define === 'function' && define.amd ? define('Escaper', ['exports'], factory) :
-  (global = global || self, factory(global.Escaper = {}));
+  (global = typeof globalThis !== 'undefined' ? globalThis : global || self, factory(global.Escaper = {}));
 }(this, (function (exports) { 'use strict';
 
   function _typeof(obj) {
@@ -465,7 +465,7 @@
    *
    * @param {string} str - source string
    * @param {Array=} [store=Escaper.content] - store of matches
-   * @param {RegExp=} [rgxp] - RegExp for searching, e.g. /__ESCAPER_QUOT__(\d+)_/g
+   * @param {RegExp=} [rgxp] - RegExp to search, e.g. /__ESCAPER_QUOT__(\d+)_/g
    * @return {string}
    */
 
