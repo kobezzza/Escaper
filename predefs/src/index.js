@@ -13,5 +13,7 @@
 //#include ../../node_modules/closurecompiler-externs/core.js
 //#include ../../externs.js
 
+var globalThis = window;
+
 function define(moduleName, dependencies, fn) {}
 define.amd = null;
