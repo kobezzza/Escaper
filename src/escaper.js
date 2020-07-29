@@ -568,7 +568,7 @@ const
  *
  * @param {string} str - source string
  * @param {Array=} [store=Escaper.content] - store of matches
- * @param {RegExp=} [rgxp] - RegExp for searching, e.g. /__ESCAPER_QUOT__(\d+)_/g
+ * @param {RegExp=} [rgxp] - RegExp to search, e.g. /__ESCAPER_QUOT__(\d+)_/g
  * @return {string}
  */
 export function paste(str, store, rgxp) {
