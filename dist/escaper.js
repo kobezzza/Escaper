@@ -5,7 +5,7 @@
  * Released under the MIT license
  * https://github.com/kobezzza/Escaper/blob/master/LICENSE
  *
- * Date: Wed, 29 Jul 2020 11:41:59 GMT
+ * Date: Sat, 03 Jul 2021 16:43:53 GMT
  */
 
 (function (global, factory) {
@@ -460,7 +460,7 @@
   }
   var pasteRgxp = /__ESCAPER_QUOT__(\d+)_/g;
   /**
-   * Replaces all found escape blocks to a real content from the specified string
+   * Replaces all found escape blocks to real content from the specified string
    * and returns a new string
    *
    * @param {string} str - source string
