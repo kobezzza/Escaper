@@ -1,7 +1,7 @@
 Escaper
 =======
 
-Escaper is a small JavaScript library to replace string literals, regular expressions, and comments from JavaScript syntax.
+Escaper is a small JavaScript library to replace string literals, regular expressions, and comments from the JavaScript syntax.
 
 [Russian documentation](https://github.com/kobezzza/Escaper/blob/master/README.ru.md)
 
@@ -143,7 +143,7 @@ then all found sequences will be removed from the string.
 
 ### Escaper.paste(str, store?, rgxp?): string
 
-Replaces all found escape blocks to a real content from the specified string and returns a new string.
+Replaces all found escape blocks to real content from the specified string and returns a new string.
 
 **Arguments**
 

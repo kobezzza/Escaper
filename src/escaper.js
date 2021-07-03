@@ -563,7 +563,7 @@ const
 	pasteRgxp = /__ESCAPER_QUOT__(\d+)_/g;
 
 /**
- * Replaces all found escape blocks to a real content from the specified string
+ * Replaces all found escape blocks to real content from the specified string
  * and returns a new string
  *
  * @param {string} str - source string
