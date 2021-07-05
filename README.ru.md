@@ -7,8 +7,8 @@ Escaper
 
 [![NPM version](http://img.shields.io/npm/v/escaper.svg?style=flat)](http://badge.fury.io/js/escaper)
 [![Build Status](https://github.com/kobezzza/Escaper/workflows/build/badge.svg?branch=master)](https://github.com/kobezzza/Escaper/actions?query=workflow%3Abuild)
-[![NPM devDependencies](http://img.shields.io/david/dev/kobezzza/Escaper.svg?style=flat)](https://david-dm.org/kobezzza/Escaper?type=dev)
 [![Coverage Status](http://img.shields.io/coveralls/kobezzza/Escaper.svg?style=flat)](https://coveralls.io/r/kobezzza/Escaper?branch=master)
+[![NPM devDependencies](http://img.shields.io/david/dev/kobezzza/Escaper.svg?style=flat)](https://david-dm.org/kobezzza/Escaper?type=dev)
 
 **Поддерживаются литералы:**
 
