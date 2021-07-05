@@ -7,7 +7,7 @@ Escaper
 
 [![NPM version](http://img.shields.io/npm/v/escaper.svg?style=flat)](http://badge.fury.io/js/escaper)
 [![NPM devDependencies](http://img.shields.io/david/dev/kobezzza/Escaper.svg?style=flat)](https://david-dm.org/kobezzza/Escaper?type=dev)
-[![Build Status](http://img.shields.io/travis/kobezzza/Escaper.svg?style=flat&branch=master)](https://travis-ci.org/kobezzza/Escaper)
+[![Build Status](https://github.com/kobezzza/Escaper/workflows/build/badge.svg?branch=master)](https://github.com/kobezzza/Escaper/actions?query=workflow%3Abuild)
 [![Coverage Status](http://img.shields.io/coveralls/kobezzza/Escaper.svg?style=flat)](https://coveralls.io/r/kobezzza/Escaper?branch=master)
 
 **Поддерживаются литералы:**
@@ -135,7 +135,7 @@ Escaper.paste(str, content);
 '/*$'
 ```
 
-Параметры могут быть заданы как в виде массива (экранировать только явно указанные последовательности), 
+Параметры могут быть заданы как в виде массива (экранировать только явно указанные последовательности),
 так и в виде объекта (отключение/исключение по литералу или группе). Также если задать значение параметра как `-1`,
 то все найденные последовательности будут удаляться из строки.
 
