@@ -32,12 +32,6 @@ npm install escaper
 или
 
 ```bash
-bower install escaper
-```
-
-или
-
-```bash
 git clone https://github.com/kobezzza/Escaper
 ```
 
