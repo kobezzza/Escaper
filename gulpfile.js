@@ -119,7 +119,7 @@ gulp.task('build:test:dev', gulp.series('build:js', test(false, true)));
 gulp.task('yaspeller', () => $.run('yaspeller ./').exec().on('error', console.error));
 
 gulp.task('bump', () =>
-	gulp.src('./@(package-lock|package|bower).json')
+	gulp.src('./@(package-lock|package).json')
 		.pipe(plumber())
 		.pipe($.bump({version: getVersion()}))
 		.pipe(gulp.dest('./'))
