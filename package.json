@@ -1,11 +1,11 @@
 {
   "name": "escaper",
-  "description": "Small JavaScript library to replace string literals, regular expressions, and comments from the JavaScript syntax.",
+  "description": "A small JavaScript library to replace string literals, regular expressions, and comments from the JavaScript syntax.",
   "homepage": "https://github.com/kobezzza/Escaper",
   "main": "dist/escaper.js",
   "module": "src/escaper.js",
   "typings": "escaper.d.ts",
-  "version": "3.0.5",
+  "version": "3.0.6",
   "license": "MIT",
   "author": {
     "name": "kobezzza",
@@ -25,8 +25,11 @@
     "full-test": "npm run test-coverage && yaspeller ./"
   },
   "keywords": [
-    "javascript",
-    "string"
+    "string literals",
+    "regular expressions",
+    "escape JS literals",
+    "escape JS comments",
+    "escape JS regular expressions"
   ],
   "devDependencies": {
     "@babel/core": "^7.14.6",
@@ -40,6 +43,7 @@
     "coveralls": "^3.1.1",
     "eslint": "7.2.0",
     "glob": "^7.1.7",
+    "google-closure-compiler": "^20210601.0.0",
     "gulp": "^4.0.2",
     "gulp-bump": "^3.2.0",
     "gulp-closure-compiler": "^0.4.0",

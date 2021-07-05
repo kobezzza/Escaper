@@ -1,6 +1,6 @@
 {
   "fileName": "escaper.min.js",
-  "compilerPath": "./bower_components/closure-compiler/closure-compiler-*.jar",
+  "compilerPath": "./node_modules/google-closure-compiler/compiler.jar",
   "continueWithWarnings": true,
   "compilerFlags": {
     "compilation_level": "ADVANCED",

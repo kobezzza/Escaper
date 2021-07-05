@@ -10,7 +10,7 @@
 
 let Escaper;
 export default Escaper = {
-	VERSION: [3, 0, 5],
+	VERSION: [3, 0, 6],
 	content: [],
 	cache: Object.create(null),
 	symbols: /[!$a-z_]/i,
