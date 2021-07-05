@@ -5,7 +5,7 @@
  * Released under the MIT license
  * https://github.com/kobezzza/Escaper/blob/master/LICENSE
  *
- * Date: Mon, 05 Jul 2021 04:53:34 GMT
+ * Date: Mon, 05 Jul 2021 05:00:38 GMT
  */
 
 (function (global, factory) {
