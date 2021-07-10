@@ -1,6 +1,6 @@
 {
   "fileName": "escaper.min.js",
-  "compilerPath": "./node_modules/google-closure-compiler/compiler.jar",
+  "compilerPath": "./node_modules/google-closure-compiler-java/compiler.jar",
   "continueWithWarnings": true,
   "compilerFlags": {
     "compilation_level": "ADVANCED",
@@ -27,7 +27,6 @@
       "visibility",
       "missingReturn",
       "duplicate",
-      "internetExplorerChecks",
       "suspiciousCode",
       "uselessCode",
       "misplacedTypeAnnotation",
