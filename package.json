@@ -20,7 +20,7 @@
     "url": "https://github.com/kobezzza/Escaper/issues"
   },
   "scripts": {
-    "test": "bower install && jasmine",
+    "test": "jasmine",
     "test-coverage": "gulp test && gulp test:dev",
     "full-test": "npm run test-coverage && yaspeller ./"
   },
